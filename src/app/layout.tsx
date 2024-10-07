@@ -38,9 +38,13 @@ export default function RootLayout({
                             <div className='w-1/3'></div>
                             <Link
                                 href='/'
-                                className='text-2xl font-bold text-gray-900'
+                                className='text-2xl font-bold text-gray-900 flex items-center'
                             >
-                                packApack.co
+                                pack
+                                <div className='pb-[2px] bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center'>
+                                    a
+                                </div>
+                                pack.co
                             </Link>
                             <nav className='w-1/3 flex justify-end'>
                                 <AuthGuard fallback={<AuthSignInButton />}>
@@ -49,7 +53,7 @@ export default function RootLayout({
                             </nav>
                         </div>
                     </header>
-                    <main className='flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+                    <main className='max-w-7xl flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8'>
                         {children}
                     </main>
                     <footer className='bg-gray-100'>
