@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { Button } from '@/ui/button';
-import { ChevronLeft, ChevronRight, Plus, Search } from 'lucide-react';
-import { Product } from '../../hooks/usePack';
+import { Search } from 'lucide-react';
+import { PackItem, usePack } from '../../hooks/usePack';
 import { Input } from '@/ui/input';
 import Link from 'next/link';
 import { ProductCard } from './ProductCard';
 import { AddProductButton } from './AddProductButton';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from '@/ui/carousel';
 
-export const AlternateProductsPanel = ({
-    products,
-}: {
-    products: Product[];
-}) => {
+export const AlternateProductsPanel = ({ item }: { item: PackItem }) => {
+    const { updateItem } = usePack();
     const [carouselIndex, setCarouselIndex] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const productsPerPage = 3;
+    const products = item.prospectiveProducts;
     const filteredProducts = products.filter(
         (product) =>
             product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -39,7 +43,9 @@ export const AlternateProductsPanel = ({
     };
     return (
         <div className=''>
-            <h3 className='text-lg font-bold mb-3'>Alternative Products</h3>
+            <h3 className='text-lg font-bold mb-3'>
+                Search "{item.name}" Products
+            </h3>
 
             <div className='flex items-center space-x-2 mb-4'>
                 <div className='relative flex-grow'>
@@ -52,52 +58,38 @@ export const AlternateProductsPanel = ({
                     />
                     <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400' />
                 </div>
-                <AddProductButton />
+                <AddProductButton item={item} />
             </div>
-            <div className='relative'>
-                <div className='flex overflow-hidden'>
-                    <div
-                        className='flex transition-transform duration-300 ease-in-out'
-                        style={{
-                            transform: `translateX(-${
-                                carouselIndex * (100 / productsPerPage)
-                            }%)`,
-                        }}
-                    >
+
+            <div className='relative mx-12'>
+                <Carousel
+                    opts={{
+                        loop: true,
+                    }}
+                >
+                    <CarouselContent className='-ml-2'>
                         {filteredProducts.map((product) => (
-                            <ProductCard product={product} />
+                            <CarouselItem className='basis-1/3 pl-2'>
+                                <ProductCard
+                                    product={product}
+                                    onSelect={(_) => {
+                                        item.selectedProduct = product;
+                                        updateItem(item);
+                                    }}
+                                />
+                            </CarouselItem>
                         ))}
-                    </div>
-                </div>
-                {filteredProducts.length > productsPerPage && (
-                    <>
-                        <Button
-                            variant='outline'
-                            size='icon'
-                            className='absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1/2'
-                            onClick={prevProducts}
-                        >
-                            <ChevronLeft className='h-4 w-4' />
-                            <span className='sr-only'>Previous products</span>
-                        </Button>
-                        <Button
-                            variant='outline'
-                            size='icon'
-                            className='absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/2'
-                            onClick={nextProducts}
-                        >
-                            <ChevronRight className='h-4 w-4' />
-                            <span className='sr-only'>Next products</span>
-                        </Button>
-                    </>
-                )}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                </Carousel>
             </div>
             <div className='mt-4 text-center'>
                 <Link
                     href='/all-products'
                     className='text-sm text-blue-600 hover:underline'
                 >
-                    View all alternative products
+                    View all products
                 </Link>
             </div>
         </div>

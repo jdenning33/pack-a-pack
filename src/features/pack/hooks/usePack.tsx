@@ -42,6 +42,7 @@ export interface Item {
 // This represents a product that can be purchased to satisfy the Item it is attributed to
 export interface Product {
     id: string;
+    itemId: string;
     name: string;
     description: string;
     brand: string;
@@ -58,6 +59,9 @@ export interface PackContract {
     addItem: (item: Omit<PackItem, 'id'>) => Promise<void>;
     updateItem: (item: PackItem) => Promise<void>;
     removeItem: (item: PackItem) => Promise<void>;
+    addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
+    updateProduct: (product: Product) => Promise<void>;
+    removeProduct: (product: Product) => Promise<void>;
 }
 
 const PackContext = createContext<PackContract | undefined>(undefined);
@@ -74,6 +78,9 @@ export const PackProvider: React.FC<{
         updateItem,
         removeItem,
         removeCategory,
+        addProduct,
+        updateProduct,
+        removeProduct,
     } = usePacksStore();
 
     let pack = packs.find((pack) => pack.id === packId) || null;
@@ -91,6 +98,12 @@ export const PackProvider: React.FC<{
         addItem: async (item: Omit<PackItem, 'id'>) => addItem(packId, item),
         updateItem: async (item: PackItem) => updateItem(packId, item),
         removeItem: async (item: PackItem) => removeItem(packId, item),
+        addProduct: async (product: Omit<Product, 'id'>) =>
+            addProduct(packId, product),
+        updateProduct: async (product: Product) =>
+            updateProduct(packId, product),
+        removeProduct: async (product: Product) =>
+            removeProduct(packId, product),
     };
 
     return (

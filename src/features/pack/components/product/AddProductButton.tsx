@@ -12,7 +12,7 @@ import {
     DialogTrigger,
 } from '@/ui/dialog';
 import { Plus } from 'lucide-react';
-import { usePack } from '../../hooks/usePack';
+import { Item, Product, usePack } from '../../hooks/usePack';
 
 // Define the type for form inputs
 interface ProductFormValues {
@@ -24,9 +24,9 @@ interface ProductFormValues {
     price: number;
 }
 
-export function AddProductButton() {
+export function AddProductButton({ item }: { item: Item }) {
     const [isOpen, setIsOpen] = useState(false);
-    // const { addProduct } = usePack(); // Replace with the actual hook or function for adding a product
+    const { pack, addProduct } = usePack(); // Replace with the actual hook or function for adding a product
 
     const {
         register, // Register form inputs
@@ -44,11 +44,16 @@ export function AddProductButton() {
     });
 
     const onSubmit = async (data: ProductFormValues) => {
-        const newProduct = {
-            id: crypto.randomUUID(), // Generate a new ID for the product
-            ...data,
+        const newProduct: Omit<Product, 'id'> = {
+            itemId: item.id,
+            name: data.name,
+            description: data.description || '',
+            brand: data.brand || '',
+            image: data.image || '',
+            weight: data.weight,
+            price: data.price,
         };
-        // await addProduct(newProduct); // Add product through your hook
+        await addProduct(newProduct); // Add product through your hook
         setIsOpen(false); // Close dialog after submission
     };
 

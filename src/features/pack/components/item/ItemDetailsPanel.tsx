@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/ui/button';
-import { Edit2 } from 'lucide-react';
+import { ArrowRight, ChevronRight, Edit2 } from 'lucide-react';
 import { PackItem, Product } from '../../hooks/usePack';
 import { AlternateProductsPanel } from '../product/AlternateProductsPanel';
 import { ProductDetailsCard } from '../product/ProductDetailsCard';
@@ -8,22 +8,35 @@ import { ProductDetailsCard } from '../product/ProductDetailsCard';
 export const ItemDetailsPanel: React.FC<{
     item: PackItem;
     products: Product[];
-}> = ({ item, products }) => {
+    onDismiss?: () => void;
+}> = ({ item, products, onDismiss }) => {
     let selectedProduct = item.selectedProduct;
     return (
-        <div className='space-y-4'>
-            <div className=''>
-                <div className='flex justify-between items-center'>
-                    <h2 className='text-xl font-bold'>{item.name}</h2>
+        <div className='p-4 pt-2 relative'>
+            {onDismiss && (
+                <div className='flex items-center gap-1'>
                     <Button
-                        variant='ghost'
-                        size='icon'
-                        // onClick={onEdit}
-                        aria-label='Edit packing item'
+                        variant='link'
+                        size='sm'
+                        className='px-0 pt-0 h-[unset]'
+                        onClick={onDismiss}
                     >
-                        <Edit2 className='h-4 w-4' />
+                        Overview
+                    </Button>
+                    <ChevronRight size={12} className='text-primary' />
+                    <Button
+                        variant='link'
+                        size='sm'
+                        className='px-0 pt-0 h-[unset]'
+                        onClick={onDismiss}
+                    >
+                        {item.name}
                     </Button>
                 </div>
+            )}
+
+            <div>
+                <h2 className='text-xl font-bold'>{item.name}</h2>
                 <p className='text-sm text-gray-600 mt-1'>{item.description}</p>
             </div>
 
@@ -35,7 +48,7 @@ export const ItemDetailsPanel: React.FC<{
                 )}
             </div>
 
-            <AlternateProductsPanel products={products} />
+            <AlternateProductsPanel item={item} />
         </div>
     );
 };

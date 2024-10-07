@@ -6,14 +6,17 @@ import { usePack, Category, PackItem } from '../../hooks/usePack';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { QuickAddPackItem } from './QuickAddPackItem';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { cn } from '@/lib/utils';
 
 export function ScrollableCategoryItemsList({
     category,
+    className,
 }: {
     category: Category;
+    className?: string;
 }) {
     const { updateItem, removeItem } = usePack();
-    const { setSelectedItemId } = usePackNavigation();
+    const { setSelectedItemId, selectedItem } = usePackNavigation();
     const toggleItem = async (item: PackItem) => {
         await updateItem({
             ...item,
@@ -21,43 +24,52 @@ export function ScrollableCategoryItemsList({
         });
     };
     return (
-        <div className='p-4 w-2/5 flex flex-col gap-4 overflow-hidden h-full'>
-            <ScrollArea className='flex-1 overflow-auto' type='scroll'>
-                <ul className='space-y-1 flex-1'>
-                    {category.items.map((item) => (
-                        <li
-                            key={item.id}
-                            className='flex items-center justify-between'
-                        >
-                            <div className='flex items-center space-x-2'>
-                                <Checkbox
-                                    id={`drawer-item-${item.id}`}
-                                    checked={item.isPacked}
-                                    onCheckedChange={() => toggleItem(item)}
-                                />
-                                <label
-                                    htmlFor={`drawer-item-${item.id}`}
-                                    className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:underline cursor-pointer'
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setSelectedItemId(item.id);
-                                    }}
-                                >
-                                    {item.name}
-                                </label>
-                            </div>
-                            <Button
-                                variant='ghost'
-                                size='sm'
-                                onClick={() => removeItem(item)}
+        <ScrollArea className='flex-1 overflow-auto' type='scroll'>
+            <ul className='flex-1'>
+                {category.items.map((item) => (
+                    <li
+                        key={item.id}
+                        className={cn(
+                            'flex items-center justify-between px-4',
+                            'hover:bg-primary/30 group cursor-pointer transition-all',
+                            item.id === selectedItem?.id &&
+                                'bg-primary/20 font-semibold'
+                        )}
+                        onClick={(e) => {
+                            setSelectedItemId(item.id);
+                        }}
+                    >
+                        <div className='flex items-center space-x-2'>
+                            <Checkbox
+                                id={`drawer-item-${item.id}`}
+                                checked={item.isPacked}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                }}
+                                onCheckedChange={(e) => {
+                                    toggleItem(item);
+                                }}
+                            />
+                            <label
+                                htmlFor={`drawer-item-${item.id}`}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                }}
+                                className='text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 group-hover:underline cursor-pointer'
                             >
-                                <Trash className='h-4 w-4' />
-                            </Button>
-                        </li>
-                    ))}
-                </ul>
-            </ScrollArea>
-            <QuickAddPackItem categoryId={category.id} />
-        </div>
+                                {item.name}
+                            </label>
+                        </div>
+                        <Button
+                            variant='ghost'
+                            size='sm'
+                            onClick={() => removeItem(item)}
+                        >
+                            <Trash className='h-4 w-4' />
+                        </Button>
+                    </li>
+                ))}
+            </ul>
+        </ScrollArea>
     );
 }

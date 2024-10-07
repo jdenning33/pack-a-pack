@@ -15,7 +15,7 @@ export const PackCategory: React.FC<PackCategoryProps> = ({
     className,
 }) => {
     const { updateItem } = usePack();
-    const { setSelectedCategoryId: selectCategoryId } = usePackNavigation();
+    const { setSelectedCategoryId, setSelectedItemId } = usePackNavigation();
 
     const toggleItem = async (item: PackItem) => {
         await updateItem({
@@ -30,7 +30,7 @@ export const PackCategory: React.FC<PackCategoryProps> = ({
                 'hover:shadow-lg hover:scale-[101%] transition-all',
                 className
             )}
-            onClick={(e) => selectCategoryId(category.id)}
+            onClick={(e) => setSelectedCategoryId(category.id)}
         >
             <CardHeader>
                 <CardTitle>{category.name}</CardTitle>
@@ -58,6 +58,7 @@ export const PackCategory: React.FC<PackCategoryProps> = ({
                                 <label
                                     htmlFor={`item-${item.id}`}
                                     onClick={(e) => {
+                                        setSelectedItemId(item.id);
                                         e.preventDefault();
                                     }}
                                     className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:underline hover:cursor-pointer'
