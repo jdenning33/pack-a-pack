@@ -53,7 +53,7 @@ export const AlternateProductsPanel = ({
                     />
                     <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400' />
                 </div>
-                <AddProductButton item={item} />
+                <AddProductButton />
             </div>
 
             <div className='relative mx-10'>
@@ -68,9 +68,16 @@ export const AlternateProductsPanel = ({
                                 <ProductCard
                                     product={product}
                                     onSelect={(_) => {
-                                        item.selectedProduct = {
-                                            ...product,
-                                            itemId: item.id,
+                                        item = {
+                                            ...item,
+                                            productName: product.name,
+                                            productDescription:
+                                                product.description,
+                                            productBrand: product.brand,
+                                            productImage: product.image,
+                                            productPrice: product.price,
+                                            productWeight: product.weight,
+                                            productId: product.id,
                                         };
                                         updateItem(item);
                                         incrementProductTag(
@@ -86,7 +93,6 @@ export const AlternateProductsPanel = ({
                                 className={
                                     'bg-[unset] border-0 shadow-none h-48'
                                 }
-                                item={item}
                             />
                         </CarouselItem>
                     </CarouselContent>

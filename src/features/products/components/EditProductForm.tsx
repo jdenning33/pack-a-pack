@@ -2,19 +2,25 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
-import { Item, Product, usePack } from '../../pack/hooks/usePack';
-import { ProductFormValues } from './AddProductButton';
+import { Product, useProducts } from '../useProducts';
+
+export interface ProductFormValues {
+    name: string;
+    description?: string;
+    brand?: string;
+    image?: string;
+    weight: number;
+    price: number;
+}
 
 export function EditProductForm({
     product,
-    item,
     onFinished,
 }: {
     product?: Product;
-    item: Item;
     onFinished?: () => void;
 }) {
-    const { pack, addProduct, updateProduct } = usePack(); // Replace with the actual hook or function for adding a product
+    const { addProduct, updateProduct } = useProducts(); // Replace with the actual hook or function for adding a product
 
     const {
         register, // Register form inputs
@@ -32,9 +38,8 @@ export function EditProductForm({
         },
     });
     const onSubmit = async (data: ProductFormValues) => {
-        const newProduct: Product | Omit<Product, 'id'> = {
+        const newProduct = {
             ...product,
-            itemId: item.id,
             name: data.name,
             description: data.description || '',
             brand: data.brand || '',
@@ -42,8 +47,8 @@ export function EditProductForm({
             weight: data.weight,
             price: data.price,
         };
-        if ('id' in newProduct) await updateProduct(newProduct as Product);
-        else await addProduct(newProduct);
+        if (newProduct.id) await updateProduct(newProduct as Product);
+        else await addProduct(newProduct as Omit<Product, 'id'>);
         onFinished?.(); // Close dialog after submission
     };
     return (

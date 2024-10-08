@@ -1,14 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-
-import {
-    Pack,
-    PackKit,
-    PackItem,
-    Item,
-    Product,
-    PackContract,
-} from './usePack';
+import { Pack, PackKit, PackItem, Product } from './usePack';
 
 interface PacksState {
     packs: Pack[];
@@ -21,9 +13,6 @@ interface PacksState {
     addItem: (packId: string, item: Omit<PackItem, 'id'>) => void;
     updateItem: (packId: string, item: PackItem) => void;
     removeItem: (packId: string, item: PackItem) => void;
-    addProduct: (packId: string, product: Omit<Product, 'id'>) => void;
-    updateProduct: (packId: string, product: Product) => void;
-    removeProduct: (packId: string, product: Product) => void;
 }
 
 const uuidv4 = () => {
@@ -167,96 +156,10 @@ export const usePacksStore = create<PacksState>()(
                             : pack
                     ),
                 })),
-            addProduct: (packId, product) =>
-                set((state) => ({
-                    packs: state.packs.map((pack) =>
-                        pack.id === packId
-                            ? {
-                                  ...pack,
-                                  kits: pack.kits.map((kit) => ({
-                                      ...kit,
-                                      items: kit.items.map((item) =>
-                                          item.id === product.itemId
-                                              ? {
-                                                    ...item,
-                                                    prospectiveProducts: [
-                                                        ...item.prospectiveProducts,
-                                                        {
-                                                            ...product,
-                                                            id: uuidv4(),
-                                                        },
-                                                    ],
-                                                }
-                                              : item
-                                      ),
-                                  })),
-                              }
-                            : pack
-                    ),
-                })),
-            updateProduct: (packId, updatedProduct) =>
-                set((state) => ({
-                    packs: state.packs.map((pack) =>
-                        pack.id === packId
-                            ? {
-                                  ...pack,
-                                  kits: pack.kits.map((kit) => ({
-                                      ...kit,
-                                      items: kit.items.map((item) =>
-                                          item.id === updatedProduct.itemId
-                                              ? {
-                                                    ...item,
-                                                    prospectiveProducts:
-                                                        item.prospectiveProducts.map(
-                                                            (product) =>
-                                                                product.id ===
-                                                                updatedProduct.id
-                                                                    ? updatedProduct
-                                                                    : product
-                                                        ),
-                                                }
-                                              : item
-                                      ),
-                                  })),
-                              }
-                            : pack
-                    ),
-                })),
-            removeProduct: (packId, product) =>
-                set((state) => ({
-                    packs: state.packs.map((pack) =>
-                        pack.id === packId
-                            ? {
-                                  ...pack,
-                                  kits: pack.kits.map((kit) => ({
-                                      ...kit,
-                                      items: kit.items.map((item) =>
-                                          item.id === product.itemId
-                                              ? {
-                                                    ...item,
-                                                    prospectiveProducts:
-                                                        item.prospectiveProducts.filter(
-                                                            (p) =>
-                                                                p.id !==
-                                                                product.id
-                                                        ),
-                                                    selectedProduct:
-                                                        item.selectedProduct
-                                                            ?.id === product.id
-                                                            ? undefined
-                                                            : item.selectedProduct,
-                                                }
-                                              : item
-                                      ),
-                                  })),
-                              }
-                            : pack
-                    ),
-                })),
         }),
         {
             name: 'packs-storage',
-            storage: createJSONStorage(() => sessionStorage),
+            storage: createJSONStorage(() => localStorage),
         }
     )
 );

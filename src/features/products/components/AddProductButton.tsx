@@ -9,26 +9,11 @@ import {
     DialogTrigger,
 } from '@/ui/dialog';
 import { Plus } from 'lucide-react';
-import { Item } from '../../pack/hooks/usePack';
 import { EditProductForm } from './EditProductForm';
 
 // Define the type for form inputs
-export interface ProductFormValues {
-    name: string;
-    description?: string;
-    brand?: string;
-    image?: string;
-    weight: number;
-    price: number;
-}
 
-export function AddProductButton({
-    item,
-    className,
-}: {
-    item: Item;
-    className?: string;
-}) {
+export function AddProductButton({ className }: { className?: string }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -46,10 +31,7 @@ export function AddProductButton({
                         Provide details for the new product.
                     </DialogDescription>
                 </DialogHeader>
-                <EditProductForm
-                    item={item}
-                    onFinished={() => setIsOpen(false)}
-                />
+                <EditProductForm onFinished={() => setIsOpen(false)} />
             </DialogContent>
         </Dialog>
     );

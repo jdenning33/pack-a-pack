@@ -2,9 +2,8 @@ import React from 'react';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import { Trash } from 'lucide-react';
-import { usePack, PackKit, PackItem, Item } from '../../hooks/usePack';
+import { usePack, PackItem } from '../../hooks/usePack';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
-import { QuickAddPackItem } from './QuickAddItemInput';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { cn } from '@/lib/utils';
 

@@ -6,7 +6,7 @@ import {
     DialogTitle,
     DialogDescription,
 } from '@/ui/dialog';
-import { ItemDetailsPanel } from '../item/ItemDetailsPanel';
+import { ItemPanel } from '../item/ItemPanel';
 import { ScrollableItemsList } from '../item/ScrollableItemsList';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { QuickAddPackItem } from '../item/QuickAddItemInput';
@@ -15,6 +15,7 @@ import { Edit } from 'lucide-react';
 import { EditProductForm } from '@/features/products/components/EditProductForm';
 import { KitOverviewPanel } from './KitOverviewPanel';
 import { SelectedKitBreadCrumbs } from './SelectedKitBreadCrumbs';
+import { EditItemProductForm } from '../item/EditItemProductForm';
 
 export const SelectedKitModal = ({}) => {
     const {
@@ -38,7 +39,7 @@ export const SelectedKitModal = ({}) => {
                 setSelectedItemId(null);
             }}
         >
-            <DialogContent className='min-h-[30rem] max-h-svh max-w-4xl p-0 flex flex-col gap-0'>
+            <DialogContent className='min-h-[30rem] h-[40rem] max-h-svh max-w-4xl p-0 flex flex-col gap-0'>
                 <DialogHeader className='p-4 pb-3 border-b text-left'>
                     <DialogTitle>{kit.name}</DialogTitle>
                     <DialogDescription>{kit.description}</DialogDescription>
@@ -58,22 +59,14 @@ export const SelectedKitModal = ({}) => {
                             items={kit.items}
                         />
                     </div>
-                    <div className='w-3/5 border-l bg-secondary'>
+                    <div className='w-3/5 border-l bg-secondary flex flex-col'>
                         <div className='px-4 pt-2'>
                             <SelectedKitBreadCrumbs />
                         </div>
 
-                        <div className='p-4'>
-                            {selectedItem && isEditingProductDetails ? (
-                                <EditProductForm
-                                    product={selectedItem.selectedProduct}
-                                    item={selectedItem}
-                                    onFinished={() =>
-                                        setIsEditingProductDetails(false)
-                                    }
-                                />
-                            ) : selectedItem && !isEditingProductDetails ? (
-                                <ItemDetailsPanel item={selectedItem} />
+                        <div className='p-4 flex-1'>
+                            {selectedItem ? (
+                                <ItemPanel item={selectedItem} />
                             ) : (
                                 <KitOverviewPanel kit={kit} />
                             )}
