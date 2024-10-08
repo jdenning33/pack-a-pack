@@ -58,8 +58,10 @@ export const PackCategory: React.FC<PackCategoryProps> = ({
                                 <label
                                     htmlFor={`item-${item.id}`}
                                     onClick={(e) => {
-                                        setSelectedItemId(item.id);
                                         e.preventDefault();
+                                        e.stopPropagation();
+                                        setSelectedCategoryId(category.id);
+                                        setSelectedItemId(item.id);
                                     }}
                                     className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:underline hover:cursor-pointer'
                                 >

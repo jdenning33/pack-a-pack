@@ -1,8 +1,8 @@
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import Image from 'next/image';
-import { useState } from 'react';
 import { Badge } from '@/ui/badge';
+import { cn } from '@/lib/utils';
 
 interface Product {
     id: string;
@@ -21,14 +21,10 @@ export function ProductCard({
     product: Product;
     onSelect: (product: Product) => void;
 }) {
-    const [isHovered, setIsHovered] = useState(false);
-
     return (
         <Card
             key={product.id}
-            className='relative flex-shrink-0 h-48  transition-shadow duration-300 ease-in-out hover:shadow-lg mb-1'
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            className='relative flex-shrink-0 h-48 transition-shadow duration-300 ease-in-out hover:shadow my-1 group'
         >
             <CardContent className='p-3 flex flex-col h-full'>
                 <div className='w-24 h-24 mb-2 relative flex self-center shrink-0'>
@@ -49,13 +45,13 @@ export function ProductCard({
                     </Badge>
                     <Badge
                         variant='outline'
-                        className='whitespace-nowrap bg-background/70'
+                        className='whitespace-nowrap bg-background/90'
                     >
                         {product.weight.toFixed(0)} oz
                     </Badge>
                     <Badge
                         variant='outline'
-                        className='whitespace-nowrap bg-background/70'
+                        className='whitespace-nowrap bg-background/90'
                     >
                         ${product.price.toFixed(0)}
                     </Badge>
@@ -69,14 +65,22 @@ export function ProductCard({
                     </p>
                 </div>
             </CardContent>
-            {isHovered && (
-                <div className='absolute inset-0 bg-primary/80 flex items-center justify-center'>
-                    <Button
-                        variant='secondary'
-                        onClick={() => onSelect(product)}
-                    >
-                        Select Product
-                    </Button>
+            {onSelect && (
+                <div
+                    className={cn(
+                        'flex opacity-0 group-hover:opacity-100',
+                        'absolute inset-0 top-3/4 bg-primary/30 items-center justify-center rounded-b-xl transition-all'
+                    )}
+                >
+                    <div className='bg-primary rounded-lg'>
+                        <Button
+                            variant='secondary'
+                            className='!bg-opacity-100'
+                            onClick={() => onSelect(product)}
+                        >
+                            Select
+                        </Button>
+                    </div>
                 </div>
             )}
         </Card>

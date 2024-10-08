@@ -2,19 +2,22 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Badge } from '@/ui/badge';
 import Image from 'next/image';
-import { Product } from '../../hooks/usePack';
+import { Product } from '../../pack/hooks/usePack';
 
 export function ProductDetailsCard({ product }: { product: Product }) {
     return (
-        <Card className='w-full max-w-md'>
-            <CardContent className='p-4 flex'>
+        <div className='w-full max-w-md'>
+            <div className='flex'>
                 <div className='relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0'>
                     <Image
-                        src={product.image || '/placeholder.svg'}
+                        src={
+                            product.image ||
+                            'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
+                        }
                         alt={product.name}
-                        width={96}
-                        height={96}
+                        layout='fill'
                         objectFit='cover'
+                        className='rounded'
                     />
                 </div>
                 <div className='ml-4 flex-grow flex flex-col'>
@@ -22,7 +25,9 @@ export function ProductDetailsCard({ product }: { product: Product }) {
                         {product.name}
                     </h3>
                     <div className='flex flex-wrap gap-2 mb-2'>
-                        <Badge variant='secondary'>{product.brand}</Badge>
+                        <Badge variant='outline' className='bg-background'>
+                            {product.brand}
+                        </Badge>
                         <Badge variant='outline'>
                             {product.weight.toFixed(0)} oz
                         </Badge>
@@ -34,7 +39,7 @@ export function ProductDetailsCard({ product }: { product: Product }) {
                         {product.description}
                     </p>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 }
