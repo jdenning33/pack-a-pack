@@ -1,10 +1,12 @@
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
 import { PackItem, usePack } from '../../hooks/usePack';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { ImageWithFallback } from '@/ui/image-with-fallback';
+import { useMemo } from 'react';
 
 export interface ItemProductFormValues {
     productName: string;
@@ -25,7 +27,7 @@ export function EditItemProductForm({
     const { updateItem } = usePack(); // Replace with the actual hook or function for adding a product
 
     const {
-        watch,
+        control,
         register, // Register form inputs
         handleSubmit, // Handles form submission
         formState: { errors }, // Validation error state
@@ -54,8 +56,7 @@ export function EditItemProductForm({
         await updateItem(updatedItem);
         onFinished?.(); // Close dialog after submission
     };
-    // get the form url from the item
-    const productImage = watch('productImage');
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
             <div className='flex gap-4'>
@@ -84,13 +85,16 @@ export function EditItemProductForm({
     );
 
     function ProductImage() {
+        const productImage = useWatch({
+            control: control,
+            name: 'productImage',
+        });
+
         return (
             <div className='relative w-24 h-24 rounded-lg flex-shrink-0'>
-                <Image
-                    src={
-                        productImage ||
-                        'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-                    }
+                <ImageWithFallback
+                    src={productImage || ''}
+                    fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                     alt={item.productName || 'placeholder'}
                     layout='fill'
                     objectFit='contain'

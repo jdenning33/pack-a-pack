@@ -3,6 +3,7 @@ import { Button } from '@/ui/button';
 import Image from 'next/image';
 import { Badge } from '@/ui/badge';
 import { cn } from '@/lib/utils';
+import { ImageWithFallback } from '@/ui/image-with-fallback';
 
 interface Product {
     id: string;
@@ -33,11 +34,9 @@ export function ProductCard({
         >
             <CardContent className='p-3 flex flex-col h-full'>
                 <div className='w-24 h-24 mb-2 relative flex self-center shrink-0'>
-                    <Image
-                        src={
-                            product.image ||
-                            'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-                        }
+                    <ImageWithFallback
+                        src={product.image || ''}
+                        fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                         alt={product.name}
                         layout='fill'
                         objectFit='contain'

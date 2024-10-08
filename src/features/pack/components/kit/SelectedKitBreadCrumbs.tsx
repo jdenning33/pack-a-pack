@@ -6,6 +6,7 @@ import { ChevronRight } from 'lucide-react';
 
 export function SelectedKitBreadCrumbs({ className }: { className?: string }) {
     const {
+        selectedKit,
         setSelectedItemId,
         selectedItem,
         isEditingProductDetails,
@@ -20,7 +21,7 @@ export function SelectedKitBreadCrumbs({ className }: { className?: string }) {
                 className='px-0 pt-0 h-[unset]'
                 onClick={() => setSelectedItemId(null)}
             >
-                Overview
+                {selectedKit?.name}
             </Button>
             {selectedItem && (
                 <>

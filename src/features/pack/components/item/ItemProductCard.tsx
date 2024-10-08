@@ -7,6 +7,7 @@ import { Button } from '@/ui/button';
 import { Edit, Edit2 } from 'lucide-react';
 import Image from 'next/image';
 import { Badge } from '@/ui/badge';
+import { ImageWithFallback } from '@/ui/image-with-fallback';
 
 export function ItemProductCard({ item }: { item: PackItem }) {
     const { isEditingProductDetails, setIsEditingProductDetails } =
@@ -36,11 +37,9 @@ export function ItemProductCard({ item }: { item: PackItem }) {
                     />
                 </Button>
                 <div className='relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0'>
-                    <Image
-                        src={
-                            item.productImage ||
-                            'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-                        }
+                    <ImageWithFallback
+                        src={item.productImage || ''}
+                        fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                         alt={item.productName || 'placeholder'}
                         layout='fill'
                         objectFit='contain'
