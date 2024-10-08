@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 import {
     Pack,
-    Category,
+    PackKit,
     PackItem,
     Item,
     Product,
@@ -15,9 +15,9 @@ interface PacksState {
     addPack: (name: string, description: string) => void;
     removePack: (id: string) => void;
     updatePack: (pack: Pack) => void;
-    addCategory: (packId: string, category: Omit<Category, 'id'>) => void;
-    updateCategory: (packId: string, category: Category) => void;
-    removeCategory: (packId: string, category: Category) => void;
+    addKit: (packId: string, kit: Omit<PackKit, 'id'>) => void;
+    updateKit: (packId: string, kit: PackKit) => void;
+    removeKit: (packId: string, kit: PackKit) => void;
     addItem: (packId: string, item: Omit<PackItem, 'id'>) => void;
     updateItem: (packId: string, item: PackItem) => void;
     removeItem: (packId: string, item: PackItem) => void;
@@ -42,7 +42,7 @@ export const usePacksStore = create<PacksState>()(
                 set((state) => ({
                     packs: [
                         ...state.packs,
-                        { id: uuidv4(), name, description, categories: [] },
+                        { id: uuidv4(), name, description, kits: [] },
                     ],
                 })),
             removePack: (id) =>
@@ -55,46 +55,46 @@ export const usePacksStore = create<PacksState>()(
                         pack.id === updatedPack.id ? updatedPack : pack
                     ),
                 })),
-            addCategory: (packId, category) =>
+            addKit: (packId, kit) =>
                 set((state) => ({
                     packs: state.packs.map((pack) =>
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: [
-                                      ...pack.categories,
+                                  kits: [
+                                      ...pack.kits,
                                       {
                                           id: uuidv4(),
-                                          ...category,
+                                          ...kit,
                                       },
                                   ],
                               }
                             : pack
                     ),
                 })),
-            updateCategory: (packId, updatedCategory) =>
+            updateKit: (packId, updatedKit) =>
                 set((state) => ({
                     packs: state.packs.map((pack) =>
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: pack.categories.map((category) =>
-                                      category.id === updatedCategory.id
-                                          ? updatedCategory
-                                          : category
+                                  kits: pack.kits.map((kit) =>
+                                      kit.id === updatedKit.id
+                                          ? updatedKit
+                                          : kit
                                   ),
                               }
                             : pack
                     ),
                 })),
-            removeCategory: (packId, category) =>
+            removeKit: (packId, kit) =>
                 set((state) => ({
                     packs: state.packs.map((pack) =>
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: pack.categories.filter(
-                                      (c) => c.id !== category.id
+                                  kits: pack.kits.filter(
+                                      (c) => c.id !== kit.id
                                   ),
                               }
                             : pack
@@ -106,12 +106,12 @@ export const usePacksStore = create<PacksState>()(
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: pack.categories.map((category) =>
-                                      category.id === item.categoryId
+                                  kits: pack.kits.map((kit) =>
+                                      kit.id === item.kitId
                                           ? {
-                                                ...category,
+                                                ...kit,
                                                 items: [
-                                                    ...category.items,
+                                                    ...kit.items,
                                                     {
                                                         ...item,
                                                         id: uuidv4(),
@@ -119,7 +119,7 @@ export const usePacksStore = create<PacksState>()(
                                                     },
                                                 ],
                                             }
-                                          : category
+                                          : kit
                                   ),
                               }
                             : pack
@@ -131,19 +131,17 @@ export const usePacksStore = create<PacksState>()(
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: pack.categories.map((category) =>
-                                      category.id === updatedItem.categoryId
+                                  kits: pack.kits.map((kit) =>
+                                      kit.id === updatedItem.kitId
                                           ? {
-                                                ...category,
-                                                items: category.items.map(
-                                                    (item) =>
-                                                        item.id ===
-                                                        updatedItem.id
-                                                            ? updatedItem
-                                                            : item
+                                                ...kit,
+                                                items: kit.items.map((item) =>
+                                                    item.id === updatedItem.id
+                                                        ? updatedItem
+                                                        : item
                                                 ),
                                             }
-                                          : category
+                                          : kit
                                   ),
                               }
                             : pack
@@ -155,15 +153,15 @@ export const usePacksStore = create<PacksState>()(
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: pack.categories.map((category) =>
-                                      category.id === item.categoryId
+                                  kits: pack.kits.map((kit) =>
+                                      kit.id === item.kitId
                                           ? {
-                                                ...category,
-                                                items: category.items.filter(
+                                                ...kit,
+                                                items: kit.items.filter(
                                                     (i) => i.id !== item.id
                                                 ),
                                             }
-                                          : category
+                                          : kit
                                   ),
                               }
                             : pack
@@ -175,25 +173,23 @@ export const usePacksStore = create<PacksState>()(
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: pack.categories.map(
-                                      (category) => ({
-                                          ...category,
-                                          items: category.items.map((item) =>
-                                              item.id === product.itemId
-                                                  ? {
-                                                        ...item,
-                                                        prospectiveProducts: [
-                                                            ...item.prospectiveProducts,
-                                                            {
-                                                                ...product,
-                                                                id: uuidv4(),
-                                                            },
-                                                        ],
-                                                    }
-                                                  : item
-                                          ),
-                                      })
-                                  ),
+                                  kits: pack.kits.map((kit) => ({
+                                      ...kit,
+                                      items: kit.items.map((item) =>
+                                          item.id === product.itemId
+                                              ? {
+                                                    ...item,
+                                                    prospectiveProducts: [
+                                                        ...item.prospectiveProducts,
+                                                        {
+                                                            ...product,
+                                                            id: uuidv4(),
+                                                        },
+                                                    ],
+                                                }
+                                              : item
+                                      ),
+                                  })),
                               }
                             : pack
                     ),
@@ -204,26 +200,24 @@ export const usePacksStore = create<PacksState>()(
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: pack.categories.map(
-                                      (category) => ({
-                                          ...category,
-                                          items: category.items.map((item) =>
-                                              item.id === updatedProduct.itemId
-                                                  ? {
-                                                        ...item,
-                                                        prospectiveProducts:
-                                                            item.prospectiveProducts.map(
-                                                                (product) =>
-                                                                    product.id ===
-                                                                    updatedProduct.id
-                                                                        ? updatedProduct
-                                                                        : product
-                                                            ),
-                                                    }
-                                                  : item
-                                          ),
-                                      })
-                                  ),
+                                  kits: pack.kits.map((kit) => ({
+                                      ...kit,
+                                      items: kit.items.map((item) =>
+                                          item.id === updatedProduct.itemId
+                                              ? {
+                                                    ...item,
+                                                    prospectiveProducts:
+                                                        item.prospectiveProducts.map(
+                                                            (product) =>
+                                                                product.id ===
+                                                                updatedProduct.id
+                                                                    ? updatedProduct
+                                                                    : product
+                                                        ),
+                                                }
+                                              : item
+                                      ),
+                                  })),
                               }
                             : pack
                     ),
@@ -234,30 +228,27 @@ export const usePacksStore = create<PacksState>()(
                         pack.id === packId
                             ? {
                                   ...pack,
-                                  categories: pack.categories.map(
-                                      (category) => ({
-                                          ...category,
-                                          items: category.items.map((item) =>
-                                              item.id === product.itemId
-                                                  ? {
-                                                        ...item,
-                                                        prospectiveProducts:
-                                                            item.prospectiveProducts.filter(
-                                                                (p) =>
-                                                                    p.id !==
-                                                                    product.id
-                                                            ),
-                                                        selectedProduct:
-                                                            item.selectedProduct
-                                                                ?.id ===
-                                                            product.id
-                                                                ? undefined
-                                                                : item.selectedProduct,
-                                                    }
-                                                  : item
-                                          ),
-                                      })
-                                  ),
+                                  kits: pack.kits.map((kit) => ({
+                                      ...kit,
+                                      items: kit.items.map((item) =>
+                                          item.id === product.itemId
+                                              ? {
+                                                    ...item,
+                                                    prospectiveProducts:
+                                                        item.prospectiveProducts.filter(
+                                                            (p) =>
+                                                                p.id !==
+                                                                product.id
+                                                        ),
+                                                    selectedProduct:
+                                                        item.selectedProduct
+                                                            ?.id === product.id
+                                                            ? undefined
+                                                            : item.selectedProduct,
+                                                }
+                                              : item
+                                      ),
+                                  })),
                               }
                             : pack
                     ),

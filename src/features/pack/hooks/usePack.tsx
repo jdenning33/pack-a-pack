@@ -7,11 +7,11 @@ export interface Pack {
     id: string;
     name: string;
     description: string;
-    categories: Category[];
+    kits: PackKit[];
 }
 
-// This represents a category of items in the backpack. For example, "Clothing Kit" or "Toiletries Kit"
-export interface Category {
+// This represents a kit of items in the backpack. For example, "Clothing Kit" or "Toiletries Kit"
+export interface PackKit {
     id: string;
     name: string;
     description: string;
@@ -21,7 +21,7 @@ export interface Category {
 // This represents a single item in this pack. For example, "T-shirt" or "Toothbrush"
 export interface PackItem {
     id: string;
-    categoryId: string;
+    kitId: string;
     item: Item;
     name: string;
     description: string;
@@ -53,9 +53,9 @@ export interface Product {
 
 export interface PackContract {
     pack: Pack;
-    addCategory: (category: Omit<Category, 'id'>) => Promise<void>;
-    updateCategory: (category: Category) => Promise<void>;
-    removeCategory: (category: Category) => Promise<void>;
+    addKit: (kit: Omit<PackKit, 'id'>) => Promise<void>;
+    updateKit: (kit: PackKit) => Promise<void>;
+    removeKit: (kit: PackKit) => Promise<void>;
     addItem: (item: Omit<PackItem, 'id'>) => Promise<void>;
     updateItem: (item: PackItem) => Promise<void>;
     removeItem: (item: PackItem) => Promise<void>;
@@ -72,12 +72,12 @@ export const PackProvider: React.FC<{
 }> = ({ children, packId }) => {
     let {
         packs,
-        addCategory,
-        updateCategory,
+        addKit,
+        updateKit,
         addItem,
         updateItem,
         removeItem,
-        removeCategory,
+        removeKit,
         addProduct,
         updateProduct,
         removeProduct,
@@ -90,11 +90,9 @@ export const PackProvider: React.FC<{
 
     let packContract: PackContract = {
         pack: pack,
-        addCategory: async (category) => addCategory(packId, category),
-        updateCategory: async (category: Category) =>
-            updateCategory(packId, category),
-        removeCategory: async (category: Category) =>
-            removeCategory(packId, category),
+        addKit: async (kit) => addKit(packId, kit),
+        updateKit: async (kit: PackKit) => updateKit(packId, kit),
+        removeKit: async (kit: PackKit) => removeKit(packId, kit),
         addItem: async (item: Omit<PackItem, 'id'>) => addItem(packId, item),
         updateItem: async (item: PackItem) => updateItem(packId, item),
         removeItem: async (item: PackItem) => removeItem(packId, item),

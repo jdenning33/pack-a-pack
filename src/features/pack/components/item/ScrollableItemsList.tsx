@@ -2,17 +2,17 @@ import React from 'react';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import { Trash } from 'lucide-react';
-import { usePack, Category, PackItem } from '../../hooks/usePack';
+import { usePack, PackKit, PackItem, Item } from '../../hooks/usePack';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
-import { QuickAddPackItem } from './QuickAddPackItem';
+import { QuickAddPackItem } from './QuickAddItemInput';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { cn } from '@/lib/utils';
 
-export function ScrollableCategoryItemsList({
-    category,
+export function ScrollableItemsList({
+    items,
     className,
 }: {
-    category: Category;
+    items: PackItem[];
     className?: string;
 }) {
     const { updateItem, removeItem } = usePack();
@@ -26,7 +26,7 @@ export function ScrollableCategoryItemsList({
     return (
         <ScrollArea className='flex-1 overflow-auto' type='scroll'>
             <ul className='flex-1'>
-                {category.items.map((item) => (
+                {items.map((item) => (
                     <li
                         key={item.id}
                         className={cn(

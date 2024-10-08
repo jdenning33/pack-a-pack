@@ -2,9 +2,9 @@
 
 import { usePack } from '../../hooks/usePack';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
-import { AddCategoryButton } from '../category/AddCategoryButton';
-import { PackCategory } from '../category/PackCategory';
-import { SelectedCategoryModal } from '../category/SelectedCategoryModal';
+import { AddKitButton } from '../kit/AddKitButton';
+import { KitCard } from '../kit/KitCard';
+import { SelectedKitModal } from '../kit/SelectedKitModal';
 
 export function PackContents() {
     const { pack } = usePack();
@@ -14,20 +14,20 @@ export function PackContents() {
         <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-end'>
                 <h1 className='text-lg font-bold'>{pack.name}</h1>
-                <AddCategoryButton />
+                <AddKitButton />
             </div>
 
             <div className='columns-[10rem] gap-4 space-y-4'>
-                {pack.categories.map((category) => (
-                    <PackCategory
-                        key={category.id}
-                        category={category}
+                {pack.kits.map((kit) => (
+                    <KitCard
+                        key={kit.id}
+                        kit={kit}
                         className='break-inside-avoid'
                     />
                 ))}
             </div>
 
-            <SelectedCategoryModal />
+            <SelectedKitModal />
         </div>
     );
 }

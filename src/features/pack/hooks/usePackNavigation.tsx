@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Category, Pack, PackItem, Product, usePack } from './usePack'; // Adjust this import based on your actual types file
+import { PackKit, Pack, PackItem, Product, usePack } from './usePack'; // Adjust this import based on your actual types file
 
 interface PackNavigationContextType {
-    selectedCategory: Category | null;
-    setSelectedCategoryId: (categoryId: string | null) => void;
+    selectedKit: PackKit | null;
+    setSelectedKitId: (kitId: string | null) => void;
     selectedItem: PackItem | null;
     setSelectedItemId: (itemId: string | null) => void;
     isEditingProductDetails: boolean;
@@ -28,17 +28,13 @@ export const PackNavigationProvider: React.FC<{ children: ReactNode }> = ({
     children,
 }) => {
     const { pack } = usePack();
-    const [selectedCategoryId, _setSelectedCategoryId] = useState<
-        string | null
-    >(null);
-    const setSelectedCategoryId = (categoryId: string | null) => {
-        _setSelectedCategoryId(categoryId);
+    const [selectedKitId, _setSelectedKitId] = useState<string | null>(null);
+    const setSelectedKitId = (kitId: string | null) => {
+        _setSelectedKitId(kitId);
         setSelectedItemId(null);
     };
-    const selectedCategory =
-        pack.categories.find(
-            (category) => category.id === selectedCategoryId
-        ) || null;
+    const selectedKit =
+        pack.kits.find((kit) => kit.id === selectedKitId) || null;
 
     const [selectedItemId, _setSelectedItemId] = useState<string | null>(null);
     const setSelectedItemId = (itemId: string | null) => {
@@ -46,8 +42,7 @@ export const PackNavigationProvider: React.FC<{ children: ReactNode }> = ({
         setIsEditingProductDetails(false);
     };
     const selectedItem =
-        selectedCategory?.items.find((item) => item.id === selectedItemId) ||
-        null;
+        selectedKit?.items.find((item) => item.id === selectedItemId) || null;
 
     const [isEditingProductDetails, setIsEditingProductDetails] =
         useState(false);
@@ -55,8 +50,8 @@ export const PackNavigationProvider: React.FC<{ children: ReactNode }> = ({
     return (
         <PackNavigationContext.Provider
             value={{
-                selectedCategory: selectedCategory,
-                setSelectedCategoryId: setSelectedCategoryId,
+                selectedKit: selectedKit,
+                setSelectedKitId: setSelectedKitId,
                 selectedItem: selectedItem,
                 setSelectedItemId: setSelectedItemId,
                 isEditingProductDetails: isEditingProductDetails,

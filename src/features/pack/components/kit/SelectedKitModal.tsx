@@ -7,43 +7,41 @@ import {
     DialogDescription,
 } from '@/ui/dialog';
 import { ItemDetailsPanel } from '../item/ItemDetailsPanel';
-import { ScrollableCategoryItemsList } from '../item/ScrollableCategoryItemsList';
+import { ScrollableItemsList } from '../item/ScrollableItemsList';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
-import { QuickAddPackItem } from '../item/QuickAddPackItem';
+import { QuickAddPackItem } from '../item/QuickAddItemInput';
 import { cn } from '@/lib/utils';
 import { Edit } from 'lucide-react';
 import { EditProductForm } from '@/features/products/components/EditProductForm';
-import { CategoryOverviewPanel } from './CategoryOverviewPanel';
-import { SelectedCategoryModalNavBar } from './SelectedCategoryModalNavBar';
+import { KitOverviewPanel } from './KitOverviewPanel';
+import { SelectedKitBreadCrumbs } from './SelectedKitBreadCrumbs';
 
-export const SelectedCategoryModal = ({}) => {
+export const SelectedKitModal = ({}) => {
     const {
-        setSelectedCategoryId,
-        selectedCategory,
+        setSelectedKitId,
+        selectedKit,
         setSelectedItemId,
         selectedItem,
         isEditingProductDetails,
         setIsEditingProductDetails,
     } = usePackNavigation();
 
-    const category = selectedCategory;
+    const kit = selectedKit;
 
-    if (!category) return null;
+    if (!kit) return null;
 
     return (
         <Dialog
-            open={!!selectedCategory}
+            open={!!selectedKit}
             onOpenChange={(_) => {
-                setSelectedCategoryId(null);
+                setSelectedKitId(null);
                 setSelectedItemId(null);
             }}
         >
             <DialogContent className='min-h-[30rem] max-h-svh max-w-4xl p-0 flex flex-col gap-0'>
                 <DialogHeader className='p-4 pb-3 border-b text-left'>
-                    <DialogTitle>{category.name}</DialogTitle>
-                    <DialogDescription>
-                        {category.description}
-                    </DialogDescription>
+                    <DialogTitle>{kit.name}</DialogTitle>
+                    <DialogDescription>{kit.description}</DialogDescription>
                 </DialogHeader>
                 <div className='flex flex-1 overflow-hidden'>
                     <div
@@ -53,16 +51,16 @@ export const SelectedCategoryModal = ({}) => {
                         )}
                     >
                         <div className='px-4'>
-                            <QuickAddPackItem categoryId={category.id} />
+                            <QuickAddPackItem kitId={kit.id} />
                         </div>
-                        <ScrollableCategoryItemsList
+                        <ScrollableItemsList
                             className='py-4 w-2/5'
-                            category={category}
+                            items={kit.items}
                         />
                     </div>
                     <div className='w-3/5 border-l bg-secondary'>
                         <div className='px-4 pt-2'>
-                            <SelectedCategoryModalNavBar />
+                            <SelectedKitBreadCrumbs />
                         </div>
 
                         <div className='p-4'>
@@ -77,7 +75,7 @@ export const SelectedCategoryModal = ({}) => {
                             ) : selectedItem && !isEditingProductDetails ? (
                                 <ItemDetailsPanel item={selectedItem} />
                             ) : (
-                                <CategoryOverviewPanel category={category} />
+                                <KitOverviewPanel kit={kit} />
                             )}
                         </div>
                     </div>

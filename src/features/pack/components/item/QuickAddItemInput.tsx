@@ -4,14 +4,14 @@ import { Input } from '@/ui/input';
 import React from 'react';
 import { usePack } from '../../hooks/usePack';
 
-export const QuickAddPackItem = ({ categoryId }: { categoryId: string }) => {
+export const QuickAddPackItem = ({ kitId }: { kitId: string }) => {
     const { addItem } = usePack();
     const [newItemName, setNewItemName] = React.useState('');
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
         if (newItemName.trim()) {
             await addItem({
-                categoryId: categoryId,
+                kitId: kitId,
                 name: newItemName.trim(),
                 description: '',
                 quantity: 1,

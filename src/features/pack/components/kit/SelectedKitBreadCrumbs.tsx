@@ -4,11 +4,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { ChevronRight } from 'lucide-react';
 
-export function SelectedCategoryModalNavBar({
-    className,
-}: {
-    className?: string;
-}) {
+export function SelectedKitBreadCrumbs({ className }: { className?: string }) {
     const {
         setSelectedItemId,
         selectedItem,

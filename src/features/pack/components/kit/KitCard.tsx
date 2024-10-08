@@ -2,20 +2,17 @@ import React from 'react';
 import { Checkbox } from '@/ui/checkbox';
 import { Card, CardHeader, CardTitle, CardContent } from '@/ui/card';
 import { cn } from '@/lib/utils';
-import { Category, usePack, PackItem } from '../../hooks/usePack';
+import { usePack, PackItem, PackKit } from '../../hooks/usePack';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 
-interface PackCategoryProps {
-    category: Category;
+interface PackKitProps {
+    kit: PackKit;
     className?: string;
 }
 
-export const PackCategory: React.FC<PackCategoryProps> = ({
-    category,
-    className,
-}) => {
+export const KitCard: React.FC<PackKitProps> = ({ kit, className }) => {
     const { updateItem } = usePack();
-    const { setSelectedCategoryId, setSelectedItemId } = usePackNavigation();
+    const { setSelectedKitId, setSelectedItemId } = usePackNavigation();
 
     const toggleItem = async (item: PackItem) => {
         await updateItem({
@@ -30,19 +27,19 @@ export const PackCategory: React.FC<PackCategoryProps> = ({
                 'hover:shadow-lg hover:scale-[101%] transition-all',
                 className
             )}
-            onClick={(e) => setSelectedCategoryId(category.id)}
+            onClick={(e) => setSelectedKitId(kit.id)}
         >
             <CardHeader>
-                <CardTitle>{category.name}</CardTitle>
+                <CardTitle>{kit.name}</CardTitle>
             </CardHeader>
             <CardContent>
-                {category.items.length === 0 ? (
+                {kit.items.length === 0 ? (
                     <p className='text-muted-foreground'>
-                        No items in this category yet.
+                        No items in this kit yet.
                     </p>
                 ) : (
                     <ul className='space-y-2'>
-                        {category.items.map((item) => (
+                        {kit.items.map((item) => (
                             <li
                                 key={item.id}
                                 className='flex items-center space-x-2 w-fit'
@@ -60,7 +57,7 @@ export const PackCategory: React.FC<PackCategoryProps> = ({
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        setSelectedCategoryId(category.id);
+                                        setSelectedKitId(kit.id);
                                         setSelectedItemId(item.id);
                                     }}
                                     className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:underline hover:cursor-pointer'
