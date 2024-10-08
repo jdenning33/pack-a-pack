@@ -43,7 +43,7 @@ export function ItemProductCard({ item }: { item: PackItem }) {
                         }
                         alt={item.productName || 'placeholder'}
                         layout='fill'
-                        objectFit='cover'
+                        objectFit='contain'
                         className='rounded'
                     />
                 </div>
@@ -62,7 +62,7 @@ export function ItemProductCard({ item }: { item: PackItem }) {
                             $ {item.productPrice?.toFixed(0) || '_'}
                         </Badge>
                     </div>
-                    <p className='text-sm text-muted-foreground line-clamp-2'>
+                    <p className='text-sm text-muted-foreground line-clamp-4'>
                         {item.productDescription}
                     </p>
                 </div>

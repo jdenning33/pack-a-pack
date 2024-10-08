@@ -25,6 +25,7 @@ export function EditItemProductForm({
     const { updateItem } = usePack(); // Replace with the actual hook or function for adding a product
 
     const {
+        watch,
         register, // Register form inputs
         handleSubmit, // Handles form submission
         formState: { errors }, // Validation error state
@@ -53,6 +54,8 @@ export function EditItemProductForm({
         await updateItem(updatedItem);
         onFinished?.(); // Close dialog after submission
     };
+    // get the form url from the item
+    const productImage = watch('productImage');
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
             <div className='flex gap-4'>
@@ -85,12 +88,12 @@ export function EditItemProductForm({
             <div className='relative w-24 h-24 rounded-lg flex-shrink-0'>
                 <Image
                     src={
-                        item.productImage ||
+                        productImage ||
                         'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                     }
                     alt={item.productName || 'placeholder'}
                     layout='fill'
-                    objectFit='cover'
+                    objectFit='contain'
                     className='rounded w-full h-full'
                 />
             </div>
@@ -101,9 +104,9 @@ export function EditItemProductForm({
         return (
             <div className={cn(className)}>
                 <Input
-                    placeholder='Product Name'
+                    placeholder='Gear Name'
                     {...register('productName', {
-                        required: 'Product name is required',
+                        required: 'Gear name is required',
                     })}
                     aria-invalid={!!errors.productName}
                 />

@@ -16,7 +16,7 @@ export function ProductDetailsCard({ product }: { product: Product }) {
                         }
                         alt={product.name}
                         layout='fill'
-                        objectFit='cover'
+                        objectFit='contain'
                         className='rounded'
                     />
                 </div>

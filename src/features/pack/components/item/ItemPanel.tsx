@@ -20,7 +20,10 @@ export const ItemPanel: React.FC<{
 
             {!isEditingProductDetails && (
                 <SimpleProductsProvider>
-                    <AlternateProductsPanel className='pt-12' item={item} />
+                    <AlternateProductsPanel
+                        className='pt-12 shrink-0'
+                        item={item}
+                    />
                 </SimpleProductsProvider>
             )}
         </div>

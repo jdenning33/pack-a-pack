@@ -17,14 +17,19 @@ interface Product {
 export function ProductCard({
     product,
     onSelect,
+    className,
 }: {
     product: Product;
     onSelect: (product: Product) => void;
+    className?: string;
 }) {
     return (
         <Card
             key={product.id}
-            className='relative flex-shrink-0 h-48 transition-shadow duration-300 ease-in-out hover:shadow my-1 group'
+            className={cn(
+                'relative flex-shrink-0 transition-shadow duration-300 ease-in-out hover:shadow my-1 group',
+                className
+            )}
         >
             <CardContent className='p-3 flex flex-col h-full'>
                 <div className='w-24 h-24 mb-2 relative flex self-center shrink-0'>
@@ -35,7 +40,7 @@ export function ProductCard({
                         }
                         alt={product.name}
                         layout='fill'
-                        objectFit='cover'
+                        objectFit='contain'
                         className='rounded'
                     />
                 </div>

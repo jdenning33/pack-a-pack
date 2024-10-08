@@ -1,4 +1,3 @@
-import { usePacksStore } from '../../hooks/usePacksStore';
 import { Button } from '@/ui/button';
 import {
     Card,
@@ -10,10 +9,11 @@ import {
 import { Trash2 } from 'lucide-react';
 import { AddPackButton } from './AddPackButton';
 import Link from 'next/link';
+import { usePacks } from '../../hooks/usePacks';
 
 // PackList Component
 export const PackList = () => {
-    const { packs, removePack } = usePacksStore();
+    const { packs, deletePack } = usePacks();
 
     return (
         <div className='mx-auto p-4 w-full flex flex-col'>
@@ -21,10 +21,13 @@ export const PackList = () => {
                 <h1 className='text-2xl font-bold'>Your Packs</h1>
                 <AddPackButton />
             </div>
-            <div className='grid gap-6 grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))]'>
+            <div className='columns-[300px]'>
                 {packs.map((pack) => (
                     <Link key={pack.id} href={`/packs/${pack.id}`}>
-                        <Card key={pack.id} className='flex flex-col h-full'>
+                        <Card
+                            key={pack.id}
+                            className='flex flex-col h-full break-inside-avoid'
+                        >
                             <CardHeader>
                                 <CardTitle className='text-xl'>
                                     {pack.name}
@@ -38,7 +41,7 @@ export const PackList = () => {
                             <CardFooter>
                                 <Button
                                     variant='destructive'
-                                    onClick={() => removePack(pack.id)}
+                                    onClick={() => deletePack(pack.id)}
                                 >
                                     <Trash2 className='mr-2 h-4 w-4' /> Delete
                                 </Button>

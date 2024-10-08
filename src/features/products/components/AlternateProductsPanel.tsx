@@ -25,9 +25,7 @@ export const AlternateProductsPanel = ({
         products,
         searchText,
         setSearchText,
-        searchTag,
         setSearchTag,
-        addProduct,
         incrementProductTag,
     } = useProducts();
     const { updateItem } = usePack();
@@ -42,7 +40,7 @@ export const AlternateProductsPanel = ({
                 Search "{item.name}" Products
             </h3> */}
 
-            <div className='flex items-center space-x-2 mb-4'>
+            <div className='flex items-center space-x-2 mb-1'>
                 <div className='relative flex-grow'>
                     <Input
                         type='text'
@@ -55,7 +53,6 @@ export const AlternateProductsPanel = ({
                 </div>
                 <AddProductButton />
             </div>
-
             <div className='relative mx-10'>
                 <Carousel
                     opts={{
@@ -66,6 +63,8 @@ export const AlternateProductsPanel = ({
                         {products.map((product) => (
                             <CarouselItem className='basis-1/2 md:basis-1/3 pl-2'>
                                 <ProductCard
+                                    key={product.id}
+                                    className='h-48'
                                     product={product}
                                     onSelect={(_) => {
                                         item = {
@@ -96,18 +95,18 @@ export const AlternateProductsPanel = ({
                             />
                         </CarouselItem>
                     </CarouselContent>
-                    <CarouselPrevious className='h-48 rounded-r-[1px] -left-10' />
-                    <CarouselNext className='h-48 rounded-l-[1px] -right-10' />
+                    <CarouselPrevious className='h-48 rounded-l-lg rounded-r-[1px] -left-10' />
+                    <CarouselNext className='h-48 rounded-r-lg rounded-l-[1px] -right-10' />
                 </Carousel>
             </div>
-            <div className='mt-4 text-center'>
+            {/* <div className='mt-4 text-center'>
                 <Link
                     href='/all-products'
                     className='text-sm text-blue-600 hover:underline'
                 >
                     View all products
                 </Link>
-            </div>
+            </div> */}
         </div>
     );
 };
