@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Search } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Mountain, Search } from 'lucide-react';
 import { PackItem, usePack } from '../../pack/hooks/usePack';
 import { Input } from '@/ui/input';
-import Link from 'next/link';
 import { ProductCard } from './ProductCard';
 import { AddProductButton } from './AddProductButton';
 import {
@@ -13,6 +12,7 @@ import {
     CarouselPrevious,
 } from '@/ui/carousel';
 import { useProducts } from '../useProducts';
+import { Button } from '@/ui/button';
 
 export const AlternateProductsPanel = ({
     item,
@@ -40,7 +40,7 @@ export const AlternateProductsPanel = ({
                 Search "{item.name}" Products
             </h3> */}
 
-            <div className='flex items-center space-x-2 mb-1'>
+            <div className='flex items-center space-x-2 mb-2'>
                 <div className='relative flex-grow'>
                     <Input
                         type='text'
@@ -51,7 +51,9 @@ export const AlternateProductsPanel = ({
                     />
                     <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400' />
                 </div>
-                <AddProductButton />
+                <Button variant='outline'>
+                    View All &nbsp; <Mountain size={14} />
+                </Button>
             </div>
             <div className='relative mx-10'>
                 <Carousel

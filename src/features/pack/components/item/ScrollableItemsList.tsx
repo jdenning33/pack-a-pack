@@ -56,7 +56,12 @@ export function ScrollableItemsList({
                                 }}
                                 className='text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 group-hover:underline cursor-pointer'
                             >
-                                {item.name}
+                                {item.name}{' '}
+                                {item.quantity > 1 && (
+                                    <span className='text-xs font-semibold text-muted-foreground'>
+                                        x{item.quantity}
+                                    </span>
+                                )}
                             </label>
                         </div>
                         <Button

@@ -37,12 +37,12 @@ export function AddKitButton() {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button variant='outline'>
-                    <Plus className='mr-2 h-4 w-4' /> Add Pack Kit
+                    <Plus className='mr-2 h-4 w-4' /> Add a Kit
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Add New Pack Kit</DialogTitle>
+                    <DialogTitle>Add New Kit</DialogTitle>
                     <DialogDescription>
                         Create a new kit for your pack items.
                     </DialogDescription>

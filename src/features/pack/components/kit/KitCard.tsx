@@ -62,7 +62,12 @@ export const KitCard: React.FC<PackKitProps> = ({ kit, className }) => {
                                     }}
                                     className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:underline hover:cursor-pointer'
                                 >
-                                    {item.name}
+                                    {item.name}{' '}
+                                    {item.quantity > 1 && (
+                                        <span className='text-xs font-semibold text-muted-foreground'>
+                                            x{item.quantity}
+                                        </span>
+                                    )}
                                 </label>
                             </li>
                         ))}
