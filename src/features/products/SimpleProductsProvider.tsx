@@ -27,7 +27,7 @@ const SimpleProductsProvider: React.FC<{
         return Object.values(productMap)
             .filter((product) => {
                 const tagMatch =
-                    searchTag !== '' &&
+                    searchTag === '' ||
                     Object.keys(product.tagMap).includes(searchTag);
                 const textMatch =
                     searchText !== '' &&

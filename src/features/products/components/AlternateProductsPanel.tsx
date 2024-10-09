@@ -1,38 +1,30 @@
 import React, { useEffect } from 'react';
 import { Mountain, Search } from 'lucide-react';
-import { PackItem, usePack } from '../../pack/hooks/usePack';
+import { PackItem } from '../../pack/hooks/usePack';
 import { Input } from '@/ui/input';
-import { ProductCard } from './ProductCard';
-import { AddProductButton } from './AddProductButton';
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from '@/ui/carousel';
 import { useProducts } from '../useProducts';
 import { Button } from '@/ui/button';
+import { ProductsCarousel } from './ProductsCarousel';
 
 export const AlternateProductsPanel = ({
-    item,
+    searchTag,
     className,
+    onSelected,
 }: {
-    item: PackItem;
+    searchTag?: string;
     className?: string;
+    onSelected?: (product: any) => void;
 }) => {
     const {
-        products,
         searchText,
         setSearchText,
+        searchTag: currentSearchTag,
         setSearchTag,
-        incrementProductTag,
     } = useProducts();
-    const { updateItem } = usePack();
 
     useEffect(() => {
-        setSearchTag(item.name);
-    }, [item]);
+        setSearchTag(searchTag || '');
+    }, [searchTag]);
 
     return (
         <div className={className}>
@@ -44,7 +36,7 @@ export const AlternateProductsPanel = ({
                 <div className='relative flex-grow'>
                     <Input
                         type='text'
-                        placeholder={`Search "${item.name.toLowerCase()}" products...`}
+                        placeholder={`Search "${currentSearchTag.toLowerCase()}" products...`}
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                         className='pl-10 pr-4'
@@ -55,52 +47,7 @@ export const AlternateProductsPanel = ({
                     View All &nbsp; <Mountain size={14} />
                 </Button>
             </div>
-            <div className='relative mx-10'>
-                <Carousel
-                    opts={{
-                        loop: false,
-                    }}
-                >
-                    <CarouselContent className='-ml-2'>
-                        {products.map((product) => (
-                            <CarouselItem className='basis-1/2 md:basis-1/3 pl-2'>
-                                <ProductCard
-                                    key={product.id}
-                                    className='h-48'
-                                    product={product}
-                                    onSelect={(_) => {
-                                        item = {
-                                            ...item,
-                                            productName: product.name,
-                                            productDescription:
-                                                product.description,
-                                            productBrand: product.brand,
-                                            productImage: product.image,
-                                            productPrice: product.price,
-                                            productWeight: product.weight,
-                                            productId: product.id,
-                                        };
-                                        updateItem(item);
-                                        incrementProductTag(
-                                            product.id,
-                                            item.name
-                                        );
-                                    }}
-                                />
-                            </CarouselItem>
-                        ))}
-                        <CarouselItem className='basis-1/2 md:basis-1/3 pl-2 flex items-center '>
-                            <AddProductButton
-                                className={
-                                    'bg-[unset] border-0 shadow-none h-48'
-                                }
-                            />
-                        </CarouselItem>
-                    </CarouselContent>
-                    <CarouselPrevious className='h-48 rounded-l-lg rounded-r-[1px] -left-10' />
-                    <CarouselNext className='h-48 rounded-r-lg rounded-l-[1px] -right-10' />
-                </Carousel>
-            </div>
+            <ProductsCarousel onSelected={onSelected} />
             {/* <div className='mt-4 text-center'>
                 <Link
                     href='/all-products'

@@ -7,6 +7,7 @@ export interface Pack {
     id: string;
     name: string;
     description: string;
+    createdByName: string;
     kits: PackKit[];
 }
 

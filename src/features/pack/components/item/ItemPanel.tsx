@@ -15,6 +15,7 @@ export const ItemPanel: React.FC<{
     const { updateItem } = usePack();
     const { isEditingProductDetails, setIsEditingProductDetails } =
         usePackNavigation();
+
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(item.name);
 
@@ -152,7 +153,20 @@ export const ItemPanel: React.FC<{
                 <SimpleProductsProvider>
                     <AlternateProductsPanel
                         className='pt-12 shrink-0'
-                        item={item}
+                        searchTag={item.name}
+                        onSelected={(product) => {
+                            item = {
+                                ...item,
+                                productName: product.name,
+                                productDescription: product.description,
+                                productBrand: product.brand,
+                                productImage: product.image,
+                                productPrice: product.price,
+                                productWeight: product.weight,
+                                productId: product.id,
+                            };
+                            updateItem(item);
+                        }}
                     />
                 </SimpleProductsProvider>
             )}

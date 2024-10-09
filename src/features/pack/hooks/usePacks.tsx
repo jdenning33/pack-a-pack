@@ -1,11 +1,8 @@
 'use client';
+import { Pack } from './usePack';
 import { usePacksStore } from './usePacksStore';
 
-export interface PackSummary {
-    id: string;
-    name: string;
-    description: string;
-}
+export type PackSummary = Omit<Pack, 'kits'>;
 
 export interface UsePacksResult {
     packs: PackSummary[];
@@ -19,6 +16,7 @@ export const usePacks = (): UsePacksResult => {
     const packSummaries: PackSummary[] = packs.map((pack) => ({
         id: pack.id,
         name: pack.name,
+        createdByName: pack.createdByName,
         description: pack.description,
     }));
 

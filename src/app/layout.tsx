@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { UserProfileDropdown } from '@/features/auth/UserProfileDropdown';
 import { AuthGuard } from '@/features/auth/AuthGuard';
 import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
+import { Backpack } from 'lucide-react';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -33,27 +34,43 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <div className='min-h-screen flex flex-col'>
-                    <header className='bg-white shadow-sm'>
-                        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center'>
-                            <div className='w-1/3'></div>
+                    <header className='border-b sticky top-0'>
+                        <div className='m-auto px-4 sm:px-6 h-14 flex items-center max-w-7xl'>
                             <Link
+                                className='flex items-center justify-center'
                                 href='/'
-                                className='text-2xl font-bold text-gray-900 flex items-center'
                             >
-                                pack
-                                <div className='pb-[2px] bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center'>
-                                    a
-                                </div>
-                                pack.co
+                                <Backpack className='h-6 w-6' />
+                                <span className='ml-2 text-2xl font-bold'>
+                                    packapack.co
+                                </span>
                             </Link>
-                            <nav className='w-1/3 flex justify-end'>
+                            <nav className='ml-auto flex items-center gap-4 sm:gap-6'>
+                                <Link
+                                    className='text-sm font-medium hover:underline underline-offset-4'
+                                    href='/packs'
+                                >
+                                    Packs
+                                </Link>
+                                <Link
+                                    className='text-sm font-medium hover:underline underline-offset-4'
+                                    href='/gear'
+                                >
+                                    Gear
+                                </Link>
+                                <Link
+                                    className='text-sm font-medium hover:underline underline-offset-4'
+                                    href='#'
+                                >
+                                    Community
+                                </Link>
                                 <AuthGuard fallback={<AuthSignInButton />}>
                                     <UserProfileDropdown />
                                 </AuthGuard>
-                            </nav>
+                            </nav>{' '}
                         </div>
                     </header>
-                    <main className='max-w-7xl flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+                    <main className='max-w-7xl flex-grow container mx-auto px-4 sm:px-6 py-8'>
                         {children}
                     </main>
                     <footer className='bg-gray-100'>

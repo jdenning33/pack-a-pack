@@ -4,16 +4,7 @@ import Image from 'next/image';
 import { Badge } from '@/ui/badge';
 import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
-
-interface Product {
-    id: string;
-    name: string;
-    brand: string;
-    description: string;
-    weight: number;
-    price: number;
-    image?: string;
-}
+import { Product } from '../useProducts';
 
 export function ProductCard({
     product,
@@ -21,7 +12,7 @@ export function ProductCard({
     className,
 }: {
     product: Product;
-    onSelect: (product: Product) => void;
+    onSelect?: (product: Product) => void;
     className?: string;
 }) {
     return (

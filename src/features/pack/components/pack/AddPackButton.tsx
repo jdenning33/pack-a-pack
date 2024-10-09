@@ -14,7 +14,7 @@ import {
 import { Plus } from 'lucide-react';
 
 // PackAddButton Component
-export const AddPackButton = () => {
+export const AddPackButton = (props: React.ComponentProps<typeof Button>) => {
     const [isOpen, setIsOpen] = useState(false);
     const [newPackName, setNewPackName] = useState('');
     const [newPackDescription, setNewPackDescription] = useState('');
@@ -33,7 +33,7 @@ export const AddPackButton = () => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button>
+                <Button {...props}>
                     <Plus className='mr-2 h-4 w-4' /> Add New Pack
                 </Button>
             </DialogTrigger>

@@ -1,12 +1,155 @@
 'use client';
+import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
+import { PackCard } from '@/features/pack/components/pack/PackCard';
 import { PackList } from '@/features/pack/components/pack/PackList';
+import { PackItem } from '@/features/pack/hooks/usePack';
+import SimpleProductsProvider from '@/features/products/SimpleProductsProvider';
+import { AlternateProductsPanel } from '@/features/products/components/AlternateProductsPanel';
+import { ProductCard } from '@/features/products/components/ProductCard';
+import { ProductsCarousel } from '@/features/products/components/ProductsCarousel';
+import { ProductsContext } from '@/features/products/useProducts';
+import { Button } from '@/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/ui/card';
+import { ImageWithFallback } from '@/ui/image-with-fallback';
+import { ScrollArea } from '@/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
+import Link from 'next/link';
 
 export default function Home() {
     return (
-        <main className='flex flex-col gap-8'>
-            <div className='z-10 flex flex-col'>
-                <PackList />
+        <main className='flex-1'>
+            <div className='container mx-auto py-4 flex flex-col gap-8'>
+                <div className='flex gap-8'>
+                    <div className='max-w-2xl  flex-auto'>
+                        <HomePagePackTabs />
+                    </div>
+                    <div className='relative flex-1'>
+                        <Link href='#'>
+                            <ImageWithFallback
+                                src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
+                                alt={''}
+                                className='rounded-lg'
+                                layout='fill'
+                                objectFit='contain'
+                            />
+                        </Link>
+                    </div>
+                </div>
+                <div>
+                    <Tabs defaultValue='community'>
+                        <TabsList>
+                            <TabsTrigger value='user'>My Gear</TabsTrigger>
+                            <TabsTrigger value='community'>
+                                Suggested Gear
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value='user'>
+                            <SimpleProductsProvider>
+                                <ProductsCarousel />
+                            </SimpleProductsProvider>
+                        </TabsContent>
+                        <TabsContent value='community'>
+                            <SimpleProductsProvider>
+                                <ProductsCarousel />
+                            </SimpleProductsProvider>
+                        </TabsContent>
+                    </Tabs>
+                </div>
             </div>
         </main>
+    );
+}
+function HomePagePackTabs() {
+    return (
+        <Tabs defaultValue='my-packs'>
+            <div className='flex flex-col h-full'>
+                <div className='flex w-full items-end'>
+                    <TabsList>
+                        <TabsTrigger value='my-packs'>My Packs</TabsTrigger>
+                        <TabsTrigger value='community'>
+                            Community Packs
+                        </TabsTrigger>
+                    </TabsList>
+                    <AddPackButton
+                        variant='ghost'
+                        size='sm'
+                        className='ml-auto'
+                    />
+                </div>
+                <div className='border bg-muted rounded-lg p-2 mt-2 flex-1'>
+                    <TabsContent
+                        value='my-packs'
+                        className='mt-0 flex flex-col'
+                    >
+                        <ScrollArea className='overflow-auto h-[20rem]'>
+                            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+                                <PackList />
+                            </div>
+                        </ScrollArea>
+                        <Button className='-mb-2 p-0 mx-auto' variant='link'>
+                            View All Packs
+                        </Button>
+                    </TabsContent>
+                    <TabsContent
+                        value='community'
+                        className='mt-0 flex flex-col'
+                    >
+                        <ScrollArea className='overflow-auto h-[20rem]'>
+                            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+                                {[
+                                    {
+                                        id: '1',
+                                        name: 'Appalachian Trail Essentials',
+                                        createdByName: 'TrailMaster99',
+                                        description:
+                                            'This pack contains all the essentials for a successful Appalachian Trail hike.',
+                                    },
+                                    {
+                                        id: '2',
+                                        name: 'Pacific Crest Trail Gear',
+                                        createdByName: 'WestCoastHiker',
+                                        description:
+                                            'This pack contains all the essentials for a successful Pacific Crest Trail hike.',
+                                    },
+                                    {
+                                        id: '3',
+                                        name: 'Ultralight European Trek',
+                                        createdByName: 'AlpineAdventurer',
+                                        description:
+                                            'This pack contains all the essentials for a successful European trek.',
+                                    },
+                                    {
+                                        id: '4',
+                                        name: 'South American Adventure',
+                                        createdByName: 'JungleExplorer',
+                                        description:
+                                            'This pack contains all the essentials for a successful South American adventure.',
+                                    },
+                                    {
+                                        id: '5',
+                                        name: 'Winter Wonderland',
+                                        createdByName: 'SnowQueen',
+                                        description:
+                                            'This pack contains all the essentials for a successful winter hike.',
+                                    },
+                                ].map((pack) => (
+                                    <PackCard pack={pack} />
+                                ))}
+                            </div>
+                        </ScrollArea>
+                        <Button className='-mb-2 p-0 mx-auto' variant='link'>
+                            View All Packs
+                        </Button>
+                    </TabsContent>
+                </div>
+            </div>
+        </Tabs>
     );
 }
