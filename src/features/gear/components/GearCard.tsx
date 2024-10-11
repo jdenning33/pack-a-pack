@@ -3,20 +3,20 @@ import { Button } from '@/ui/button';
 import { Badge } from '@/ui/badge';
 import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
-import { Gear } from '../useProducts';
+import { Gear } from '../useGear';
 
-export function ProductCard({
-    product,
+export function GearCard({
+    gear,
     onSelect,
     className,
 }: {
-    product: Gear;
-    onSelect?: (product: Gear) => void;
+    gear: Gear;
+    onSelect?: (gear: Gear) => void;
     className?: string;
 }) {
     return (
         <Card
-            key={product.id}
+            key={gear.id}
             className={cn(
                 'relative flex-shrink-0 transition-shadow duration-300 ease-in-out hover:shadow group',
                 className
@@ -25,9 +25,9 @@ export function ProductCard({
             <CardContent className='p-3 flex flex-col h-full'>
                 <div className='w-24 h-24 mb-2 relative flex self-center shrink-0'>
                     <ImageWithFallback
-                        src={product.image || ''}
+                        src={gear.image || ''}
                         fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-                        alt={product.name}
+                        alt={gear.name}
                         layout='fill'
                         objectFit='contain'
                         className='rounded'
@@ -35,27 +35,27 @@ export function ProductCard({
                 </div>
                 <div className='absolute top-2 right-2 flex flex-col items-end gap-1'>
                     <Badge variant='secondary' className='bg-opacity-60'>
-                        {product.brand}
+                        {gear.brand}
                     </Badge>
                     <Badge
                         variant='outline'
                         className='whitespace-nowrap bg-background/90'
                     >
-                        {product.weight.toFixed(0)} oz
+                        {gear.weight.toFixed(0)} oz
                     </Badge>
                     <Badge
                         variant='outline'
                         className='whitespace-nowrap bg-background/90'
                     >
-                        ${product.price.toFixed(0)}
+                        ${gear.price.toFixed(0)}
                     </Badge>
                 </div>
                 <div className='text-left flex-grow overflow-hidden'>
                     <h4 className='font-bold text-sm line-clamp-2'>
-                        {product.name}
+                        {gear.name}
                     </h4>
                     <p className='text-sm text-muted-foreground'>
-                        {product.description}
+                        {gear.description}
                     </p>
                 </div>
             </CardContent>
@@ -70,7 +70,7 @@ export function ProductCard({
                         <Button
                             variant='secondary'
                             className='!bg-opacity-100'
-                            onClick={() => onSelect(product)}
+                            onClick={() => onSelect(gear)}
                         >
                             Select
                         </Button>

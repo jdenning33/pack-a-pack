@@ -6,8 +6,8 @@ interface PackNavigationContextType {
     setSelectedKitId: (kitId: string | null) => void;
     selectedItem: Item | null;
     setSelectedItemId: (itemId: string | null) => void;
-    isEditingProductDetails: boolean;
-    setIsEditingProductDetails: (isEditingProductDetails: boolean) => void;
+    isEditingGearDetails: boolean;
+    setIsEditingGearDetails: (isEditingGearDetails: boolean) => void;
 }
 
 const PackNavigationContext = createContext<
@@ -39,13 +39,12 @@ export const PackNavigationProvider: React.FC<{ children: ReactNode }> = ({
     const [selectedItemId, _setSelectedItemId] = useState<string | null>(null);
     const setSelectedItemId = (itemId: string | null) => {
         _setSelectedItemId(itemId);
-        setIsEditingProductDetails(false);
+        setIsEditingGearDetails(false);
     };
     const selectedItem =
         selectedKit?.items.find((item) => item.id === selectedItemId) || null;
 
-    const [isEditingProductDetails, setIsEditingProductDetails] =
-        useState(false);
+    const [isEditingGearDetails, setIsEditingGearDetails] = useState(false);
 
     return (
         <PackNavigationContext.Provider
@@ -54,8 +53,8 @@ export const PackNavigationProvider: React.FC<{ children: ReactNode }> = ({
                 setSelectedKitId: setSelectedKitId,
                 selectedItem: selectedItem,
                 setSelectedItemId: setSelectedItemId,
-                isEditingProductDetails: isEditingProductDetails,
-                setIsEditingProductDetails: setIsEditingProductDetails,
+                isEditingGearDetails: isEditingGearDetails,
+                setIsEditingGearDetails: setIsEditingGearDetails,
             }}
         >
             {children}

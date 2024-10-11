@@ -1,5 +1,5 @@
 'use client';
-import { Gear } from '@/features/products/useProducts';
+import { Gear } from '@/features/gear/useGear';
 import { createContext, useContext } from 'react';
 
 // This represents a backpack and it's contents for a single trip, it may be cloned for a new trip

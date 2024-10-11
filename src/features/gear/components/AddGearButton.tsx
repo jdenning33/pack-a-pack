@@ -9,11 +9,11 @@ import {
     DialogTrigger,
 } from '@/ui/dialog';
 import { Plus } from 'lucide-react';
-import { EditProductForm } from './EditProductForm';
+import { EditGearForm } from './EditGearForm';
 
 // Define the type for form inputs
 
-export function AddProductButton({ className }: { className?: string }) {
+export function AddGearButton({ className }: { className?: string }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -21,17 +21,17 @@ export function AddProductButton({ className }: { className?: string }) {
             <DialogTrigger asChild>
                 <Button variant='outline' size='sm' className={className}>
                     <Plus className='mr-2 h-4 w-4' />
-                    Add Product
+                    Add Gear
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Add New Product</DialogTitle>
+                    <DialogTitle>Add New Gear</DialogTitle>
                     <DialogDescription>
-                        Provide details for the new product.
+                        Provide details for the new gear.
                     </DialogDescription>
                 </DialogHeader>
-                <EditProductForm onFinished={() => setIsOpen(false)} />
+                <EditGearForm onFinished={() => setIsOpen(false)} />
             </DialogContent>
         </Dialog>
     );

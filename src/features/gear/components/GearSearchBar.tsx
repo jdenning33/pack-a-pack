@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/ui/input';
-import { useProducts } from '../useProducts';
+import { useGear } from '../useGear';
 import { SelectKitFilter } from './SelectKitFilter';
 import { cn } from '@/lib/utils';
 import { SelectItemFilter } from './SelectItemFilter';
 
-export const ProductsSearchBar = ({
+export const GearSearchBar = ({
     defaultSearchTag,
     className,
 }: {
     defaultSearchTag?: string;
     className?: string;
 }) => {
-    const { searchText, setSearchText, setSearchTag } = useProducts();
+    const { searchText, setSearchText, setSearchTag } = useGear();
 
     useEffect(() => {
         setSearchTag(defaultSearchTag || '');
@@ -24,7 +24,7 @@ export const ProductsSearchBar = ({
             <div className='relative flex-1 max-w-96'>
                 <Input
                     type='text'
-                    placeholder={`Search products...`}
+                    placeholder={`Search gear...`}
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     className='pl-10 pr-4'

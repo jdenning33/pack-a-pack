@@ -1,6 +1,6 @@
 import React from 'react';
-import { ProductCard } from './ProductCard';
-import { AddProductButton } from './AddProductButton';
+import { GearCard } from './GearCard';
+import { AddGearButton } from './AddGearButton';
 import {
     Carousel,
     CarouselContent,
@@ -8,18 +8,18 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/ui/carousel';
-import { Gear, useProducts } from '../useProducts';
+import { Gear, useGear } from '../useGear';
 import { cn } from '@/lib/utils';
 
-export function ProductsCarousel({
+export function GearCarousel({
     onSelected,
     variant = 'default',
 }: {
     className?: string;
     variant?: 'default' | 'compact';
-    onSelected?: (product: Gear) => void;
+    onSelected?: (gear: Gear) => void;
 }) {
-    const { products } = useProducts();
+    const { gear } = useGear();
 
     return (
         <div className='relative mx-10'>
@@ -38,25 +38,25 @@ export function ProductsCarousel({
                     )}
                 >
                     <CarouselContent className='-ml-2 '>
-                        {products.map((product) => (
+                        {gear.map((gear) => (
                             <CarouselItem
-                                key={product.id}
+                                key={gear.id}
                                 className='w-36 max-w-36 pl-2 '
                             >
-                                <ProductCard
-                                    key={product.id}
+                                <GearCard
+                                    key={gear.id}
                                     className={
                                         variant === 'compact'
                                             ? 'h-52'
                                             : 'h-[12.5rem]'
                                     }
-                                    product={product}
+                                    gear={gear}
                                     onSelect={onSelected}
                                 />
                             </CarouselItem>
                         ))}
                         <CarouselItem className='basis-1/2 md:basis-1/3 pl-2 flex items-center '>
-                            <AddProductButton
+                            <AddGearButton
                                 className={cn(
                                     'bg-[unset] border-0 shadow-none h-48',
                                     variant === 'compact' ? 'h-52' : 'h-48'

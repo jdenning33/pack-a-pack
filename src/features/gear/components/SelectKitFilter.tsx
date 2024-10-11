@@ -14,12 +14,12 @@ import {
     CommandList,
 } from '@/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
-import { useProducts } from '../useProducts';
+import { useGear } from '../useGear';
 
 const kits = ['Sleep', 'Cook', 'Food', 'Shelter'];
 
 export function SelectKitFilter() {
-    const { searchTag: value, setSearchTag: setValue } = useProducts();
+    const { searchTag: value, setSearchTag: setValue } = useGear();
     const [open, setOpen] = React.useState(false);
 
     return (

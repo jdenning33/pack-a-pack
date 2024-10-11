@@ -3,11 +3,11 @@ import { useForm, useWatch } from 'react-hook-form';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
-import { Gear, useProducts } from '../useProducts';
+import { Gear, useGear } from '../useGear';
 import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 
-export interface ProductFormValues {
+export interface GearFormValues {
     name: string;
     description?: string;
     brand?: string;
@@ -16,21 +16,21 @@ export interface ProductFormValues {
     price: number;
 }
 
-export function EditProductForm({
-    product,
+export function EditGearForm({
+    gear,
     onFinished,
 }: {
-    product?: Gear;
+    gear?: Gear;
     onFinished?: () => void;
 }) {
-    const { addProduct, updateProduct } = useProducts();
+    const { addGear, updateGear } = useGear();
 
     const {
         control,
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<ProductFormValues>({
+    } = useForm<GearFormValues>({
         defaultValues: {
             name: '',
             description: '',
@@ -38,13 +38,13 @@ export function EditProductForm({
             image: '',
             weight: 0,
             price: 0,
-            ...product,
+            ...gear,
         },
     });
 
-    const onSubmit = async (data: ProductFormValues) => {
-        const newProduct = {
-            ...product,
+    const onSubmit = async (data: GearFormValues) => {
+        const newGear = {
+            ...gear,
             name: data.name,
             description: data.description || '',
             brand: data.brand || '',
@@ -52,30 +52,30 @@ export function EditProductForm({
             weight: data.weight,
             price: data.price,
         };
-        if (newProduct.id) await updateProduct(newProduct as Gear);
-        else await addProduct(newProduct as Omit<Gear, 'id'>);
+        if (newGear.id) await updateGear(newGear as Gear);
+        else await addGear(newGear as Omit<Gear, 'id'>);
         onFinished?.();
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
             <div className='flex gap-4'>
-                <ProductImage />
+                <GearImage />
                 <div className='space-y-4 flex-grow'>
-                    <ProductNameInput />
+                    <GearNameInput />
                     <div className='flex gap-4'>
-                        <ProductBrandInput className='basis-1/3' />
-                        <ProductWeightInput className='basis-1/3' />
-                        <ProductPriceInput className='basis-1/3' />
+                        <GearBrandInput className='basis-1/3' />
+                        <GearWeightInput className='basis-1/3' />
+                        <GearPriceInput className='basis-1/3' />
                     </div>
                 </div>
             </div>
-            <ProductDescriptionInput />
-            <ProductImageUrlInput />
+            <GearDescriptionInput />
+            <GearImageUrlInput />
 
             <div className='flex gap-2'>
                 <Button type='submit'>
-                    {product ? 'Update Product' : 'Add Product'}
+                    {gear ? 'Update Gear' : 'Add Gear'}
                 </Button>
                 <Button
                     variant='ghost'
@@ -88,8 +88,8 @@ export function EditProductForm({
         </form>
     );
 
-    function ProductImage() {
-        const productImage = useWatch({
+    function GearImage() {
+        const gearImage = useWatch({
             control: control,
             name: 'image',
         });
@@ -97,9 +97,9 @@ export function EditProductForm({
         return (
             <div className='relative w-24 h-24 rounded-lg flex-shrink-0'>
                 <ImageWithFallback
-                    src={productImage || ''}
+                    src={gearImage || ''}
                     fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-                    alt={product?.name || 'placeholder'}
+                    alt={gear?.name || 'placeholder'}
                     layout='fill'
                     objectFit='contain'
                     className='rounded w-full h-full'
@@ -108,13 +108,13 @@ export function EditProductForm({
         );
     }
 
-    function ProductNameInput({ className }: { className?: string }) {
+    function GearNameInput({ className }: { className?: string }) {
         return (
             <div className={cn(className)}>
                 <Input
-                    placeholder='Product Name'
+                    placeholder='Gear Name'
                     {...register('name', {
-                        required: 'Product name is required',
+                        required: 'Gear name is required',
                     })}
                     aria-invalid={!!errors.name}
                 />
@@ -127,7 +127,7 @@ export function EditProductForm({
         );
     }
 
-    function ProductWeightInput({ className }: { className?: string }) {
+    function GearWeightInput({ className }: { className?: string }) {
         return (
             <div className={className}>
                 <div className='flex items-center gap-1'>
@@ -157,7 +157,7 @@ export function EditProductForm({
         );
     }
 
-    function ProductPriceInput({ className }: { className?: string }) {
+    function GearPriceInput({ className }: { className?: string }) {
         return (
             <div className={className}>
                 <div className='flex items-center gap-1'>
@@ -187,7 +187,7 @@ export function EditProductForm({
         );
     }
 
-    function ProductDescriptionInput({ className }: { className?: string }) {
+    function GearDescriptionInput({ className }: { className?: string }) {
         return (
             <div className={className}>
                 <Textarea
@@ -198,7 +198,7 @@ export function EditProductForm({
         );
     }
 
-    function ProductImageUrlInput({ className }: { className?: string }) {
+    function GearImageUrlInput({ className }: { className?: string }) {
         return (
             <div className={className}>
                 <Input
@@ -220,7 +220,7 @@ export function EditProductForm({
         );
     }
 
-    function ProductBrandInput({ className }: { className?: string }) {
+    function GearBrandInput({ className }: { className?: string }) {
         return (
             <div className={className}>
                 <Input placeholder='Brand (optional)' {...register('brand')} />

@@ -1,6 +1,7 @@
 'use client';
 import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
 import { PackList } from '@/features/pack/components/pack/PackList';
+import { ZustandPacksProvider } from '@/features/pack/hooks/ZustandPacksProvider';
 
 export default function PacksPage() {
     return (
@@ -11,7 +12,9 @@ export default function PacksPage() {
                     <AddPackButton />
                 </div>
                 <div className='columns-[300px]'>
-                    <PackList packClassName='break-inside-avoid' />
+                    <ZustandPacksProvider>
+                        <PackList packClassName='break-inside-avoid' />
+                    </ZustandPacksProvider>
                 </div>
             </div>
         </main>

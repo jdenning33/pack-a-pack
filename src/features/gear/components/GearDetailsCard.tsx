@@ -2,20 +2,20 @@ import React from 'react';
 import { Card } from '@/ui/card';
 import { Badge } from '@/ui/badge';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
-import { Gear } from '../useProducts';
+import { Gear } from '../useGear';
 import { Button } from '@/ui/button';
 import { Edit } from 'lucide-react';
-import { EditProductForm } from './EditProductForm';
+import { EditGearForm } from './EditGearForm';
 
-export function ProductDetailsCard2({ product }: { product: Gear }) {
+export function GearDetailsCard2({ gear }: { gear: Gear }) {
     return (
         <div className='w-full max-w-md'>
             <div className='flex'>
                 <div className='relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0'>
                     <ImageWithFallback
-                        src={product.image || ''}
+                        src={gear.image || ''}
                         fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-                        alt={product.name}
+                        alt={gear.name}
                         layout='fill'
                         objectFit='contain'
                         className='rounded'
@@ -23,21 +23,21 @@ export function ProductDetailsCard2({ product }: { product: Gear }) {
                 </div>
                 <div className='ml-4 flex-grow flex flex-col'>
                     <h3 className='font-bold text-lg leading-tight mb-2'>
-                        {product.name}
+                        {gear.name}
                     </h3>
                     <div className='flex flex-wrap gap-2 mb-2'>
                         <Badge variant='outline' className='bg-background'>
-                            {product.brand}
+                            {gear.brand}
                         </Badge>
                         <Badge variant='outline'>
-                            {product.weight.toFixed(0)} oz
+                            {gear.weight.toFixed(0)} oz
                         </Badge>
                         <Badge variant='outline'>
-                            ${product.price.toFixed(0)}
+                            ${gear.price.toFixed(0)}
                         </Badge>
                     </div>
                     <p className='text-sm text-muted-foreground line-clamp-2'>
-                        {product.description}
+                        {gear.description}
                     </p>
                 </div>
             </div>
@@ -45,7 +45,7 @@ export function ProductDetailsCard2({ product }: { product: Gear }) {
     );
 }
 
-export function ProductDetailsCard({
+export function GearDetailsCard({
     gear,
     isEditing,
     onIsEditingChange,
@@ -57,8 +57,8 @@ export function ProductDetailsCard({
     return (
         <Card className='p-4 relative'>
             {isEditing ? (
-                <EditProductForm
-                    product={gear}
+                <EditGearForm
+                    gear={gear}
                     onFinished={() => onIsEditingChange(false)}
                 />
             ) : (

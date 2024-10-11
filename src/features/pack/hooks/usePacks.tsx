@@ -1,38 +1,23 @@
 'use client';
+import { createContext, useContext } from 'react';
 import { Pack } from './usePack';
-import { usePackStore } from '@/lib/zustandStore';
 
 export type PackSummary = Omit<Pack, 'kits'>;
 
-export interface UsePacksResult {
+interface PacksContextType {
     packs: PackSummary[];
     addPack: (name: string, description: string) => void;
     deletePack: (id: string) => void;
 }
 
-export const usePacks = (): UsePacksResult => {
-    const { packs, addPack: addPackToStore, deletePack } = usePackStore();
+export const PacksContext = createContext<PacksContextType | undefined>(
+    undefined
+);
 
-    const packSummaries: PackSummary[] = packs.map((pack) => ({
-        id: pack.id,
-        name: pack.name,
-        isPublic: pack.isPublic,
-        isGearLocker: pack.isGearLocker,
-        description: pack.description,
-    }));
-
-    const addPack = (name: string, description: string) => {
-        addPackToStore({
-            name,
-            description,
-            isPublic: false,
-            isGearLocker: false,
-        });
-    };
-
-    return {
-        packs: packSummaries,
-        addPack,
-        deletePack,
-    };
+export const usePacks = (): PacksContextType => {
+    const context = useContext(PacksContext);
+    if (context === undefined) {
+        throw new Error('usePacks must be used within a PacksProvider');
+    }
+    return context;
 };

@@ -6,7 +6,7 @@ import { UserProfileDropdown } from '@/features/auth/UserProfileDropdown';
 import { AuthGuard } from '@/features/auth/AuthGuard';
 import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
 import { Backpack } from 'lucide-react';
-import { ZustandProductsProvider } from '@/features/products/ZustandProductsProvider';
+import { ZustandGearProvider } from '@/features/gear/ZustandGearProvider';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -72,9 +72,7 @@ export default function RootLayout({
                         </div>
                     </header>
                     <main className='max-w-7xl flex-grow container mx-auto px-4 sm:px-6 py-8'>
-                        <ZustandProductsProvider>
-                            {children}
-                        </ZustandProductsProvider>
+                        <ZustandGearProvider>{children}</ZustandGearProvider>
                     </main>
                     <footer className='bg-gray-100'>
                         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-gray-500'>

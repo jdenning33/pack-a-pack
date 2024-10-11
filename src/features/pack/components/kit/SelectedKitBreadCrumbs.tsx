@@ -9,8 +9,8 @@ export function SelectedKitBreadCrumbs({ className }: { className?: string }) {
         selectedKit,
         setSelectedItemId,
         selectedItem,
-        isEditingProductDetails,
-        setIsEditingProductDetails,
+        isEditingGearDetails,
+        setIsEditingGearDetails,
     } = usePackNavigation();
 
     return (
@@ -30,13 +30,13 @@ export function SelectedKitBreadCrumbs({ className }: { className?: string }) {
                         variant='link'
                         size='sm'
                         className='px-0 pt-0 h-[unset]'
-                        onClick={() => setIsEditingProductDetails(false)}
+                        onClick={() => setIsEditingGearDetails(false)}
                     >
                         {selectedItem.name}
                     </Button>
                 </>
             )}
-            {isEditingProductDetails && (
+            {isEditingGearDetails && (
                 <>
                     <ChevronRight size={12} className='text-primary' />
                     <Button
@@ -45,7 +45,7 @@ export function SelectedKitBreadCrumbs({ className }: { className?: string }) {
                         className='px-0 pt-0 h-[unset]'
                         onClick={() => null}
                     >
-                        Edit Product
+                        Edit Gear
                     </Button>
                 </>
             )}

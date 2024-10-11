@@ -2,22 +2,25 @@
 import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
 import { PackCard } from '@/features/pack/components/pack/PackCard';
 import { PackList } from '@/features/pack/components/pack/PackList';
-import { ZustandProductsProvider } from '@/features/products/ZustandProductsProvider';
-import { ProductsCarousel } from '@/features/products/components/ProductsCarousel';
+import { ZustandGearProvider } from '@/features/gear/ZustandGearProvider';
 import { Button } from '@/ui/button';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { ScrollArea } from '@/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import Link from 'next/link';
+import { GearCarousel } from '@/features/gear/components/GearCarousel';
+import { ZustandPacksProvider } from '@/features/pack/hooks/ZustandPacksProvider';
 
 export default function Home() {
     return (
         <main className='flex-1'>
-            <ZustandProductsProvider>
+            <ZustandGearProvider>
                 <div className='container mx-auto py-4 flex flex-col gap-8'>
                     <div className='flex gap-8'>
                         <div className='max-w-2xl  flex-auto'>
-                            <HomePagePackTabs />
+                            <ZustandPacksProvider>
+                                <HomePagePackTabs />
+                            </ZustandPacksProvider>
                         </div>
                         <div className='relative flex-1'>
                             <Link href='#'>
@@ -40,19 +43,19 @@ export default function Home() {
                                 </TabsTrigger>
                             </TabsList>
                             <TabsContent value='user'>
-                                <ZustandProductsProvider>
-                                    <ProductsCarousel />
-                                </ZustandProductsProvider>
+                                <ZustandGearProvider>
+                                    <GearCarousel />
+                                </ZustandGearProvider>
                             </TabsContent>
                             <TabsContent value='community'>
-                                <ZustandProductsProvider>
-                                    <ProductsCarousel />
-                                </ZustandProductsProvider>
+                                <ZustandGearProvider>
+                                    <GearCarousel />
+                                </ZustandGearProvider>
                             </TabsContent>
                         </Tabs>
                     </div>
                 </div>
-            </ZustandProductsProvider>
+            </ZustandGearProvider>
         </main>
     );
 }

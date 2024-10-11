@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Item, usePack } from '../../hooks/usePack';
-import { AlternateProductsPanel } from '../../../products/components/AlternateProductsPanel';
+import { AlternateGearPanel } from '../../../gear/components/AlternateGearPanel';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { Check, Edit, X } from 'lucide-react';
-import { ProductDetailsCard } from '@/features/products/components/ProductDetailsCard';
+import { GearDetailsCard } from '@/features/gear/components/GearDetailsCard';
 
 export const ItemPanel: React.FC<{
     item: Item;
 }> = ({ item }) => {
     const { updateItem } = usePack();
-    const { isEditingProductDetails, setIsEditingProductDetails } =
+    const { isEditingGearDetails, setIsEditingGearDetails } =
         usePackNavigation();
 
     const [isEditing, setIsEditing] = useState(false);
@@ -145,7 +145,7 @@ export const ItemPanel: React.FC<{
                         </div>
                     </div>
                 </div>
-                <ProductDetailsCard
+                <GearDetailsCard
                     gear={
                         item.gear || {
                             id: '',
@@ -159,21 +159,21 @@ export const ItemPanel: React.FC<{
                             purchaseLinks: [],
                         }
                     }
-                    isEditing={isEditingProductDetails}
-                    onIsEditingChange={setIsEditingProductDetails}
+                    isEditing={isEditingGearDetails}
+                    onIsEditingChange={setIsEditingGearDetails}
                 />
             </div>
 
-            {!isEditingProductDetails && (
+            {!isEditingGearDetails && (
                 <>
-                    <AlternateProductsPanel
+                    <AlternateGearPanel
                         className='pt-12 shrink-0'
                         searchTag={item.name}
-                        onSelected={(product) => {
+                        onSelected={(gear) => {
                             item = {
                                 ...item,
-                                gear: product,
-                                gearId: product.id,
+                                gear: gear,
+                                gearId: gear.id,
                             };
                             console.log(item);
                             updateItem(item);
