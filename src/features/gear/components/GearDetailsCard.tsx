@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/ui/card';
 import { Badge } from '@/ui/badge';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
-import { Gear } from '../useGear';
+import { Gear } from '@/lib/appTypes';
 import { Button } from '@/ui/button';
 import { Edit } from 'lucide-react';
 import { EditGearForm } from './EditGearForm';

@@ -8,7 +8,8 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/ui/carousel';
-import { Gear, useGear } from '../useGear';
+import { useGear } from '../useGear';
+import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 
 export function GearCarousel({

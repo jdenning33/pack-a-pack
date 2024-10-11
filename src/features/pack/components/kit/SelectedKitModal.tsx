@@ -32,10 +32,7 @@ export const SelectedKitModal = ({}) => {
         >
             <DialogContent className='min-h-[30rem] h-[40rem] max-h-svh max-w-4xl p-0 flex flex-col gap-0'>
                 <DialogHeader className='p-4 pb-3 border-b text-left'>
-                    <DialogTitle>
-                        {kit.name}
-                        {kit.id}
-                    </DialogTitle>
+                    <DialogTitle>{kit.name}</DialogTitle>
                     <DialogDescription>{kit.description}</DialogDescription>
                 </DialogHeader>
                 <div className='flex flex-1 overflow-hidden'>

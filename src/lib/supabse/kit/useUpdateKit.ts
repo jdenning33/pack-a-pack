@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { supabase } from '../supabseClient';
+import { supabase } from '../supabaseClient';
 import { Kit } from '@/lib/appTypes';
 import { appToSupabaseKit } from '../supabaseTypes';
 

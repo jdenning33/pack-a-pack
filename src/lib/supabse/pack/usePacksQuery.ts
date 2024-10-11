@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { supabase } from '../supabseClient';
+import { supabase } from '../supabaseClient';
 import { PackSummary } from '@/lib/appTypes';
 
 export function usePacksQuery() {

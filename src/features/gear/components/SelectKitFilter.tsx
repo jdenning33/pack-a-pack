@@ -19,7 +19,7 @@ import { useGear } from '../useGear';
 const kits = ['Sleep', 'Cook', 'Food', 'Shelter'];
 
 export function SelectKitFilter() {
-    const { searchTag: value, setSearchTag: setValue } = useGear();
+    const { kitFilter, setKitFilter } = useGear();
     const [open, setOpen] = React.useState(false);
 
     return (
@@ -31,7 +31,7 @@ export function SelectKitFilter() {
                     aria-expanded={open}
                     className='justify-between'
                 >
-                    {value ? value : 'Any Kit'}
+                    {kitFilter ? kitFilter : 'Any Kit'}
                     <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
             </PopoverTrigger>
@@ -46,8 +46,8 @@ export function SelectKitFilter() {
                                     key={kit}
                                     value={kit}
                                     onSelect={(currentValue) => {
-                                        setValue(
-                                            currentValue === value
+                                        setKitFilter(
+                                            currentValue === kitFilter
                                                 ? ''
                                                 : currentValue
                                         );
@@ -57,7 +57,7 @@ export function SelectKitFilter() {
                                     <Check
                                         className={cn(
                                             'mr-2 h-4 w-4',
-                                            value === kit
+                                            kitFilter === kit
                                                 ? 'opacity-100'
                                                 : 'opacity-0'
                                         )}

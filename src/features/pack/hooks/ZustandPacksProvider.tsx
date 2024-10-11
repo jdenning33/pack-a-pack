@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo, ReactNode } from 'react';
+import React, { useMemo, ReactNode, useCallback } from 'react';
 import { usePackStore } from '@/lib/zustand/zustandStore';
 import { PacksContext } from './usePacks';
 import { PackSummary } from '@/lib/appTypes';
@@ -21,14 +21,17 @@ export const ZustandPacksProvider: React.FC<{ children: ReactNode }> = ({
         [packs]
     );
 
-    const addPack = (name: string, description: string) => {
-        addPackToStore({
-            name,
-            description,
-            isPublic: false,
-            isGearLocker: false,
-        });
-    };
+    const addPack = useCallback(
+        (name: string, description: string) => {
+            addPackToStore({
+                name,
+                description,
+                isPublic: false,
+                isGearLocker: false,
+            });
+        },
+        [addPackToStore]
+    );
 
     const value = useMemo(
         () => ({
@@ -36,7 +39,7 @@ export const ZustandPacksProvider: React.FC<{ children: ReactNode }> = ({
             addPack,
             deletePack,
         }),
-        [packSummaries, deletePack]
+        [packSummaries, addPack, deletePack]
     );
 
     return (

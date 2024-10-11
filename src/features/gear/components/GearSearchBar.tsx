@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/ui/input';
 import { useGear } from '../useGear';
@@ -6,18 +6,8 @@ import { SelectKitFilter } from './SelectKitFilter';
 import { cn } from '@/lib/utils';
 import { SelectItemFilter } from './SelectItemFilter';
 
-export const GearSearchBar = ({
-    defaultSearchTag,
-    className,
-}: {
-    defaultSearchTag?: string;
-    className?: string;
-}) => {
-    const { searchText, setSearchText, setSearchTag } = useGear();
-
-    useEffect(() => {
-        setSearchTag(defaultSearchTag || '');
-    }, [defaultSearchTag, setSearchTag]);
+export const GearSearchBar = ({ className }: { className?: string }) => {
+    const { searchText, setSearchText } = useGear();
 
     return (
         <div className={cn('flex gap-1', className)}>

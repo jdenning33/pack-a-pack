@@ -24,6 +24,7 @@ export const ItemPanel: React.FC<{
     }
 
     function setIsPacked(isPacked: boolean) {
+        console.log('isPacked', isPacked);
         updateItem({ ...item, isPacked });
     }
 
@@ -161,7 +162,9 @@ export const ItemPanel: React.FC<{
                         }
                     }
                     isEditing={isEditingGearDetails}
-                    onIsEditingChange={setIsEditingGearDetails}
+                    onIsEditingChange={(isEditing) => {
+                        setIsEditingGearDetails(isEditing);
+                    }}
                 />
             </div>
 
@@ -169,14 +172,13 @@ export const ItemPanel: React.FC<{
                 <>
                     <AlternateGearPanel
                         className='pt-12 shrink-0'
-                        searchTag={item.name}
+                        itemFilter={item.name}
                         onSelected={(gear) => {
                             item = {
                                 ...item,
                                 gear: gear,
                                 gearId: gear.id,
                             };
-                            console.log(item);
                             updateItem(item);
                         }}
                     />

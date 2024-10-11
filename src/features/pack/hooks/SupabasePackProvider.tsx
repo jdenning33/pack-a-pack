@@ -40,7 +40,6 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
         updateKit: (kit) => updateKitMutation.mutateAsync(kit),
         deleteKit: (kit) => deleteKitMutation.mutateAsync(kit),
         addItem: async (item) => {
-            console.log('item', item);
             addItemMutation.mutateAsync(item);
         },
         updateItem: (item) => updateItemMutation.mutateAsync(item),

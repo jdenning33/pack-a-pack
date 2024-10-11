@@ -1,34 +1,39 @@
 import React from 'react';
-import { Mountain } from 'lucide-react';
-import { Gear } from '../useGear';
-import { Button } from '@/ui/button';
+import { Gear } from '@/lib/appTypes';
 import { GearCarousel } from './GearCarousel';
 import { GearSearchBar } from './GearSearchBar';
-import { ZustandGearProvider } from '../ZustandGearProvider';
+import { SupabaseGearProvider } from '../SupabaseGearProvider';
+import Link from 'next/link';
+import { Button } from '@/ui/button';
+import { cn } from '@/lib/utils';
 
 export const AlternateGearPanel = ({
-    searchTag,
+    itemFilter,
+    kitFilter,
     className,
     onSelected,
 }: {
-    searchTag?: string;
+    itemFilter?: string;
+    kitFilter?: string;
     className?: string;
     onSelected?: (gear: Gear) => void;
 }) => {
     return (
-        <div className={className}>
-            <ZustandGearProvider>
+        <div className={cn('flex flex-col', className)}>
+            <SupabaseGearProvider itemFilter={itemFilter} kitFilter={kitFilter}>
                 <div className='flex items-center space-x-2 mb-2'>
-                    <GearSearchBar
-                        defaultSearchTag={searchTag}
-                        className='flex-grow'
-                    />
-                    <Button variant='outline'>
-                        View All &nbsp; <Mountain size={14} />
-                    </Button>
+                    <GearSearchBar className='flex-grow' />
                 </div>
                 <GearCarousel variant='compact' onSelected={onSelected} />
-            </ZustandGearProvider>
+            </SupabaseGearProvider>
+            <Link
+                href={`/gear?searchTag=${itemFilter}`}
+                className='self-center mt-1'
+            >
+                <Button variant='link' size={'sm'}>
+                    Search All Gear
+                </Button>
+            </Link>
         </div>
     );
 };

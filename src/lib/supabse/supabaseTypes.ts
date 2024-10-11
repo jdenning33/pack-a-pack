@@ -1,5 +1,5 @@
 // File: src/utils/supabaseConverters.ts
-import { Pack, Kit, Item } from '@/lib/appTypes';
+import { Pack, Kit, Item, Gear } from '@/lib/appTypes';
 import { Optional } from '../utils';
 
 type Upsert<T extends { id: string; created_at: string; updated_at: string }> =
@@ -28,11 +28,27 @@ interface SupabaseKit {
 interface SupabaseItem {
     id: string;
     kit_id: string;
+    pack_id: string;
     name: string;
     quantity: number;
     is_packed: boolean;
     notes: string;
     gear_id?: string;
+    created_at: string;
+    updated_at: string;
+    gear?: SupabaseGear;
+}
+
+interface SupabaseGear {
+    id: string;
+    name: string;
+    description: string;
+    brand: string;
+    image: string;
+    weight: number;
+    price: number;
+    is_public: boolean;
+    purchase_links: string[];
     created_at: string;
     updated_at: string;
 }
@@ -95,11 +111,15 @@ export function supabaseToAppItem(supabaseItem: SupabaseItem): Item {
     return {
         id: supabaseItem.id,
         kitId: supabaseItem.kit_id,
+        packId: supabaseItem.pack_id,
         name: supabaseItem.name,
         quantity: supabaseItem.quantity,
         isPacked: supabaseItem.is_packed,
         notes: supabaseItem.notes,
         gearId: supabaseItem.gear_id,
+        gear: supabaseItem.gear
+            ? supabaseToAppGear(supabaseItem.gear)
+            : undefined,
     };
 }
 
@@ -110,6 +130,7 @@ export function appToSupabaseItem(
     return {
         id: appItem.id,
         kit_id: appItem.kitId,
+        pack_id: appItem.packId,
         name: appItem.name,
         quantity: appItem.quantity,
         is_packed: appItem.isPacked,
@@ -129,4 +150,34 @@ export function convertNestedSupabasePack(
         return supabaseToAppKit(supabaseKit, items);
     });
     return supabaseToAppPack(supabasePack, kits);
+}
+
+export function appToSupabaseGear(
+    appGear: Optional<Gear, 'id'>
+): Upsert<SupabaseGear> {
+    return {
+        id: appGear.id,
+        name: appGear.name,
+        description: appGear.description,
+        brand: appGear.brand,
+        image: appGear.image,
+        weight: appGear.weight,
+        price: appGear.price,
+        is_public: appGear.isPublic,
+        purchase_links: appGear.purchaseLinks,
+    };
+}
+
+export function supabaseToAppGear(supabaseGear: SupabaseGear): Gear {
+    return {
+        id: supabaseGear.id,
+        name: supabaseGear.name,
+        description: supabaseGear.description,
+        brand: supabaseGear.brand,
+        image: supabaseGear.image,
+        weight: supabaseGear.weight,
+        price: supabaseGear.price,
+        isPublic: supabaseGear.is_public,
+        purchaseLinks: supabaseGear.purchase_links,
+    };
 }

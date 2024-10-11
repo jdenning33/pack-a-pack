@@ -14,6 +14,7 @@ import {
     CommandList,
 } from '@/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
+import { useGear } from '../useGear';
 
 const items = [
     'Stove',
@@ -33,7 +34,7 @@ const items = [
 
 export function SelectItemFilter() {
     const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState('');
+    const { itemFilter, setItemFilter } = useGear();
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -44,7 +45,7 @@ export function SelectItemFilter() {
                     aria-expanded={open}
                     className='justify-between'
                 >
-                    {value ? value : 'Any Item'}
+                    {itemFilter ? itemFilter : 'Any Item'}
                     <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
             </PopoverTrigger>
@@ -59,8 +60,8 @@ export function SelectItemFilter() {
                                     key={item}
                                     value={item}
                                     onSelect={(currentValue) => {
-                                        setValue(
-                                            currentValue === value
+                                        setItemFilter(
+                                            currentValue === itemFilter
                                                 ? ''
                                                 : currentValue
                                         );
@@ -70,7 +71,7 @@ export function SelectItemFilter() {
                                     <Check
                                         className={cn(
                                             'mr-2 h-4 w-4',
-                                            value === item
+                                            itemFilter === item
                                                 ? 'opacity-100'
                                                 : 'opacity-0'
                                         )}

@@ -3,7 +3,7 @@ import { Button } from '@/ui/button';
 import { Badge } from '@/ui/badge';
 import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
-import { Gear } from '../useGear';
+import { Gear } from '@/lib/appTypes';
 
 export function GearCard({
     gear,

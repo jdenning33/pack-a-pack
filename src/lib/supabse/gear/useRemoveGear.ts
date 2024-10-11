@@ -1,19 +1,20 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { supabase } from '../supabaseClient';
-import { Kit } from '@/lib/appTypes';
 
-export function useDeleteKit(packId: string) {
+// Remove gear
+
+export function useRemoveGear() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (kit: Kit) => {
+        mutationFn: async (gearId: string) => {
             const { error } = await supabase
-                .from('kits')
+                .from('gear')
                 .delete()
-                .eq('id', kit.id);
+                .eq('id', gearId);
             if (error) throw error;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['pack', packId]);
+            queryClient.invalidateQueries(['gear']);
         },
     });
 }

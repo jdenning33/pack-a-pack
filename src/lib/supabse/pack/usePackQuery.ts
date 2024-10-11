@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
-import { supabase } from '../supabseClient';
+import { supabase } from '../supabaseClient';
 import { Pack } from '@/lib/appTypes';
+import { convertNestedSupabasePack } from '../supabaseTypes';
 
 export function usePackQuery(packId: string) {
     return useQuery<Pack>({
@@ -13,7 +14,10 @@ export function usePackQuery(packId: string) {
           *,
           kits:kits(
             *,
-            items:items(*)
+            items:items(
+              *,
+              gear:gear(*)
+            )
           )
         `
                 )
@@ -21,7 +25,7 @@ export function usePackQuery(packId: string) {
                 .single();
 
             if (error) throw error;
-            return data;
+            return convertNestedSupabasePack(data);
         },
     });
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { GearCard } from './GearCard';
-import { Gear, useGear } from '../useGear';
+import { useGear } from '../useGear';
+import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 
 export function GearList({

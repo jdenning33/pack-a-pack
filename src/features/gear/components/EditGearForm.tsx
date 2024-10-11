@@ -3,7 +3,8 @@ import { useForm, useWatch } from 'react-hook-form';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
-import { Gear, useGear } from '../useGear';
+import { useGear } from '../useGear';
+import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 

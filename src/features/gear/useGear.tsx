@@ -1,23 +1,16 @@
 'use client';
+import { Gear } from '@/lib/appTypes';
 import { createContext, useContext } from 'react';
-
-// This represents a gear that can be purchased to satisfy the Item it is attributed to
-export interface Gear {
-    id: string;
-    name: string;
-    description: string;
-    brand: string;
-    image: string;
-    weight: number;
-    price: number;
-    isPublic: boolean;
-    purchaseLinks: string[];
-}
 
 export interface GearContract {
     gear: Gear[];
-    searchTag: string;
-    setSearchTag: (searchTag: string) => void;
+    isLoading: boolean;
+    isError: boolean;
+    error: Error | unknown | null;
+    kitFilter: string;
+    setKitFilter: (kitFilter: string) => void;
+    itemFilter: string;
+    setItemFilter: (searchTag: string) => void;
     searchText: string;
     setSearchText: (searchText: string) => void;
     addGear: (gear: Omit<Gear, 'id'>) => Promise<void>;

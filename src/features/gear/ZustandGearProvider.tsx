@@ -1,7 +1,8 @@
 'use client';
 import { usePackStore } from '@/lib/zustand/zustandStore';
 import React, { ReactNode, useState, useCallback, useMemo } from 'react';
-import { Gear, GearContext, GearContract } from './useGear';
+import { GearContext, GearContract } from './useGear';
+import { Gear } from '@/lib/appTypes';
 
 interface GearProviderProps {
     children: ReactNode;
@@ -50,8 +51,13 @@ export const ZustandGearProvider: React.FC<GearProviderProps> = ({
 
     const gearContract: GearContract = {
         gear: filteredGear,
-        searchTag,
-        setSearchTag,
+        isLoading: false,
+        isError: false,
+        error: null,
+        itemFilter: searchTag,
+        setItemFilter: setSearchTag,
+        kitFilter: '',
+        setKitFilter: () => {},
         searchText,
         setSearchText,
         addGear,
