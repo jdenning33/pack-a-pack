@@ -13,7 +13,6 @@ export const QuickAddPackItem = ({ kitId }: { kitId: string }) => {
             await addItem({
                 kitId: kitId,
                 name: newItemName.trim(),
-                description: '',
                 quantity: 1,
                 isPacked: false,
                 notes: '',

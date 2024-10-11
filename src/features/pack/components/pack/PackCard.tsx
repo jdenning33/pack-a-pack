@@ -7,8 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/ui/card';
-import { Trash2 } from 'lucide-react';
-import { PackSummary, usePacks } from '../../hooks/usePacks';
+import { PackSummary } from '../../hooks/usePacks';
 import Link from 'next/link';
 
 export function PackCard({
@@ -22,9 +21,7 @@ export function PackCard({
         <Card key={pack.id} className={className}>
             <CardHeader>
                 <CardTitle className=''>{pack.name}</CardTitle>
-                <CardDescription>
-                    {pack.createdByName || 'jdenning'}
-                </CardDescription>
+                <CardDescription>{'jdenning'}</CardDescription>
             </CardHeader>
             <CardContent>
                 <p className='text-sm'>{pack.description}</p>

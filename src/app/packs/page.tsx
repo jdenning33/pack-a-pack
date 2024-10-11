@@ -11,7 +11,7 @@ export default function PacksPage() {
                     <AddPackButton />
                 </div>
                 <div className='columns-[300px]'>
-                    <PackList />
+                    <PackList packClassName='break-inside-avoid' />
                 </div>
             </div>
         </main>

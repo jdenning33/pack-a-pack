@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { PackItem, usePack } from '../../hooks/usePack';
+import { Item, usePack } from '../../hooks/usePack';
 import { AlternateProductsPanel } from '../../../products/components/AlternateProductsPanel';
-import SimpleProductsProvider from '@/features/products/SimpleProductsProvider';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
-import { ItemProductCard } from './ItemProductCard';
 import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { Check, Edit, X } from 'lucide-react';
+import { ProductDetailsCard } from '@/features/products/components/ProductDetailsCard';
 
 export const ItemPanel: React.FC<{
-    item: PackItem;
+    item: Item;
 }> = ({ item }) => {
     const { updateItem } = usePack();
     const { isEditingProductDetails, setIsEditingProductDetails } =
@@ -146,29 +145,41 @@ export const ItemPanel: React.FC<{
                         </div>
                     </div>
                 </div>
-                <ItemProductCard item={item} />
+                <ProductDetailsCard
+                    gear={
+                        item.gear || {
+                            id: '',
+                            isPublic: false,
+                            name: '',
+                            description: '',
+                            brand: '',
+                            weight: 0,
+                            price: 0,
+                            image: '',
+                            purchaseLinks: [],
+                        }
+                    }
+                    isEditing={isEditingProductDetails}
+                    onIsEditingChange={setIsEditingProductDetails}
+                />
             </div>
 
             {!isEditingProductDetails && (
-                <SimpleProductsProvider>
+                <>
                     <AlternateProductsPanel
                         className='pt-12 shrink-0'
                         searchTag={item.name}
                         onSelected={(product) => {
                             item = {
                                 ...item,
-                                productName: product.name,
-                                productDescription: product.description,
-                                productBrand: product.brand,
-                                productImage: product.image,
-                                productPrice: product.price,
-                                productWeight: product.weight,
-                                productId: product.id,
+                                gear: product,
+                                gearId: product.id,
                             };
+                            console.log(item);
                             updateItem(item);
                         }}
                     />
-                </SimpleProductsProvider>
+                </>
             )}
         </div>
     );

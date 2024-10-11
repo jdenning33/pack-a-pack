@@ -40,9 +40,10 @@ export const AuthProvider: React.FC<{
 
 export const useAuth = (): AuthContract => {
     const context = useContext(AuthContext);
+    const defaultContext = useSupabaseAuth();
     if (context !== undefined) {
         return context;
     }
     // If no context is found, use the default Supabase implementation
-    return useSupabaseAuth();
+    return defaultContext;
 };

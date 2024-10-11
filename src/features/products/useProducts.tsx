@@ -1,8 +1,8 @@
 'use client';
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 // This represents a product that can be purchased to satisfy the Item it is attributed to
-export interface Product {
+export interface Gear {
     id: string;
     name: string;
     description: string;
@@ -10,26 +10,19 @@ export interface Product {
     image: string;
     weight: number;
     price: number;
-    tagMap: { [key: string]: number };
-}
-
-export interface ProductTag {
-    id: string;
-    name: string;
-    count: number;
+    isPublic: boolean;
+    purchaseLinks: string[];
 }
 
 export interface ProductsContract {
-    products: Product[];
+    products: Gear[];
     searchTag: string;
     setSearchTag: (searchTag: string) => void;
     searchText: string;
     setSearchText: (searchText: string) => void;
-    addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
-    updateProduct: (product: Product) => Promise<void>;
-    removeProduct: (product: Product) => Promise<void>;
-    incrementProductTag: (productId: string, tag: string) => Promise<void>;
-    decrementProductTag: (productId: string, tag: string) => Promise<void>;
+    addProduct: (product: Omit<Gear, 'id'>) => Promise<void>;
+    updateProduct: (product: Gear) => Promise<void>;
+    removeProduct: (product: Gear) => Promise<void>;
 }
 
 export const ProductsContext = createContext<ProductsContract | undefined>(

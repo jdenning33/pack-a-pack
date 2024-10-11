@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import { Trash } from 'lucide-react';
-import { usePack, PackItem } from '../../hooks/usePack';
+import { usePack, Item } from '../../hooks/usePack';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { cn } from '@/lib/utils';
@@ -11,20 +11,23 @@ export function ScrollableItemsList({
     items,
     className,
 }: {
-    items: PackItem[];
+    items: Item[];
     className?: string;
 }) {
-    const { updateItem, removeItem } = usePack();
+    const { updateItem, deleteItem: removeItem } = usePack();
     const { setSelectedItemId, selectedItem } = usePackNavigation();
-    const toggleItem = async (item: PackItem) => {
+    const toggleItem = async (item: Item) => {
         await updateItem({
             ...item,
             isPacked: !item.isPacked,
         });
     };
     return (
-        <ScrollArea className='flex-1 overflow-auto' type='scroll'>
-            <ul className='flex-1'>
+        <ScrollArea
+            className={cn('flex-1 overflow-auto', className)}
+            type='scroll'
+        >
+            <ul className='flex-1 w-full'>
                 {items.map((item) => (
                     <li
                         key={item.id}
@@ -34,7 +37,7 @@ export function ScrollableItemsList({
                             item.id === selectedItem?.id &&
                                 'bg-primary/20 font-semibold'
                         )}
-                        onClick={(e) => {
+                        onClick={(_) => {
                             setSelectedItemId(item.id);
                         }}
                     >
@@ -45,7 +48,7 @@ export function ScrollableItemsList({
                                 onClick={(e) => {
                                     e.stopPropagation();
                                 }}
-                                onCheckedChange={(e) => {
+                                onCheckedChange={(_) => {
                                     toggleItem(item);
                                 }}
                             />

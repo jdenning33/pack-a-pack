@@ -5,10 +5,12 @@ import { ErrorBoundary } from './error-boundary';
 export function ImageWithFallback({
     src,
     fallbackSrc = 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png',
+    alt,
     ...rest
 }: {
     src: string;
     fallbackSrc?: string;
+    alt: string;
 } & React.ComponentProps<typeof Image>) {
     const [imgSrc, setImgSrc] = useState(src);
 
@@ -17,8 +19,11 @@ export function ImageWithFallback({
     }, [src]);
 
     return (
-        <ErrorBoundary fallback={<Image {...rest} src={fallbackSrc} />}>
+        <ErrorBoundary
+            fallback={<Image alt={alt} {...rest} src={fallbackSrc} />}
+        >
             <Image
+                alt={alt}
                 {...rest}
                 src={imgSrc || fallbackSrc}
                 onLoadingComplete={(result) => {

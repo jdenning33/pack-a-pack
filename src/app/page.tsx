@@ -2,21 +2,9 @@
 import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
 import { PackCard } from '@/features/pack/components/pack/PackCard';
 import { PackList } from '@/features/pack/components/pack/PackList';
-import { PackItem } from '@/features/pack/hooks/usePack';
-import SimpleProductsProvider from '@/features/products/SimpleProductsProvider';
-import { AlternateProductsPanel } from '@/features/products/components/AlternateProductsPanel';
-import { ProductCard } from '@/features/products/components/ProductCard';
+import { ZustandProductsProvider } from '@/features/products/ZustandProductsProvider';
 import { ProductsCarousel } from '@/features/products/components/ProductsCarousel';
-import { ProductsContext } from '@/features/products/useProducts';
 import { Button } from '@/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { ScrollArea } from '@/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
@@ -25,44 +13,46 @@ import Link from 'next/link';
 export default function Home() {
     return (
         <main className='flex-1'>
-            <div className='container mx-auto py-4 flex flex-col gap-8'>
-                <div className='flex gap-8'>
-                    <div className='max-w-2xl  flex-auto'>
-                        <HomePagePackTabs />
+            <ZustandProductsProvider>
+                <div className='container mx-auto py-4 flex flex-col gap-8'>
+                    <div className='flex gap-8'>
+                        <div className='max-w-2xl  flex-auto'>
+                            <HomePagePackTabs />
+                        </div>
+                        <div className='relative flex-1'>
+                            <Link href='#'>
+                                <ImageWithFallback
+                                    src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
+                                    alt={''}
+                                    className='rounded-lg'
+                                    layout='fill'
+                                    objectFit='contain'
+                                />
+                            </Link>
+                        </div>
                     </div>
-                    <div className='relative flex-1'>
-                        <Link href='#'>
-                            <ImageWithFallback
-                                src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
-                                alt={''}
-                                className='rounded-lg'
-                                layout='fill'
-                                objectFit='contain'
-                            />
-                        </Link>
+                    <div>
+                        <Tabs defaultValue='community'>
+                            <TabsList>
+                                <TabsTrigger value='user'>My Gear</TabsTrigger>
+                                <TabsTrigger value='community'>
+                                    Suggested Gear
+                                </TabsTrigger>
+                            </TabsList>
+                            <TabsContent value='user'>
+                                <ZustandProductsProvider>
+                                    <ProductsCarousel />
+                                </ZustandProductsProvider>
+                            </TabsContent>
+                            <TabsContent value='community'>
+                                <ZustandProductsProvider>
+                                    <ProductsCarousel />
+                                </ZustandProductsProvider>
+                            </TabsContent>
+                        </Tabs>
                     </div>
                 </div>
-                <div>
-                    <Tabs defaultValue='community'>
-                        <TabsList>
-                            <TabsTrigger value='user'>My Gear</TabsTrigger>
-                            <TabsTrigger value='community'>
-                                Suggested Gear
-                            </TabsTrigger>
-                        </TabsList>
-                        <TabsContent value='user'>
-                            <SimpleProductsProvider>
-                                <ProductsCarousel />
-                            </SimpleProductsProvider>
-                        </TabsContent>
-                        <TabsContent value='community'>
-                            <SimpleProductsProvider>
-                                <ProductsCarousel />
-                            </SimpleProductsProvider>
-                        </TabsContent>
-                    </Tabs>
-                </div>
-            </div>
+            </ZustandProductsProvider>
         </main>
     );
 }
@@ -106,6 +96,9 @@ function HomePagePackTabs() {
                                 {[
                                     {
                                         id: '1',
+                                        isPublic: true,
+                                        isGearLocker: false,
+
                                         name: 'Appalachian Trail Essentials',
                                         createdByName: 'TrailMaster99',
                                         description:
@@ -113,6 +106,9 @@ function HomePagePackTabs() {
                                     },
                                     {
                                         id: '2',
+                                        isPublic: true,
+                                        isGearLocker: false,
+
                                         name: 'Pacific Crest Trail Gear',
                                         createdByName: 'WestCoastHiker',
                                         description:
@@ -120,6 +116,9 @@ function HomePagePackTabs() {
                                     },
                                     {
                                         id: '3',
+                                        isPublic: true,
+                                        isGearLocker: false,
+
                                         name: 'Ultralight European Trek',
                                         createdByName: 'AlpineAdventurer',
                                         description:
@@ -127,6 +126,9 @@ function HomePagePackTabs() {
                                     },
                                     {
                                         id: '4',
+                                        isPublic: true,
+                                        isGearLocker: false,
+
                                         name: 'South American Adventure',
                                         createdByName: 'JungleExplorer',
                                         description:
@@ -134,13 +136,15 @@ function HomePagePackTabs() {
                                     },
                                     {
                                         id: '5',
+                                        isPublic: true,
+                                        isGearLocker: false,
                                         name: 'Winter Wonderland',
                                         createdByName: 'SnowQueen',
                                         description:
                                             'This pack contains all the essentials for a successful winter hike.',
                                     },
                                 ].map((pack) => (
-                                    <PackCard pack={pack} />
+                                    <PackCard key={pack.id} pack={pack} />
                                 ))}
                             </div>
                         </ScrollArea>

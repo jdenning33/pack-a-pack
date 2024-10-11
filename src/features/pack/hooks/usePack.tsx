@@ -1,100 +1,50 @@
 'use client';
-import React, { createContext, useContext } from 'react';
-import { usePacksStore } from './usePacksStore';
+import { Gear } from '@/features/products/useProducts';
+import { createContext, useContext } from 'react';
 
 // This represents a backpack and it's contents for a single trip, it may be cloned for a new trip
 export interface Pack {
     id: string;
     name: string;
     description: string;
-    createdByName: string;
-    kits: PackKit[];
+    isPublic: boolean;
+    isGearLocker: boolean;
+    kits: Kit[];
 }
 
 // This represents a kit of items in the backpack. For example, "Clothing Kit" or "Toiletries Kit"
-export interface PackKit {
+export interface Kit {
     id: string;
+    packId: string;
     name: string;
     description: string;
-    items: PackItem[];
+    items: Item[];
 }
 
 // This represents a single item in this pack. For example, "T-shirt" or "Toothbrush"
-export interface PackItem {
+export interface Item {
     id: string;
     kitId: string;
     name: string;
     quantity: number;
-    description: string;
     isPacked: boolean;
     notes: string;
-    productId?: string;
-    productName?: string;
-    productDescription?: string;
-    productBrand?: string;
-    productImage?: string;
-    productWeight?: number;
-    productPrice?: number;
-}
-
-// This represents a product that can be purchased to satisfy the Item it is attributed to
-export interface Product {
-    id: string;
-    name: string;
-    description: string;
-    brand: string;
-    image: string;
-    weight: number;
-    price: number;
+    gearId?: string;
+    gear?: Gear;
 }
 
 export interface PackContract {
     pack: Pack;
-    addKit: (kit: Omit<PackKit, 'id'>) => Promise<void>;
-    updateKit: (kit: PackKit) => Promise<void>;
-    removeKit: (kit: PackKit) => Promise<void>;
-    addItem: (item: Omit<PackItem, 'id'>) => Promise<void>;
-    updateItem: (item: PackItem) => Promise<void>;
-    removeItem: (item: PackItem) => Promise<void>;
+    addKit: (kit: Omit<Kit, 'id'>) => Promise<void>;
+    updateKit: (kit: Kit) => Promise<void>;
+    deleteKit: (kit: Kit) => Promise<void>;
+    addItem: (item: Omit<Item, 'id'>) => Promise<void>;
+    updateItem: (item: Item) => Promise<void>;
+    deleteItem: (item: Item) => Promise<void>;
+    toggleItemPacked: (itemId: string) => Promise<Item>;
 }
 
-const PackContext = createContext<PackContract | undefined>(undefined);
-
-export const PackProvider: React.FC<{
-    children: React.ReactNode;
-    packId: string;
-}> = ({ children, packId }) => {
-    let {
-        packs,
-        addKit,
-        updateKit,
-        addItem,
-        updateItem,
-        removeItem,
-        removeKit,
-    } = usePacksStore();
-
-    let pack = packs.find((pack) => pack.id === packId) || null;
-    if (!pack) {
-        return <div>Pack not found</div>;
-    }
-
-    let packContract: PackContract = {
-        pack: pack,
-        addKit: async (kit) => addKit(packId, kit),
-        updateKit: async (kit: PackKit) => updateKit(packId, kit),
-        removeKit: async (kit: PackKit) => removeKit(packId, kit),
-        addItem: async (item: Omit<PackItem, 'id'>) => addItem(packId, item),
-        updateItem: async (item: PackItem) => updateItem(packId, item),
-        removeItem: async (item: PackItem) => removeItem(packId, item),
-    };
-
-    return (
-        <PackContext.Provider value={packContract}>
-            {children}
-        </PackContext.Provider>
-    );
-};
+export const PackContext = createContext<PackContract | undefined>(undefined);
 
 export const usePack = (): PackContract => {
     const context = useContext(PackContext);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProductCard } from './ProductCard';
-import { Product, useProducts } from '../useProducts';
+import { Gear, useProducts } from '../useProducts';
 import { cn } from '@/lib/utils';
 
 export function ProductsList({
@@ -8,7 +8,7 @@ export function ProductsList({
     onSelected,
 }: {
     productClassName?: string;
-    onSelected?: (product: Product) => void;
+    onSelected?: (product: Gear) => void;
 }) {
     const { products } = useProducts();
 

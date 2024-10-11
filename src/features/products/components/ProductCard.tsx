@@ -1,25 +1,24 @@
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
-import Image from 'next/image';
 import { Badge } from '@/ui/badge';
 import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
-import { Product } from '../useProducts';
+import { Gear } from '../useProducts';
 
 export function ProductCard({
     product,
     onSelect,
     className,
 }: {
-    product: Product;
-    onSelect?: (product: Product) => void;
+    product: Gear;
+    onSelect?: (product: Gear) => void;
     className?: string;
 }) {
     return (
         <Card
             key={product.id}
             className={cn(
-                'relative flex-shrink-0 transition-shadow duration-300 ease-in-out hover:shadow my-1 group',
+                'relative flex-shrink-0 transition-shadow duration-300 ease-in-out hover:shadow group',
                 className
             )}
         >

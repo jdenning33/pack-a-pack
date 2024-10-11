@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { usePacksStore } from '../../hooks/usePacksStore';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
@@ -12,13 +11,14 @@ import {
     DialogTrigger,
 } from '@/ui/dialog';
 import { Plus } from 'lucide-react';
+import { usePacks } from '../../hooks/usePacks';
 
 // PackAddButton Component
 export const AddPackButton = (props: React.ComponentProps<typeof Button>) => {
     const [isOpen, setIsOpen] = useState(false);
     const [newPackName, setNewPackName] = useState('');
     const [newPackDescription, setNewPackDescription] = useState('');
-    const { addPack } = usePacksStore();
+    const { addPack } = usePacks();
 
     const handleAddPack = (e: React.FormEvent) => {
         e.preventDefault();

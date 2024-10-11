@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { PackKit, Pack, PackItem, Product, usePack } from './usePack'; // Adjust this import based on your actual types file
+import { Kit, Item, usePack } from './usePack'; // Adjust this import based on your actual types file
 
 interface PackNavigationContextType {
-    selectedKit: PackKit | null;
+    selectedKit: Kit | null;
     setSelectedKitId: (kitId: string | null) => void;
-    selectedItem: PackItem | null;
+    selectedItem: Item | null;
     setSelectedItemId: (itemId: string | null) => void;
     isEditingProductDetails: boolean;
     setIsEditingProductDetails: (isEditingProductDetails: boolean) => void;

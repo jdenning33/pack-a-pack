@@ -1,7 +1,6 @@
 'use client';
 
 import { usePack } from '../../hooks/usePack';
-import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { AddKitButton } from '../kit/AddKitButton';
 import { KitCard } from '../kit/KitCard';
 import { SelectedKitModal } from '../kit/SelectedKitModal';

@@ -17,12 +17,13 @@ export function AddKitButton() {
     const [isOpen, setIsOpen] = useState(false);
     const [newKitName, setNewKitName] = useState('');
     const [newKitDescription, setNewKitDescription] = useState('');
-    const { addKit } = usePack();
+    const { pack, addKit } = usePack();
 
     const handleAddKit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (newKitName.trim()) {
             await addKit({
+                packId: pack.id,
                 name: newKitName,
                 description: newKitDescription,
                 items: [],

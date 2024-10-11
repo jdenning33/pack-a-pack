@@ -11,21 +11,12 @@ import { ScrollableItemsList } from '../item/ScrollableItemsList';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { QuickAddPackItem } from '../item/QuickAddItemInput';
 import { cn } from '@/lib/utils';
-import { Edit } from 'lucide-react';
-import { EditProductForm } from '@/features/products/components/EditProductForm';
 import { KitOverviewPanel } from './KitOverviewPanel';
 import { SelectedKitBreadCrumbs } from './SelectedKitBreadCrumbs';
-import { EditItemProductForm } from '../item/EditItemProductForm';
 
 export const SelectedKitModal = ({}) => {
-    const {
-        setSelectedKitId,
-        selectedKit,
-        setSelectedItemId,
-        selectedItem,
-        isEditingProductDetails,
-        setIsEditingProductDetails,
-    } = usePackNavigation();
+    const { setSelectedKitId, selectedKit, setSelectedItemId, selectedItem } =
+        usePackNavigation();
 
     const kit = selectedKit;
 
@@ -55,7 +46,7 @@ export const SelectedKitModal = ({}) => {
                             <QuickAddPackItem kitId={kit.id} />
                         </div>
                         <ScrollableItemsList
-                            className='py-4 w-2/5'
+                            className='py-2'
                             items={kit.items}
                         />
                     </div>

@@ -1,6 +1,6 @@
 'use client';
 import { Pack } from './usePack';
-import { usePacksStore } from './usePacksStore';
+import { usePackStore } from '@/lib/zustandStore';
 
 export type PackSummary = Omit<Pack, 'kits'>;
 
@@ -11,21 +11,23 @@ export interface UsePacksResult {
 }
 
 export const usePacks = (): UsePacksResult => {
-    const { packs, addPack: addPackToStore, removePack } = usePacksStore();
+    const { packs, addPack: addPackToStore, deletePack } = usePackStore();
 
     const packSummaries: PackSummary[] = packs.map((pack) => ({
         id: pack.id,
         name: pack.name,
-        createdByName: pack.createdByName,
+        isPublic: pack.isPublic,
+        isGearLocker: pack.isGearLocker,
         description: pack.description,
     }));
 
     const addPack = (name: string, description: string) => {
-        addPackToStore(name, description);
-    };
-
-    const deletePack = (id: string) => {
-        removePack(id);
+        addPackToStore({
+            name,
+            description,
+            isPublic: false,
+            isGearLocker: false,
+        });
     };
 
     return {

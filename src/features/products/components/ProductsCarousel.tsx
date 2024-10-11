@@ -8,13 +8,16 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/ui/carousel';
-import { Product, useProducts } from '../useProducts';
+import { Gear, useProducts } from '../useProducts';
+import { cn } from '@/lib/utils';
 
 export function ProductsCarousel({
     onSelected,
+    variant = 'default',
 }: {
     className?: string;
-    onSelected?: (product: Product) => void;
+    variant?: 'default' | 'compact';
+    onSelected?: (product: Gear) => void;
 }) {
     const { products } = useProducts();
 
@@ -26,13 +29,27 @@ export function ProductsCarousel({
                     loop: false,
                 }}
             >
-                <div className='bg-muted border-t border-b px-2 h-52 flex items-stretch'>
+                <div
+                    className={cn(
+                        ' h-52 flex items-center',
+                        variant === 'compact'
+                            ? ''
+                            : 'bg-muted border-t border-b px-2'
+                    )}
+                >
                     <CarouselContent className='-ml-2 '>
                         {products.map((product) => (
-                            <CarouselItem className='w-36 max-w-36 pl-2 '>
+                            <CarouselItem
+                                key={product.id}
+                                className='w-36 max-w-36 pl-2 '
+                            >
                                 <ProductCard
                                     key={product.id}
-                                    className='h-[12.5rem]'
+                                    className={
+                                        variant === 'compact'
+                                            ? 'h-52'
+                                            : 'h-[12.5rem]'
+                                    }
                                     product={product}
                                     onSelect={onSelected}
                                 />
@@ -40,9 +57,10 @@ export function ProductsCarousel({
                         ))}
                         <CarouselItem className='basis-1/2 md:basis-1/3 pl-2 flex items-center '>
                             <AddProductButton
-                                className={
-                                    'bg-[unset] border-0 shadow-none h-48'
-                                }
+                                className={cn(
+                                    'bg-[unset] border-0 shadow-none h-48',
+                                    variant === 'compact' ? 'h-52' : 'h-48'
+                                )}
                             />
                         </CarouselItem>
                     </CarouselContent>

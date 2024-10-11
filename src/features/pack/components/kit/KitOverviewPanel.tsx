@@ -1,14 +1,14 @@
 import React from 'react';
-import { PackKit } from '../../hooks/usePack';
+import { Kit } from '../../hooks/usePack';
 
-export function KitOverviewPanel({ kit }: { kit: PackKit }) {
+export function KitOverviewPanel({ kit }: { kit: Kit }) {
     return (
         <div className='flex flex-col gap-4'>
             <p className='text-muted-foreground'>
                 {kit.items.length} items in this kit
             </p>
             <hr />
-            <div>Common "{kit.name}" Items</div>
+            <div>Common &quot;{kit.name}&quot; Items</div>
         </div>
     );
 }

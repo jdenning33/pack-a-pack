@@ -2,11 +2,11 @@ import React from 'react';
 import { Checkbox } from '@/ui/checkbox';
 import { Card, CardHeader, CardTitle, CardContent } from '@/ui/card';
 import { cn } from '@/lib/utils';
-import { usePack, PackItem, PackKit } from '../../hooks/usePack';
+import { usePack, Item, Kit } from '../../hooks/usePack';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 
 interface PackKitProps {
-    kit: PackKit;
+    kit: Kit;
     className?: string;
 }
 
@@ -14,7 +14,7 @@ export const KitCard: React.FC<PackKitProps> = ({ kit, className }) => {
     const { updateItem } = usePack();
     const { setSelectedKitId, setSelectedItemId } = usePackNavigation();
 
-    const toggleItem = async (item: PackItem) => {
+    const toggleItem = async (item: Item) => {
         await updateItem({
             ...item,
             isPacked: !item.isPacked,
@@ -27,7 +27,7 @@ export const KitCard: React.FC<PackKitProps> = ({ kit, className }) => {
                 'hover:shadow-lg hover:scale-[101%] transition-all',
                 className
             )}
-            onClick={(e) => setSelectedKitId(kit.id)}
+            onClick={(_) => setSelectedKitId(kit.id)}
         >
             <CardHeader>
                 <CardTitle>{kit.name}</CardTitle>
@@ -47,7 +47,7 @@ export const KitCard: React.FC<PackKitProps> = ({ kit, className }) => {
                                 <Checkbox
                                     id={`item-${item.id}`}
                                     checked={item.isPacked}
-                                    onCheckedChange={(e) => toggleItem(item)}
+                                    onCheckedChange={(_) => toggleItem(item)}
                                     onClick={(e) => {
                                         e.stopPropagation();
                                     }}

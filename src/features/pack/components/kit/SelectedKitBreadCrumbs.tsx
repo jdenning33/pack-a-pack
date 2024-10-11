@@ -14,7 +14,7 @@ export function SelectedKitBreadCrumbs({ className }: { className?: string }) {
     } = usePackNavigation();
 
     return (
-        <div className={cn('flex items-center gap-1')}>
+        <div className={cn('flex items-center gap-1', className)}>
             <Button
                 variant='link'
                 size='sm'
