@@ -1,5 +1,5 @@
 import React from 'react';
-import { Kit } from '../../hooks/usePack';
+import { Kit } from '@/lib/appTypes';
 
 export function KitOverviewPanel({ kit }: { kit: Kit }) {
     return (

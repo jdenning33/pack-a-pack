@@ -2,7 +2,8 @@ import React from 'react';
 import { Checkbox } from '@/ui/checkbox';
 import { Card, CardHeader, CardTitle, CardContent } from '@/ui/card';
 import { cn } from '@/lib/utils';
-import { usePack, Item, Kit } from '../../hooks/usePack';
+import { usePack } from '../../hooks/usePack';
+import { Item, Kit } from '@/lib/appTypes';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 
 interface PackKitProps {

@@ -1,4 +1,4 @@
-import { Item, Kit, Pack } from '@/features/pack/hooks/usePack';
+import { Item, Kit, Pack } from '../appTypes';
 import { Gear } from '@/features/gear/useGear';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';

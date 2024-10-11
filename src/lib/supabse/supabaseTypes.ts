@@ -1,0 +1,132 @@
+// File: src/utils/supabaseConverters.ts
+import { Pack, Kit, Item } from '@/lib/appTypes';
+import { Optional } from '../utils';
+
+type Upsert<T extends { id: string; created_at: string; updated_at: string }> =
+    Optional<T, 'id' | 'created_at' | 'updated_at'>;
+
+// Types for Supabase database models
+interface SupabasePack {
+    id: string;
+    name: string;
+    description: string;
+    is_public: boolean;
+    is_gear_locker: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+interface SupabaseKit {
+    id: string;
+    pack_id: string;
+    name: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface SupabaseItem {
+    id: string;
+    kit_id: string;
+    name: string;
+    quantity: number;
+    is_packed: boolean;
+    notes: string;
+    gear_id?: string;
+    created_at: string;
+    updated_at: string;
+}
+
+// Convert Supabase Pack to application Pack
+export function supabaseToAppPack(
+    supabasePack: SupabasePack,
+    kits?: Kit[]
+): Pack {
+    return {
+        id: supabasePack.id,
+        name: supabasePack.name,
+        description: supabasePack.description,
+        isPublic: supabasePack.is_public,
+        isGearLocker: supabasePack.is_gear_locker,
+        kits: kits || [],
+    };
+}
+
+// Convert application Pack to Supabase Pack
+export function appToSupabasePack(appPack: Pack): Upsert<SupabasePack> {
+    return {
+        id: appPack.id,
+        name: appPack.name,
+        description: appPack.description,
+        is_public: appPack.isPublic,
+        is_gear_locker: appPack.isGearLocker,
+    };
+}
+
+// Convert Supabase Kit to application Kit
+export function supabaseToAppKit(
+    supabaseKit: SupabaseKit,
+    items?: Item[]
+): Kit {
+    return {
+        id: supabaseKit.id,
+        packId: supabaseKit.pack_id,
+        name: supabaseKit.name,
+        description: supabaseKit.description,
+        items: items || [],
+    };
+}
+
+// Convert application Kit to Supabase Kit
+export function appToSupabaseKit(
+    appKit: Kit | Optional<Kit, 'id'>,
+    packId: string
+): Upsert<SupabaseKit> {
+    return {
+        id: appKit.id,
+        pack_id: packId,
+        name: appKit.name,
+        description: appKit.description,
+    };
+}
+
+// Convert Supabase Item to application Item
+export function supabaseToAppItem(supabaseItem: SupabaseItem): Item {
+    return {
+        id: supabaseItem.id,
+        kitId: supabaseItem.kit_id,
+        name: supabaseItem.name,
+        quantity: supabaseItem.quantity,
+        isPacked: supabaseItem.is_packed,
+        notes: supabaseItem.notes,
+        gearId: supabaseItem.gear_id,
+    };
+}
+
+// Convert application Item to Supabase Item
+export function appToSupabaseItem(
+    appItem: Item | Optional<Item, 'id'>
+): Upsert<SupabaseItem> {
+    return {
+        id: appItem.id,
+        kit_id: appItem.kitId,
+        name: appItem.name,
+        quantity: appItem.quantity,
+        is_packed: appItem.isPacked,
+        notes: appItem.notes,
+        gear_id: appItem.gearId,
+    };
+}
+
+// Helper function to convert a nested Supabase Pack structure to an application Pack
+export function convertNestedSupabasePack(
+    supabasePack: SupabasePack & {
+        kits: (SupabaseKit & { items: SupabaseItem[] })[];
+    }
+): Pack {
+    const kits = supabasePack.kits.map((supabaseKit) => {
+        const items = supabaseKit.items.map(supabaseToAppItem);
+        return supabaseToAppKit(supabaseKit, items);
+    });
+    return supabaseToAppPack(supabasePack, kits);
+}

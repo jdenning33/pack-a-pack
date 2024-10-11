@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Kit, Item, usePack } from './usePack'; // Adjust this import based on your actual types file
+import { usePack } from './usePack'; // Adjust this import based on your actual types file
+import { Kit, Item } from '@/lib/appTypes';
 
 interface PackNavigationContextType {
     selectedKit: Kit | null;

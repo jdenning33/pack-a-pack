@@ -1,7 +1,7 @@
 'use client';
 import React, { ReactNode, useMemo } from 'react';
 import { PackContract, PackContext } from './usePack';
-import { usePackStore } from '@/lib/zustandStore';
+import { usePackStore } from '@/lib/zustand/zustandStore';
 
 export const ZustandPackProvider: React.FC<PackProviderProps> = ({
     children,
@@ -33,7 +33,7 @@ export const ZustandPackProvider: React.FC<PackProviderProps> = ({
     }, [store.packs, store.kits, store.items, store.gear, packId]);
 
     if (!pack) {
-        return null; // or a loading state
+        return <div>Pack not found.</div>; // or a loading state
     }
 
     const packContract: PackContract = {
@@ -61,7 +61,6 @@ export const ZustandPackProvider: React.FC<PackProviderProps> = ({
             if (!item) throw new Error('Item not found');
             const updatedItem = { ...item, isPacked: !item.isPacked };
             store.updateItem(updatedItem);
-            return updatedItem;
         },
     };
 

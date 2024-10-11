@@ -9,7 +9,7 @@ import { ScrollArea } from '@/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import Link from 'next/link';
 import { GearCarousel } from '@/features/gear/components/GearCarousel';
-import { ZustandPacksProvider } from '@/features/pack/hooks/ZustandPacksProvider';
+import { SupabasePacksProvider } from '@/features/pack/hooks/SupabasePacksProvider';
 
 export default function Home() {
     return (
@@ -18,9 +18,9 @@ export default function Home() {
                 <div className='container mx-auto py-4 flex flex-col gap-8'>
                     <div className='flex gap-8'>
                         <div className='max-w-2xl  flex-auto'>
-                            <ZustandPacksProvider>
+                            <SupabasePacksProvider>
                                 <HomePagePackTabs />
-                            </ZustandPacksProvider>
+                            </SupabasePacksProvider>
                         </div>
                         <div className='relative flex-1'>
                             <Link href='#'>
@@ -39,7 +39,7 @@ export default function Home() {
                             <TabsList>
                                 <TabsTrigger value='user'>My Gear</TabsTrigger>
                                 <TabsTrigger value='community'>
-                                    Suggested Gear
+                                    Popular Gear
                                 </TabsTrigger>
                             </TabsList>
                             <TabsContent value='user'>

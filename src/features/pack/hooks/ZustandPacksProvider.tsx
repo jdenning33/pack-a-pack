@@ -1,7 +1,8 @@
 'use client';
 import React, { useMemo, ReactNode } from 'react';
-import { usePackStore } from '@/lib/zustandStore';
-import { PackSummary, PacksContext } from './usePacks';
+import { usePackStore } from '@/lib/zustand/zustandStore';
+import { PacksContext } from './usePacks';
+import { PackSummary } from '@/lib/appTypes';
 
 export const ZustandPacksProvider: React.FC<{ children: ReactNode }> = ({
     children,

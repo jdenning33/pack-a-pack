@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Item, usePack } from '../../hooks/usePack';
+import { usePack } from '../../hooks/usePack';
+import { Item } from '@/lib/appTypes';
 import { AlternateGearPanel } from '../../../gear/components/AlternateGearPanel';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { Label } from '@/ui/label';

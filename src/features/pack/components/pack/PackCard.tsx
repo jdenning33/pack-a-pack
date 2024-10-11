@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/ui/card';
-import { PackSummary } from '../../hooks/usePacks';
+import { PackSummary } from '@/lib/appTypes';
 import Link from 'next/link';
 
 export function PackCard({

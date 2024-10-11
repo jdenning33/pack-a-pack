@@ -1,6 +1,6 @@
 'use client';
+import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import React, { createContext, useContext } from 'react';
-import { useSupabaseAuth } from '@/features/auth/useSupabaseAuth';
 
 export interface User {
     id: string;

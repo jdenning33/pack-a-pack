@@ -1,8 +1,6 @@
 'use client';
 import { createContext, useContext } from 'react';
-import { Pack } from './usePack';
-
-export type PackSummary = Omit<Pack, 'kits'>;
+import { PackSummary } from '@/lib/appTypes';
 
 interface PacksContextType {
     packs: PackSummary[];

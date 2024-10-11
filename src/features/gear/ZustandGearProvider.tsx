@@ -1,5 +1,5 @@
 'use client';
-import { usePackStore } from '@/lib/zustandStore';
+import { usePackStore } from '@/lib/zustand/zustandStore';
 import React, { ReactNode, useState, useCallback, useMemo } from 'react';
 import { Gear, GearContext, GearContract } from './useGear';
 
