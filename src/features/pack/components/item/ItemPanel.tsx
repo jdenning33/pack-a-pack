@@ -24,7 +24,6 @@ export const ItemPanel: React.FC<{
     }
 
     function setIsPacked(isPacked: boolean) {
-        console.log('isPacked', isPacked);
         updateItem({ ...item, isPacked });
     }
 

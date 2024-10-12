@@ -19,7 +19,7 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
     children,
     packId,
 }) => {
-    const { data: pack } = usePackQuery(packId);
+    const { pack } = usePackQuery(packId);
     const addKitMutation = useAddKit(packId);
     const updateKitMutation = useUpdateKit(packId);
     const deleteKitMutation = useDeleteKit(packId);

@@ -17,7 +17,7 @@ export function useAddItem(packId: string) {
             return data;
         },
         onSuccess: async () => {
-            await queryClient.invalidateQueries(['pack', packId]);
+            await queryClient.invalidateQueries(['items', packId]);
         },
     });
 }

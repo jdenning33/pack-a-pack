@@ -17,7 +17,7 @@ export function useAddKit(packId: string) {
             return data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['pack', packId]);
+            queryClient.invalidateQueries(['kits', packId]);
         },
     });
 }

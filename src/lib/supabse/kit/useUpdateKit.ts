@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { supabase } from '../supabaseClient';
 import { Kit } from '@/lib/appTypes';
 import { appToSupabaseKit } from '../supabaseTypes';
+import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 
 export function useUpdateKit(packId: string) {
     const queryClient = useQueryClient();
@@ -14,8 +15,23 @@ export function useUpdateKit(packId: string) {
                 .eq('id', kit.id);
             if (error) throw error;
         },
+        onMutate: async (kit) => {
+            const rollbackData = await optimisticUpdateHandler(
+                queryClient,
+                { queryKey: ['kits'], exact: false },
+                kit
+            );
+            return { rollbackData };
+        },
+        onError: (err, _item, context) => {
+            console.log('onError', err);
+            // Rollback all affected queries
+            context?.rollbackData.forEach(({ queryKey, previousData }) => {
+                queryClient.setQueryData(queryKey, previousData);
+            });
+        },
         onSuccess: () => {
-            queryClient.invalidateQueries(['pack', packId]);
+            queryClient.invalidateQueries(['kits', packId]);
         },
     });
 }

@@ -13,7 +13,7 @@ export function useDeleteKit(packId: string) {
             if (error) throw error;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['pack', packId]);
+            queryClient.invalidateQueries(['kits', packId]);
         },
     });
 }
