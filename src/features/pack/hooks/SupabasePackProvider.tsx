@@ -9,6 +9,7 @@ import { useAddItem } from '@/lib/supabse/item/useAddItem';
 import { useDeleteItem } from '@/lib/supabse/item/useDeleteItem';
 import { useUpdateItem } from '@/lib/supabse/item/useUpdateItem';
 import { useDeleteKit } from '@/lib/supabse/kit/useDeleteKit';
+import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 
 interface PackProviderProps {
     children: ReactNode;
@@ -19,12 +20,13 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
     children,
     packId,
 }) => {
+    const { user } = useSupabaseAuth();
     const { pack } = usePackQuery(packId);
     const addKitMutation = useAddKit(packId);
     const updateKitMutation = useUpdateKit(packId);
     const deleteKitMutation = useDeleteKit(packId);
-    const addItemMutation = useAddItem(packId);
-    const updateItemMutation = useUpdateItem(packId);
+    const addItemMutation = useAddItem(packId, user?.id);
+    const updateItemMutation = useUpdateItem(packId, user?.id);
     const deleteItemMutation = useDeleteItem(packId);
     const toggleItemPacked = async (itemId: string) => {
         const item = pack?.kits

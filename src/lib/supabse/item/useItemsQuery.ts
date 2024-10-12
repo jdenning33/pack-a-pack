@@ -11,7 +11,7 @@ export function useItemsQuery(pack_id: string) {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from('items')
-                .select('*,gear(*)')
+                .select('*,user_gear(*,gear(*))')
                 .eq('pack_id', pack_id);
 
             if (error) throw error;

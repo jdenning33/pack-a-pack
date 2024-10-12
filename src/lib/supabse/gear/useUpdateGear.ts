@@ -19,7 +19,7 @@ export function useUpdateGear() {
                     items.map((i: Item) => {
                         if (i.gearId !== gear.id) return i;
                         if (i.id !== i.id) return i;
-                        return { ...i, gear: gear };
+                        return { ...i, gear: gear, gearId: gear.id };
                     })
                 );
             });
@@ -55,14 +55,15 @@ export function useUpdateGear() {
 
         onSuccess: async (_newGear, gear, _context) => {
             queryClient.invalidateQueries(['gear']);
-            const items = await supabase
-                .from('items')
-                .select('id,pack_id')
-                .eq('gear_id', gear.id);
-            if (items.error) throw items.error;
-            const keys = items.data.map((item) => ['items', item.pack_id]);
 
-            queryClient.invalidateQueries(keys[0]);
+            queryClient
+                .getQueriesData({ queryKey: ['items'] })
+                .forEach(([key, items]) => {
+                    if (!Array.isArray(items)) return;
+                    if (items.some((i: Item) => i.gearId === gear.id)) {
+                        queryClient.invalidateQueries(key);
+                    }
+                });
         },
     });
 }

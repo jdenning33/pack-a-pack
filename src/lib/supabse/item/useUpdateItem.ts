@@ -4,12 +4,26 @@ import { Item } from '@/lib/appTypes';
 import { appToSupabaseItem } from '../supabaseTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 
-export function useUpdateItem(packId: string) {
+export function useUpdateItem(packId: string, userId?: string) {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (item: Item) => {
-            const supabaseItem = appToSupabaseItem(item);
-            console.log('supabaseItem', supabaseItem);
+            if (!userId) throw new Error('userId is required');
+
+            let userGearId;
+            if (item.gearId) {
+                const userGear = await supabase
+                    .from('user_gear')
+                    .upsert({
+                        gear_id: item.gearId,
+                        user_id: userId,
+                    })
+                    .select()
+                    .single();
+                userGearId = userGear.data?.id;
+            }
+
+            const supabaseItem = appToSupabaseItem(item, userGearId);
             const { error } = await supabase
                 .from('items')
                 .update(supabaseItem)

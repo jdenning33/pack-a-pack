@@ -33,10 +33,19 @@ interface SupabaseItem {
     quantity: number;
     is_packed: boolean;
     notes: string;
-    gear_id?: string;
+    user_gear_id?: string;
     created_at: string;
     updated_at: string;
-    gear?: SupabaseGear;
+    user_gear?: SupabaseUserGear;
+}
+
+interface SupabaseUserGear {
+    id: string;
+    user_id: string;
+    gear_id: string;
+    gear: SupabaseGear;
+    created_at: string;
+    updated_at: string;
 }
 
 interface SupabaseGear {
@@ -116,16 +125,17 @@ export function supabaseToAppItem(supabaseItem: SupabaseItem): Item {
         quantity: supabaseItem.quantity,
         isPacked: supabaseItem.is_packed,
         notes: supabaseItem.notes,
-        gearId: supabaseItem.gear_id,
-        gear: supabaseItem.gear
-            ? supabaseToAppGear(supabaseItem.gear)
+        gearId: supabaseItem.user_gear?.gear_id,
+        gear: supabaseItem.user_gear?.gear
+            ? supabaseToAppGear(supabaseItem.user_gear.gear)
             : undefined,
     };
 }
 
 // Convert application Item to Supabase Item
 export function appToSupabaseItem(
-    appItem: Item | Optional<Item, 'id'>
+    appItem: Item | Optional<Item, 'id'>,
+    userGearId?: string
 ): Upsert<SupabaseItem> {
     return {
         id: appItem.id,
@@ -135,7 +145,7 @@ export function appToSupabaseItem(
         quantity: appItem.quantity,
         is_packed: appItem.isPacked,
         notes: appItem.notes,
-        gear_id: appItem.gearId,
+        user_gear_id: userGearId,
     };
 }
 
