@@ -4,36 +4,17 @@ import { appToSupabaseGear } from '../supabaseTypes';
 import { Gear, Item } from '@/lib/appTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 import { toast } from 'sonner';
+import { Optional } from '@/lib/utils';
 
-// Update existing gear
-
-export function useUpdateGear() {
+export function useUpsertGear() {
     const queryClient = useQueryClient();
 
-    function optimisticUpdateRelatedItemQueries(gear: Gear) {
-        queryClient
-            .getQueriesData({ queryKey: ['items'] })
-            .forEach(([key, items]) => {
-                if (!Array.isArray(items)) return;
-                queryClient.setQueryData(
-                    key,
-                    items.map((i: Item) => {
-                        if (i.gearId !== gear.id) return i;
-                        if (i.id !== i.id) return i;
-                        return { ...i, gear: gear, gearId: gear.id };
-                    })
-                );
-            });
-    }
-
     return useMutation({
-        mutationFn: async (gear: Gear) => {
+        mutationFn: async (gear: Optional<Gear, 'id'>) => {
             const supabaseGear = appToSupabaseGear(gear);
-            console.log('supabaseGear', supabaseGear);
-            const { data, error } = await supabase
+            let { data, error } = await supabase
                 .from('gear')
-                .update(supabaseGear)
-                .eq('id', gear.id)
+                .upsert(supabaseGear)
                 .select()
                 .single();
             if (error) throw error;
@@ -49,40 +30,53 @@ export function useUpdateGear() {
             return data.id;
         },
         onMutate: async (gear) => {
-            // Optimistically update the cache with the new gear
+            // Optimistically update the cache with the new or updated gear
             const rollbackData = await optimisticUpdateHandler(
                 queryClient,
                 { queryKey: ['gear'], exact: false },
                 gear
             );
-            optimisticUpdateRelatedItemQueries(gear);
-            return { rollbackData };
-        },
-        onError: (err, _gear, context) => {
-            console.log('onError', err);
-            // Rollback all affected queries
-            context?.rollbackData.forEach(({ queryKey, previousData }) => {
-                queryClient.setQueryData(queryKey, previousData);
-            });
-            toast.error('Failed to update gear.', {
-                description:
-                    JSON.stringify(err, null, 2) || 'An error occurred',
-            });
-        },
-
-        onSuccess: async (_newGear, gear, _context) => {
-            queryClient.invalidateQueries({ queryKey: ['gear'] });
 
             queryClient
                 .getQueriesData({ queryKey: ['items'] })
                 .forEach(([key, items]) => {
                     if (!Array.isArray(items)) return;
-                    if (items.some((i: Item) => i.gearId === gear.id)) {
+                    queryClient.setQueryData(
+                        key,
+                        items.map((i: Item) => {
+                            if (i.gearId !== gear.id) return i;
+                            return { ...i, gear: gear, gearId: gear.id };
+                        })
+                    );
+                });
+
+            return { rollbackData };
+        },
+        onError: (err, _gear, context) => {
+            console.error('Failed to save gear:', err);
+            // Rollback all affected queries
+            context?.rollbackData.forEach(({ queryKey, previousData }) => {
+                queryClient.setQueryData(queryKey, previousData);
+            });
+            toast.error('Failed to save gear.', {
+                description: JSON.stringify(err, null, 2),
+            });
+        },
+        onSuccess: async (_newGearId, gear) => {
+            queryClient.invalidateQueries({ queryKey: ['gear'] });
+
+            queryClient
+                .getQueriesData({ queryKey: ['items'] })
+                .forEach(([key, items]) => {
+                    if (
+                        Array.isArray(items) &&
+                        items.some((i: Item) => i.gearId === gear.id)
+                    ) {
                         queryClient.invalidateQueries(key);
                     }
                 });
 
-            toast.success('Gear updated successfully');
+            toast.success('Gear saved successfully');
         },
     });
 }

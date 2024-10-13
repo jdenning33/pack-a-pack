@@ -2,8 +2,9 @@
 import { Pack, Kit, Item, Gear } from '@/lib/appTypes';
 import { Optional } from '../utils';
 
-type Upsert<T extends { id: string; created_at: string; updated_at: string }> =
-    Optional<T, 'id' | 'created_at' | 'updated_at'>;
+export type Upsert<
+    T extends { id: string; created_at: string; updated_at: string }
+> = Optional<T, 'id' | 'created_at' | 'updated_at'>;
 
 // Types for Supabase database models
 export interface SupabasePack {
@@ -15,6 +16,7 @@ export interface SupabasePack {
     is_gear_locker: boolean;
     created_at: string;
     updated_at: string;
+    is_deleted: boolean;
 }
 
 interface SupabaseKit {
@@ -24,10 +26,12 @@ interface SupabaseKit {
     description: string;
     created_at: string;
     updated_at: string;
+    is_deleted: boolean;
 }
 
 interface SupabaseItem {
     id: string;
+    is_deleted: boolean;
     kit_id: string;
     pack_id: string;
     name: string;
@@ -78,6 +82,7 @@ export function supabaseToAppPack(
         isPublic: supabasePack.is_public,
         isGearLocker: supabasePack.is_gear_locker,
         kits: kits || [],
+        isDeleted: supabasePack.is_deleted,
     };
 }
 
@@ -92,6 +97,7 @@ export function appToSupabasePack(
         description: appPack.description,
         is_public: appPack.isPublic,
         is_gear_locker: appPack.isGearLocker,
+        is_deleted: appPack.isDeleted,
     };
 }
 
@@ -106,6 +112,7 @@ export function supabaseToAppKit(
         name: supabaseKit.name,
         description: supabaseKit.description,
         items: items || [],
+        isDeleted: supabaseKit.is_deleted,
     };
 }
 
@@ -119,6 +126,7 @@ export function appToSupabaseKit(
         pack_id: packId,
         name: appKit.name,
         description: appKit.description,
+        is_deleted: appKit.isDeleted,
     };
 }
 
@@ -126,6 +134,7 @@ export function appToSupabaseKit(
 export function supabaseToAppItem(supabaseItem: SupabaseItem): Item {
     return {
         id: supabaseItem.id,
+        isDeleted: supabaseItem.is_deleted,
         kitId: supabaseItem.kit_id,
         packId: supabaseItem.pack_id,
         name: supabaseItem.name,
@@ -153,6 +162,7 @@ export function appToSupabaseItem(
         is_packed: appItem.isPacked,
         notes: appItem.notes,
         user_gear_id: userGearId,
+        is_deleted: appItem.isDeleted,
     };
 }
 

@@ -21,7 +21,7 @@ interface PacksContextType {
         setter: (prev: PackSearchOptions) => PackSearchOptions
     ) => void;
     addPack: (pack: Omit<Pack, 'id'>) => void;
-    deletePack: (id: string) => void;
+    deletePack: (pack: Pack) => void;
 }
 
 export const PacksContext = createContext<PacksContextType | undefined>(

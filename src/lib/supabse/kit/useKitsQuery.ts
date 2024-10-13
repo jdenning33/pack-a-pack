@@ -12,6 +12,7 @@ export function useKitsQuery(packId: string) {
             const { data, error } = await supabase
                 .from('kits')
                 .select('*')
+                .eq('is_deleted', false)
                 .eq('pack_id', packId);
 
             if (error) throw error;

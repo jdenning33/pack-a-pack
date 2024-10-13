@@ -33,6 +33,7 @@ export const AddPackButton = (props: React.ComponentProps<typeof Button>) => {
                 isPublic: false,
                 isGearLocker: false,
                 kits: [],
+                isDeleted: false,
             });
             setNewPackName('');
             setNewPackDescription('');

@@ -16,6 +16,7 @@ export const QuickAddPackItem = ({ kitId }: { kitId: string }) => {
                 name: newItemName.trim(),
                 quantity: 1,
                 isPacked: false,
+                isDeleted: false,
                 notes: '',
             });
             setNewItemName('');

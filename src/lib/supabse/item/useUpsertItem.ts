@@ -3,16 +3,18 @@ import { supabase } from '../supabaseClient';
 import { Item } from '@/lib/appTypes';
 import { appToSupabaseItem } from '../supabaseTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
+import { toast } from 'sonner';
+import { Optional } from '@/lib/utils';
 
-export function useUpdateItem(packId: string, userId?: string) {
+export function useUpsertItem(packId: string, userId?: string) {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (item: Item) => {
+        mutationFn: async (item: Optional<Item, 'id'>) => {
             if (!userId) throw new Error('userId is required');
 
             let userGearId;
             if (item.gearId) {
-                const userGear = await supabase
+                const { data: userGear, error: userGearError } = await supabase
                     .from('user_gear')
                     .upsert({
                         gear_id: item.gearId,
@@ -20,15 +22,19 @@ export function useUpdateItem(packId: string, userId?: string) {
                     })
                     .select()
                     .single();
-                userGearId = userGear.data?.id;
+                if (userGearError) throw userGearError;
+                userGearId = userGear?.id;
             }
 
             const supabaseItem = appToSupabaseItem(item, userGearId);
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('items')
-                .update(supabaseItem)
-                .eq('id', item.id);
+                .upsert(supabaseItem)
+                .select()
+                .single();
+
             if (error) throw error;
+            return data;
         },
         onMutate: async (item) => {
             const rollbackData = await optimisticUpdateHandler(
@@ -39,14 +45,18 @@ export function useUpdateItem(packId: string, userId?: string) {
             return { rollbackData };
         },
         onError: (err, _item, context) => {
-            console.log('onError', err);
+            console.error('Failed to save item:', err);
             // Rollback all affected queries
             context?.rollbackData.forEach(({ queryKey, previousData }) => {
                 queryClient.setQueryData(queryKey, previousData);
             });
+            toast.error('Failed to save item.', {
+                description: JSON.stringify(err, null, 2),
+            });
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['items', packId]);
+            toast.success('Item saved.');
         },
     });
 }

@@ -3,13 +3,9 @@
 import React, { ReactNode } from 'react';
 import { PackContext, PackContract } from './usePack';
 import { usePackQuery } from '@/lib/supabse/pack/usePackQuery';
-import { useAddKit } from '@/lib/supabse/kit/useAddKit';
-import { useUpdateKit } from '@/lib/supabse/kit/useUpdateKit';
-import { useAddItem } from '@/lib/supabse/item/useAddItem';
-import { useDeleteItem } from '@/lib/supabse/item/useDeleteItem';
-import { useUpdateItem } from '@/lib/supabse/item/useUpdateItem';
-import { useDeleteKit } from '@/lib/supabse/kit/useDeleteKit';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
+import { useUpsertItem } from '@/lib/supabse/item/useUpsertItem';
+import { useUpsertKit } from '@/lib/supabse/kit/useUpsertKit';
 
 interface PackProviderProps {
     children: ReactNode;
@@ -22,31 +18,29 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
 }) => {
     const { user } = useSupabaseAuth();
     const { pack, isLoading } = usePackQuery(packId);
-    const addKitMutation = useAddKit(packId);
-    const updateKitMutation = useUpdateKit(packId);
-    const deleteKitMutation = useDeleteKit(packId);
-    const addItemMutation = useAddItem(packId, user?.id);
-    const updateItemMutation = useUpdateItem(packId, user?.id);
-    const deleteItemMutation = useDeleteItem(packId);
+    const upsertKitMutation = useUpsertKit(packId);
+    const upsertItemMutation = useUpsertItem(packId, user?.id);
     const toggleItemPacked = async (itemId: string) => {
         const item = pack?.kits
             .flatMap((k) => k.items)
             .find((i) => i.id === itemId);
         if (!item) return;
-        updateItemMutation.mutateAsync(item);
+        upsertItemMutation.mutateAsync(item);
     };
 
     const packContract: PackContract = {
         pack: pack!,
         isReadOnly: !user || pack?.userId !== user.id,
-        addKit: (kit) => addKitMutation.mutateAsync(kit),
-        updateKit: (kit) => updateKitMutation.mutateAsync(kit),
-        deleteKit: (kit) => deleteKitMutation.mutateAsync(kit),
+        addKit: (kit) => upsertKitMutation.mutateAsync(kit),
+        updateKit: (kit) => upsertKitMutation.mutateAsync(kit),
+        deleteKit: (kit) =>
+            upsertKitMutation.mutateAsync({ ...kit, isDeleted: true }),
         addItem: async (item) => {
-            addItemMutation.mutateAsync(item);
+            upsertItemMutation.mutateAsync(item);
         },
-        updateItem: (item) => updateItemMutation.mutateAsync(item),
-        deleteItem: (item) => deleteItemMutation.mutateAsync(item),
+        updateItem: (item) => upsertItemMutation.mutateAsync(item),
+        deleteItem: (item) =>
+            upsertItemMutation.mutateAsync({ ...item, isDeleted: true }),
         toggleItemPacked: toggleItemPacked,
     };
 

@@ -7,6 +7,7 @@ export interface Pack {
     isPublic: boolean;
     isGearLocker: boolean;
     kits: Kit[];
+    isDeleted: boolean;
 }
 export type PackSummary = Omit<Pack, 'kits'>; // This represents a gear that can be purchased to satisfy the Item it is attributed to
 
@@ -17,6 +18,7 @@ export interface Kit {
     name: string;
     description: string;
     items: Item[];
+    isDeleted: boolean;
 }
 
 // This represents a single item in this pack. For example, "T-shirt" or "Toothbrush"
@@ -30,6 +32,7 @@ export interface Item {
     notes: string;
     gearId?: string;
     gear?: Gear;
+    isDeleted: boolean;
 }
 
 export interface Gear {

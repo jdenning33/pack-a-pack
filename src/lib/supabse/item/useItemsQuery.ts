@@ -13,6 +13,7 @@ export function useItemsQuery(pack_id: string) {
                 .from('items')
                 .select('*,user_gear(*,gear(*))')
                 .eq('pack_id', pack_id)
+                .eq('is_deleted', false)
                 .order('created_at', { ascending: true });
 
             if (error) throw error;
