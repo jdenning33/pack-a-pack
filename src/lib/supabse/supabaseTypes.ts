@@ -1,5 +1,5 @@
 // File: src/utils/supabaseConverters.ts
-import { Pack, Kit, Item, Gear } from '@/lib/appTypes';
+import { Pack, Kit, Item, Gear, PackSummary } from '@/lib/appTypes';
 import { Optional } from '../utils';
 
 export type Upsert<
@@ -88,7 +88,7 @@ export function supabaseToAppPack(
 
 // Convert application Pack to Supabase Pack
 export function appToSupabasePack(
-    appPack: Optional<Pack, 'id'>
+    appPack: Optional<Pack | PackSummary, 'id'>
 ): Upsert<SupabasePack> {
     return {
         id: appPack.id,

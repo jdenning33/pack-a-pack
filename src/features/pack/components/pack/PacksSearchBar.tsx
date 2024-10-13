@@ -10,9 +10,11 @@ import {
     SelectValue,
     SelectContent,
 } from '@/ui/select';
+import { useAuth } from '@/features/auth/useAuth';
 
 export const PackSearchBar = ({ className }: { className?: string }) => {
     const { searchParams, setSearchParams } = usePacks();
+    const { user } = useAuth();
     const [localSearchText, setLocalSearchText] = useState<string>(
         searchParams.searchText || ''
     );
@@ -48,6 +50,7 @@ export const PackSearchBar = ({ className }: { className?: string }) => {
                     setSearchParams((prev) => ({
                         ...prev,
                         excludePrivatePacks: v === 'allpacks',
+                        packUserId: v === 'mypacks' ? user?.id : undefined,
                     }));
                 }}
             >

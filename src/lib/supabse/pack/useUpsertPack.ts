@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { supabase } from '../supabaseClient';
-import { Pack } from '@/lib/appTypes';
+import { Pack, PackSummary } from '@/lib/appTypes';
 import { appToSupabasePack, supabaseToAppPack } from '../supabaseTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 import { toast } from 'sonner';
@@ -10,7 +10,7 @@ export function useUpsertPack() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (pack: Optional<Pack, 'id'>) => {
+        mutationFn: async (pack: Optional<Pack | PackSummary, 'id'>) => {
             const supabasePack = appToSupabasePack(pack);
             const { data, error } = await supabase
                 .from('packs')
@@ -37,10 +37,7 @@ export function useUpsertPack() {
                 queryClient.setQueryData(queryKey, previousData);
             });
             toast.error('Failed to save pack.', {
-                description:
-                    err instanceof Error
-                        ? err.message
-                        : 'An unknown error occurred',
+                description: JSON.stringify(err),
             });
         },
         onSuccess: () => {

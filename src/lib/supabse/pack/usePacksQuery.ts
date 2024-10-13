@@ -42,7 +42,10 @@ export function usePacksQuery({
             },
         ],
         queryFn: async () => {
-            let query = supabase.from('packs').select('*', { count: 'exact' });
+            let query = supabase
+                .from('packs')
+                .select('*', { count: 'exact' })
+                .eq('is_deleted', false);
 
             if (packId) {
                 query = query.eq('id', packId);
