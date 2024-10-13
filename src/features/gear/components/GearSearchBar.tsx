@@ -13,6 +13,7 @@ export const GearSearchBar = ({ className }: { className?: string }) => {
         <div className={cn('flex gap-1', className)}>
             <div className='relative flex-1 max-w-96'>
                 <Input
+                    id='gear-search-text'
                     type='text'
                     placeholder={`Search gear...`}
                     value={searchText}

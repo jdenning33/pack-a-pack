@@ -30,14 +30,14 @@ export const ZustandGearProvider: React.FC<GearProviderProps> = ({
 
     const addGear = useCallback(
         async (gear: Omit<Gear, 'id'>) => {
-            packStore.addGear(gear);
+            return packStore.addGear(gear);
         },
         [packStore]
     );
 
     const updateGear = useCallback(
         async (gear: Gear) => {
-            packStore.updateGear(gear);
+            return packStore.updateGear(gear);
         },
         [packStore]
     );

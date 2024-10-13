@@ -5,7 +5,7 @@ import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
 import { useGear } from '../useGear';
 import { Gear } from '@/lib/appTypes';
-import { cn } from '@/lib/utils';
+import { Optional, cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 
 export interface GearFormValues {
@@ -21,8 +21,8 @@ export function EditGearForm({
     gear,
     onFinished,
 }: {
-    gear?: Gear;
-    onFinished?: () => void;
+    gear?: Optional<Gear, 'id'>;
+    onFinished?: (gear: Gear | undefined) => void;
 }) {
     const { addGear, updateGear } = useGear();
 
@@ -52,10 +52,13 @@ export function EditGearForm({
             image: data.image || '',
             weight: data.weight,
             price: data.price,
+            isPublic: gear?.isPublic || false,
+            purchaseLinks: gear?.purchaseLinks || [],
         };
-        if (newGear.id) await updateGear(newGear as Gear);
-        else await addGear(newGear as Omit<Gear, 'id'>);
-        onFinished?.();
+        let id;
+        if (newGear.id) id = await updateGear(newGear as Gear);
+        else id = await addGear(newGear as Omit<Gear, 'id'>);
+        onFinished?.({ ...newGear, id });
     };
 
     return (
@@ -81,7 +84,7 @@ export function EditGearForm({
                 <Button
                     variant='ghost'
                     type='button'
-                    onClick={() => onFinished?.()}
+                    onClick={() => onFinished?.(undefined)}
                 >
                     Cancel
                 </Button>
@@ -101,9 +104,9 @@ export function EditGearForm({
                     src={gearImage || ''}
                     fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                     alt={gear?.name || 'placeholder'}
-                    layout='fill'
-                    objectFit='contain'
-                    className='rounded w-full h-full'
+                    fill={true}
+                    sizes='100% 100%'
+                    className='rounded w-full h-full object-contain'
                 />
             </div>
         );

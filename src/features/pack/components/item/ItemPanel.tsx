@@ -115,13 +115,11 @@ export const ItemPanel: React.FC<{
                             />
                         </div>
                         <div className='flex items-center space-x-1'>
-                            <Label
-                                htmlFor='packed'
-                                className='text-sm font-medium'
+                            <span className='text-sm font-medium'>Packed:</span>
+                            <div
+                                id='packed-group'
+                                className='flex rounded-md items-center'
                             >
-                                Packed:
-                            </Label>
-                            <div className='flex rounded-md items-center'>
                                 <Button
                                     variant={
                                         !item.isPacked ? 'default' : 'outline'
@@ -149,11 +147,11 @@ export const ItemPanel: React.FC<{
                 <GearDetailsCard
                     gear={
                         item.gear || {
-                            id: '',
+                            id: undefined,
                             isPublic: false,
-                            name: '',
+                            name: 'Generic ' + item.name,
                             description: '',
-                            brand: '',
+                            brand: 'N/A',
                             weight: 0,
                             price: 0,
                             image: '',
@@ -163,6 +161,14 @@ export const ItemPanel: React.FC<{
                     isEditing={isEditingGearDetails}
                     onIsEditingChange={(isEditing) => {
                         setIsEditingGearDetails(isEditing);
+                    }}
+                    onFinished={(gear) => {
+                        if (!gear) return;
+                        updateItem({
+                            ...item,
+                            gear: gear,
+                            gearId: gear?.id,
+                        });
                     }}
                 />
             </div>

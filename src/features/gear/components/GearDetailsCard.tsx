@@ -6,6 +6,7 @@ import { Gear } from '@/lib/appTypes';
 import { Button } from '@/ui/button';
 import { Edit } from 'lucide-react';
 import { EditGearForm } from './EditGearForm';
+import { Optional } from '@/lib/utils';
 
 export function GearDetailsCard2({ gear }: { gear: Gear }) {
     return (
@@ -16,9 +17,9 @@ export function GearDetailsCard2({ gear }: { gear: Gear }) {
                         src={gear.image || ''}
                         fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                         alt={gear.name}
-                        layout='fill'
-                        objectFit='contain'
-                        className='rounded'
+                        fill={true}
+                        sizes='100% 100%'
+                        className='rounded object-contain'
                     />
                 </div>
                 <div className='ml-4 flex-grow flex flex-col'>
@@ -49,17 +50,22 @@ export function GearDetailsCard({
     gear,
     isEditing,
     onIsEditingChange,
+    onFinished,
 }: {
-    gear: Gear;
+    gear: Optional<Gear, 'id'>;
     isEditing: boolean;
     onIsEditingChange: (isEditing: boolean) => void;
+    onFinished?: (gear: Gear | undefined) => void;
 }) {
     return (
         <Card className='p-4 relative'>
             {isEditing ? (
                 <EditGearForm
                     gear={gear}
-                    onFinished={() => onIsEditingChange(false)}
+                    onFinished={(updatedGear) => {
+                        onFinished?.(updatedGear);
+                        onIsEditingChange(false);
+                    }}
                 />
             ) : (
                 <GearDetails
@@ -74,7 +80,7 @@ export function GearDetailsCard({
         gear,
         onIsEditingChange,
     }: {
-        gear: Gear;
+        gear: Optional<Gear, 'id'>;
         onIsEditingChange: (isEditing: boolean) => void;
     }): React.ReactNode {
         return (
@@ -91,9 +97,9 @@ export function GearDetailsCard({
                         src={gear.image || ''}
                         fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                         alt={gear.name || 'placeholder'}
-                        layout='fill'
-                        objectFit='contain'
-                        className='rounded'
+                        fill={true}
+                        sizes='100% 100%'
+                        className='rounded object-contain'
                     />
                 </div>
                 <div className='ml-4 flex-grow flex flex-col'>

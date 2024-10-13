@@ -28,12 +28,14 @@ export function useUpdateGear() {
     return useMutation({
         mutationFn: async (gear: Gear) => {
             const supabaseGear = appToSupabaseGear(gear);
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('gear')
                 .update(supabaseGear)
-                .eq('id', gear.id);
+                .eq('id', gear.id)
+                .select()
+                .single();
             if (error) throw error;
-            queryClient.invalidateQueries(['gear']);
+            return data.id;
         },
         onMutate: async (gear) => {
             // Optimistically update the cache with the new gear

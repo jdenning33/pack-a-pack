@@ -21,7 +21,7 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
     packId,
 }) => {
     const { user } = useSupabaseAuth();
-    const { pack } = usePackQuery(packId);
+    const { pack, isLoading } = usePackQuery(packId);
     const addKitMutation = useAddKit(packId);
     const updateKitMutation = useUpdateKit(packId);
     const deleteKitMutation = useDeleteKit(packId);
@@ -38,6 +38,7 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
 
     const packContract: PackContract = {
         pack: pack!,
+        isReadOnly: !user || pack?.userId !== user.id,
         addKit: (kit) => addKitMutation.mutateAsync(kit),
         updateKit: (kit) => updateKitMutation.mutateAsync(kit),
         deleteKit: (kit) => deleteKitMutation.mutateAsync(kit),
@@ -49,7 +50,8 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
         toggleItemPacked: toggleItemPacked,
     };
 
-    if (!pack) return null; // or a loading state
+    if (isLoading) return <div>Loading...</div>;
+    if (!pack) return <div>Pack not found</div>;
 
     return (
         <PackContext.Provider value={packContract}>

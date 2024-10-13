@@ -2,7 +2,6 @@
 import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
 import { PackCard } from '@/features/pack/components/pack/PackCard';
 import { PackList } from '@/features/pack/components/pack/PackList';
-import { ZustandGearProvider } from '@/features/gear/ZustandGearProvider';
 import { Button } from '@/ui/button';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { ScrollArea } from '@/ui/scroll-area';
@@ -10,58 +9,71 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import Link from 'next/link';
 import { GearCarousel } from '@/features/gear/components/GearCarousel';
 import { SupabasePacksProvider } from '@/features/pack/hooks/SupabasePacksProvider';
+import { SupabaseGearProvider } from '@/features/gear/SupabaseGearProvider';
+import { useAuth } from '@/features/auth/useAuth';
+import { AuthGuard } from '@/features/auth/AuthGuard';
+import { useEffect, useState } from 'react';
+import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
 
 export default function Home() {
     return (
         <main className='flex-1'>
-            <ZustandGearProvider>
-                <div className='container mx-auto py-4 flex flex-col gap-8'>
-                    <div className='flex gap-8'>
-                        <div className='max-w-2xl  flex-auto'>
-                            <SupabasePacksProvider>
+            <SupabaseGearProvider>
+                <SupabasePacksProvider>
+                    <div className='container mx-auto py-4 flex flex-col gap-8'>
+                        <div className='flex gap-8'>
+                            <div className=' flex-auto'>
                                 <HomePagePackTabs />
-                            </SupabasePacksProvider>
+                            </div>
+                            <div className='relative w-72 hidden sm:flex'>
+                                <Link href='#' className='absolute inset-0'>
+                                    <ImageWithFallback
+                                        src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
+                                        alt={''}
+                                        className='rounded-lg object-fill'
+                                        priority={true}
+                                        fill={true}
+                                        sizes='100% 100%'
+                                    />
+                                </Link>
+                            </div>
                         </div>
-                        <div className='relative flex-1'>
-                            <Link href='#'>
-                                <ImageWithFallback
-                                    src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
-                                    alt={''}
-                                    className='rounded-lg'
-                                    layout='fill'
-                                    objectFit='contain'
-                                />
-                            </Link>
+                        <div>
+                            <Tabs defaultValue='community'>
+                                <TabsList>
+                                    <TabsTrigger value='user'>
+                                        My Gear
+                                    </TabsTrigger>
+                                    <TabsTrigger value='community'>
+                                        Popular Gear
+                                    </TabsTrigger>
+                                </TabsList>
+                                <TabsContent value='user'>
+                                    <SupabaseGearProvider searchText='Better'>
+                                        <GearCarousel />
+                                    </SupabaseGearProvider>
+                                </TabsContent>
+                                <TabsContent value='community'>
+                                    <SupabaseGearProvider searchText='Test'>
+                                        <GearCarousel />
+                                    </SupabaseGearProvider>
+                                </TabsContent>
+                            </Tabs>
                         </div>
                     </div>
-                    <div>
-                        <Tabs defaultValue='community'>
-                            <TabsList>
-                                <TabsTrigger value='user'>My Gear</TabsTrigger>
-                                <TabsTrigger value='community'>
-                                    Popular Gear
-                                </TabsTrigger>
-                            </TabsList>
-                            <TabsContent value='user'>
-                                <ZustandGearProvider>
-                                    <GearCarousel />
-                                </ZustandGearProvider>
-                            </TabsContent>
-                            <TabsContent value='community'>
-                                <ZustandGearProvider>
-                                    <GearCarousel />
-                                </ZustandGearProvider>
-                            </TabsContent>
-                        </Tabs>
-                    </div>
-                </div>
-            </ZustandGearProvider>
+                </SupabasePacksProvider>
+            </SupabaseGearProvider>
         </main>
     );
 }
 function HomePagePackTabs() {
+    const { user } = useAuth();
+    const [selectedTab, setSelectedTab] = useState('community');
+    useEffect(() => {
+        if (user) setSelectedTab('my-packs');
+    }, [!user]);
     return (
-        <Tabs defaultValue='my-packs'>
+        <Tabs value={selectedTab} onValueChange={setSelectedTab}>
             <div className='flex flex-col h-full'>
                 <div className='flex w-full items-end'>
                     <TabsList>
@@ -70,11 +82,13 @@ function HomePagePackTabs() {
                             Community Packs
                         </TabsTrigger>
                     </TabsList>
-                    <AddPackButton
-                        variant='ghost'
-                        size='sm'
-                        className='ml-auto'
-                    />
+                    <AuthGuard fallback={<div className='ml-auto' />}>
+                        <AddPackButton
+                            variant='ghost'
+                            size='sm'
+                            className='ml-auto'
+                        />
+                    </AuthGuard>
                 </div>
                 <div className='border bg-muted rounded-lg p-2 mt-2 flex-1'>
                     <TabsContent
@@ -82,8 +96,24 @@ function HomePagePackTabs() {
                         className='mt-0 flex flex-col'
                     >
                         <ScrollArea className='overflow-auto h-[20rem]'>
-                            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
-                                <PackList />
+                            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
+                                <AuthGuard
+                                    fallback={
+                                        <div>
+                                            Sign in or sign up to view your
+                                            packs.
+                                            <AuthSignInButton />
+                                        </div>
+                                    }
+                                >
+                                    <SupabasePacksProvider
+                                        searchDefaults={{
+                                            packUserId: user?.id,
+                                        }}
+                                    >
+                                        <PackList />
+                                    </SupabasePacksProvider>
+                                </AuthGuard>
                             </div>
                         </ScrollArea>
                         <Button className='-mb-2 p-0 mx-auto' variant='link'>
@@ -95,60 +125,14 @@ function HomePagePackTabs() {
                         className='mt-0 flex flex-col'
                     >
                         <ScrollArea className='overflow-auto h-[20rem]'>
-                            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
-                                {[
-                                    {
-                                        id: '1',
-                                        isPublic: true,
-                                        isGearLocker: false,
-
-                                        name: 'Appalachian Trail Essentials',
-                                        createdByName: 'TrailMaster99',
-                                        description:
-                                            'This pack contains all the essentials for a successful Appalachian Trail hike.',
-                                    },
-                                    {
-                                        id: '2',
-                                        isPublic: true,
-                                        isGearLocker: false,
-
-                                        name: 'Pacific Crest Trail Gear',
-                                        createdByName: 'WestCoastHiker',
-                                        description:
-                                            'This pack contains all the essentials for a successful Pacific Crest Trail hike.',
-                                    },
-                                    {
-                                        id: '3',
-                                        isPublic: true,
-                                        isGearLocker: false,
-
-                                        name: 'Ultralight European Trek',
-                                        createdByName: 'AlpineAdventurer',
-                                        description:
-                                            'This pack contains all the essentials for a successful European trek.',
-                                    },
-                                    {
-                                        id: '4',
-                                        isPublic: true,
-                                        isGearLocker: false,
-
-                                        name: 'South American Adventure',
-                                        createdByName: 'JungleExplorer',
-                                        description:
-                                            'This pack contains all the essentials for a successful South American adventure.',
-                                    },
-                                    {
-                                        id: '5',
-                                        isPublic: true,
-                                        isGearLocker: false,
-                                        name: 'Winter Wonderland',
-                                        createdByName: 'SnowQueen',
-                                        description:
-                                            'This pack contains all the essentials for a successful winter hike.',
-                                    },
-                                ].map((pack) => (
-                                    <PackCard key={pack.id} pack={pack} />
-                                ))}
+                            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
+                                <SupabasePacksProvider
+                                    searchDefaults={{
+                                        excludePrivatePacks: true,
+                                    }}
+                                >
+                                    <PackList />
+                                </SupabasePacksProvider>
                             </div>
                         </ScrollArea>
                         <Button className='-mb-2 p-0 mx-auto' variant='link'>

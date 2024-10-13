@@ -6,8 +6,9 @@ type Upsert<T extends { id: string; created_at: string; updated_at: string }> =
     Optional<T, 'id' | 'created_at' | 'updated_at'>;
 
 // Types for Supabase database models
-interface SupabasePack {
+export interface SupabasePack {
     id: string;
+    user_id: string;
     name: string;
     description: string;
     is_public: boolean;
@@ -69,6 +70,7 @@ export function supabaseToAppPack(
 ): Pack {
     return {
         id: supabasePack.id,
+        userId: supabasePack.user_id,
         name: supabasePack.name,
         description: supabasePack.description,
         isPublic: supabasePack.is_public,
@@ -78,9 +80,12 @@ export function supabaseToAppPack(
 }
 
 // Convert application Pack to Supabase Pack
-export function appToSupabasePack(appPack: Pack): Upsert<SupabasePack> {
+export function appToSupabasePack(
+    appPack: Optional<Pack, 'id'>
+): Upsert<SupabasePack> {
     return {
         id: appPack.id,
+        user_id: appPack.userId,
         name: appPack.name,
         description: appPack.description,
         is_public: appPack.isPublic,

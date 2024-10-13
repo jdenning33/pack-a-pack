@@ -8,8 +8,13 @@ export function useAddGear() {
     return useMutation({
         mutationFn: async (gear: Omit<Gear, 'id'>) => {
             const supabaseGear = appToSupabaseGear(gear);
-            const { error } = await supabase.from('gear').insert(supabaseGear);
+            const { data, error } = await supabase
+                .from('gear')
+                .insert(supabaseGear)
+                .select()
+                .single();
             if (error) throw error;
+            return data.id;
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['gear']);

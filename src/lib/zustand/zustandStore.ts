@@ -18,7 +18,7 @@ export interface PackStore {
     updateItem: (item: FlatItem) => void;
     deleteItem: (itemId: string) => void;
     addGear: (gear: Omit<Gear, 'id'>) => string;
-    updateGear: (gear: Gear) => void;
+    updateGear: (gear: Gear) => string;
     deleteGear: (gearId: string) => void;
 } // Updated types to remove nested structures
 
@@ -93,12 +93,14 @@ const usePackStore = create<PackStore>()(
                 set((state) => ({ gear: [...state.gear, { ...gear, id }] }));
                 return id;
             },
-            updateGear: (updatedGear) =>
+            updateGear: (updatedGear) => {
                 set((state) => ({
                     gear: state.gear.map((gear) =>
                         gear.id === updatedGear.id ? updatedGear : gear
                     ),
-                })),
+                }));
+                return updatedGear.id;
+            },
             deleteGear: (gearId) =>
                 set((state) => ({
                     gear: state.gear.filter((gear) => gear.id !== gearId),

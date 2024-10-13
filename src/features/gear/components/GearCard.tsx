@@ -28,9 +28,9 @@ export function GearCard({
                         src={gear.image || ''}
                         fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                         alt={gear.name}
-                        layout='fill'
-                        objectFit='contain'
-                        className='rounded'
+                        fill={true}
+                        sizes='100% 100%'
+                        className='rounded object-contain'
                     />
                 </div>
                 <div className='absolute top-2 right-2 flex flex-col items-end gap-1'>

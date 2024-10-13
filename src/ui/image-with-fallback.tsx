@@ -26,8 +26,12 @@ export function ImageWithFallback({
                 alt={alt}
                 {...rest}
                 src={imgSrc || fallbackSrc}
-                onLoadingComplete={(result) => {
-                    if (result.naturalWidth === 0) {
+                onLoad={(event) => {
+                    const target = event.target as HTMLImageElement;
+                    if (target.src.indexOf(fallbackSrc) !== -1) {
+                        return;
+                    }
+                    if (target.naturalWidth === 0) {
                         // Broken image
                         setImgSrc(fallbackSrc);
                     }

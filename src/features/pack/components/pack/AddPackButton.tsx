@@ -12,6 +12,7 @@ import {
 } from '@/ui/dialog';
 import { Plus } from 'lucide-react';
 import { usePacks } from '../../hooks/usePacks';
+import { useAuth } from '@/features/auth/useAuth';
 
 // PackAddButton Component
 export const AddPackButton = (props: React.ComponentProps<typeof Button>) => {
@@ -19,11 +20,20 @@ export const AddPackButton = (props: React.ComponentProps<typeof Button>) => {
     const [newPackName, setNewPackName] = useState('');
     const [newPackDescription, setNewPackDescription] = useState('');
     const { addPack } = usePacks();
+    const { user } = useAuth();
 
     const handleAddPack = (e: React.FormEvent) => {
         e.preventDefault();
         if (newPackName.trim() && newPackDescription.trim()) {
-            addPack(newPackName, newPackDescription);
+            if (!user?.id) throw new Error('User not found');
+            addPack({
+                userId: user.id,
+                name: newPackName,
+                description: newPackDescription,
+                isPublic: false,
+                isGearLocker: false,
+                kits: [],
+            });
             setNewPackName('');
             setNewPackDescription('');
             setIsOpen(false);

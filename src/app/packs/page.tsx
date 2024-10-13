@@ -12,7 +12,7 @@ export default function PacksPage() {
                         <h1 className='text-2xl font-bold'>Your Packs</h1>
                         <AddPackButton />
                     </div>
-                    <div className='columns-[300px]'>
+                    <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(15rem,1fr))]'>
                         <PackList packClassName='break-inside-avoid' />
                     </div>
                 </div>

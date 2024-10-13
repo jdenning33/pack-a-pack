@@ -13,8 +13,8 @@ export interface GearContract {
     setItemFilter: (searchTag: string) => void;
     searchText: string;
     setSearchText: (searchText: string) => void;
-    addGear: (gear: Omit<Gear, 'id'>) => Promise<void>;
-    updateGear: (gear: Gear) => Promise<void>;
+    addGear: (gear: Omit<Gear, 'id'>) => Promise<string>;
+    updateGear: (gear: Gear) => Promise<string>;
     removeGear: (gear: Gear) => Promise<void>;
 }
 

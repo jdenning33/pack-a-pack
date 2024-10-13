@@ -6,15 +6,22 @@ import { KitCard } from '../kit/KitCard';
 import { SelectedKitModal } from '../kit/SelectedKitModal';
 
 export function PackContents() {
-    const { pack } = usePack();
+    const { pack, isReadOnly } = usePack();
     if (!pack) return <div>Loading...</div>;
 
     return (
         <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-end'>
                 <h1 className='text-lg font-bold'>{pack.name}</h1>
-                <AddKitButton />
+                {!isReadOnly && <AddKitButton />}
             </div>
+
+            {pack.kits.length === 0 && (
+                <div className=''>
+                    Looks like this pack is empty.
+                    {!isReadOnly && ' Add a kit to get started!'}
+                </div>
+            )}
 
             <div className='columns-[10rem] gap-4 space-y-4'>
                 {pack.kits.map((kit) => (

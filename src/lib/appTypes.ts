@@ -1,6 +1,7 @@
 // This represents a backpack and it's contents for a single trip, it may be cloned for a new trip
 export interface Pack {
     id: string;
+    userId: string;
     name: string;
     description: string;
     isPublic: boolean;

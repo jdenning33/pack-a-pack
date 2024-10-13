@@ -38,6 +38,7 @@ export const ZustandPackProvider: React.FC<PackProviderProps> = ({
 
     const packContract: PackContract = {
         pack: pack,
+        isReadOnly: false,
         addKit: async (kit) => {
             store.addKit({ ...kit, packId });
         },

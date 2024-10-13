@@ -24,6 +24,7 @@ export const QuickAddPackItem = ({ kitId }: { kitId: string }) => {
     return (
         <form onSubmit={handleAddItem} className='flex space-x-2'>
             <Input
+                id='new-item-name'
                 value={newItemName}
                 onChange={(e) => setNewItemName(e.target.value)}
                 placeholder='Add new item'

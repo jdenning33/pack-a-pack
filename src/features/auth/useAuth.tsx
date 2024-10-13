@@ -1,6 +1,6 @@
 'use client';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 export interface User {
     id: string;
@@ -26,17 +26,7 @@ export interface AuthContract {
     signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContract | undefined>(undefined);
-
-export const AuthProvider: React.FC<{
-    children: React.ReactNode;
-    auth: AuthContract;
-}> = ({ children, auth }) => {
-    const value = auth;
-    return (
-        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-    );
-};
+export const AuthContext = createContext<AuthContract | undefined>(undefined);
 
 export const useAuth = (): AuthContract => {
     const context = useContext(AuthContext);

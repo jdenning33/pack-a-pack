@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
 import {
-    createClient,
     User as SupabaseUser,
     Session as SupabaseSession,
 } from '@supabase/supabase-js';
 import { AuthContract, User, Session } from '@/features/auth/useAuth';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '../supabaseClient';
 
 function mapUser(supabaseUser: SupabaseUser | null): User | null {
     if (!supabaseUser) return null;

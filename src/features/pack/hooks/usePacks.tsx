@@ -1,10 +1,10 @@
 'use client';
 import { createContext, useContext } from 'react';
-import { PackSummary } from '@/lib/appTypes';
+import { Pack, PackSummary } from '@/lib/appTypes';
 
 interface PacksContextType {
     packs: PackSummary[];
-    addPack: (name: string, description: string) => void;
+    addPack: (pack: Omit<Pack, 'id'>) => void;
     deletePack: (id: string) => void;
 }
 

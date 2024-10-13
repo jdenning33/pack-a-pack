@@ -4,6 +4,7 @@ import { createContext, useContext } from 'react';
 
 export interface PackContract {
     pack: Pack;
+    isReadOnly: boolean;
     addKit: (kit: Omit<Kit, 'id'>) => Promise<void>;
     updateKit: (kit: Kit) => Promise<void>;
     deleteKit: (kit: Kit) => Promise<void>;
