@@ -2,28 +2,27 @@ import { useQuery } from 'react-query';
 import { supabaseToAppGear } from '../supabaseTypes';
 import { Gear } from '@/lib/appTypes';
 import { supabase } from '../supabaseClient';
+import { GearQueryParams } from '@/features/gear/useGear';
 
-export function useGearQuery({
-    searchText,
-    kitFilter: kitName,
-    itemFilter: itemName,
-    tags,
-}: {
-    searchText?: string;
-    kitFilter?: string;
-    itemFilter?: string;
-    tags?: string[];
-}) {
+export function useGearQuery(queryParams: GearQueryParams) {
     return useQuery<Gear[]>({
-        queryKey: ['gear', searchText, kitName, itemName, tags],
+        queryKey: ['gear', queryParams],
         queryFn: async () => {
-            let query = supabase.from('gear').select('*');
+            let query = supabase
+                .from('gear')
+                .select('*')
+                .eq('is_deleted', false);
 
-            if (searchText) {
-                query = query.or(
-                    `name.ilike.%${searchText}%,description.ilike.%${searchText}%,brand.ilike.%${searchText}%`
-                );
+            console.log('queryParams', queryParams);
+
+            if (queryParams.searchText) {
+                const searchText = queryParams.searchText.replace(/\s/g, '%'); // replace spaces with % for ilike query
+                // query = query.or(
+                //     `name.ilike.%${searchText}%,description.ilike.%${searchText}%,brand.ilike.%${searchText}%`
+                // );
+                query = query.like('name', `%${searchText}%`);
             }
+            console.log('query', query);
 
             // if (kitName) {
             //     query = query.eq('kit_name', kitName);

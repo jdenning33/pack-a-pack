@@ -4,19 +4,21 @@ import { Checkbox } from '@/ui/checkbox';
 import { Trash } from 'lucide-react';
 import { usePack } from '../../hooks/usePack';
 import { Item } from '@/lib/appTypes';
-import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { cn } from '@/lib/utils';
 
 export function ScrollableItemsList({
     items,
+    selectedItemId,
+    onItemSelected,
     className,
 }: {
     items: Item[];
+    selectedItemId?: string;
+    onItemSelected?: (item: Item) => void;
     className?: string;
 }) {
     const { updateItem, deleteItem: removeItem } = usePack();
-    const { setSelectedItemId, selectedItem } = usePackNavigation();
     const toggleItem = async (item: Item) => {
         await updateItem({
             ...item,
@@ -35,11 +37,11 @@ export function ScrollableItemsList({
                         className={cn(
                             'flex items-center justify-between px-4',
                             'hover:bg-primary/30 group cursor-pointer transition-all',
-                            item.id === selectedItem?.id &&
+                            item.id === selectedItemId &&
                                 'bg-primary/20 font-semibold'
                         )}
                         onClick={(_) => {
-                            setSelectedItemId(item.id);
+                            onItemSelected?.(item);
                         }}
                     >
                         <div className='flex items-center space-x-2'>
@@ -71,7 +73,10 @@ export function ScrollableItemsList({
                         <Button
                             variant='ghost'
                             size='sm'
-                            onClick={() => removeItem(item)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                removeItem(item);
+                            }}
                         >
                             <Trash className='h-4 w-4' />
                         </Button>

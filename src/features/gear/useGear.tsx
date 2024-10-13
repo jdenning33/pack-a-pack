@@ -2,17 +2,22 @@
 import { Gear } from '@/lib/appTypes';
 import { createContext, useContext } from 'react';
 
+export type GearQueryParams = Partial<{
+    kitFilter: string;
+    itemFilter: string;
+    searchText: string;
+    excludePrivateGear: boolean;
+    gearForUserId: string;
+}>;
 export interface GearContract {
     gear: Gear[];
     isLoading: boolean;
     isError: boolean;
     error: Error | unknown | null;
-    kitFilter: string;
-    setKitFilter: (kitFilter: string) => void;
-    itemFilter: string;
-    setItemFilter: (searchTag: string) => void;
-    searchText: string;
-    setSearchText: (searchText: string) => void;
+    searchParams: GearQueryParams;
+    setSearchParams: (
+        setter: (prev: GearQueryParams) => GearQueryParams
+    ) => void;
     addGear: (gear: Omit<Gear, 'id'>) => Promise<string>;
     updateGear: (gear: Gear) => Promise<string>;
     removeGear: (gear: Gear) => Promise<void>;

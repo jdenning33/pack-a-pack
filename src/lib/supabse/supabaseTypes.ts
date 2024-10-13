@@ -59,8 +59,10 @@ interface SupabaseGear {
     price: number;
     is_public: boolean;
     purchase_links: string[];
+    created_by_id: string;
     created_at: string;
     updated_at: string;
+    is_deleted: boolean;
 }
 
 // Convert Supabase Pack to application Pack
@@ -180,6 +182,8 @@ export function appToSupabaseGear(
         price: appGear.price,
         is_public: appGear.isPublic,
         purchase_links: appGear.purchaseLinks,
+        created_by_id: appGear.createdById,
+        is_deleted: appGear.isDeleted,
     };
 }
 
@@ -194,5 +198,7 @@ export function supabaseToAppGear(supabaseGear: SupabaseGear): Gear {
         price: supabaseGear.price,
         isPublic: supabaseGear.is_public,
         purchaseLinks: supabaseGear.purchase_links,
+        createdById: supabaseGear.created_by_id,
+        isDeleted: supabaseGear.is_deleted,
     };
 }

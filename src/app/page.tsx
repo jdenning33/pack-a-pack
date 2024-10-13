@@ -1,6 +1,5 @@
 'use client';
 import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
-import { PackCard } from '@/features/pack/components/pack/PackCard';
 import { PackList } from '@/features/pack/components/pack/PackList';
 import { Button } from '@/ui/button';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
@@ -16,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
 
 export default function Home() {
+    const { user } = useAuth();
     return (
         <main className='flex-1'>
             <SupabaseGearProvider>
@@ -49,12 +49,20 @@ export default function Home() {
                                     </TabsTrigger>
                                 </TabsList>
                                 <TabsContent value='user'>
-                                    <SupabaseGearProvider searchText='Better'>
+                                    <SupabaseGearProvider
+                                        defaultSearchParams={{
+                                            gearForUserId: user?.id,
+                                        }}
+                                    >
                                         <GearCarousel />
                                     </SupabaseGearProvider>
                                 </TabsContent>
                                 <TabsContent value='community'>
-                                    <SupabaseGearProvider searchText='Test'>
+                                    <SupabaseGearProvider
+                                        defaultSearchParams={{
+                                            excludePrivateGear: true,
+                                        }}
+                                    >
                                         <GearCarousel />
                                     </SupabaseGearProvider>
                                 </TabsContent>

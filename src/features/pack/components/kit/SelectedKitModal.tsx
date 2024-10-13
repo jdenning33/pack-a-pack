@@ -47,6 +47,10 @@ export const SelectedKitModal = ({}) => {
                         </div>
                         <ScrollableItemsList
                             className='py-2'
+                            selectedItemId={selectedItem?.id}
+                            onItemSelected={(item) =>
+                                setSelectedItemId(item.id)
+                            }
                             items={kit.items}
                         />
                     </div>

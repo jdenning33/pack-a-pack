@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { appToSupabaseGear } from '../supabaseTypes';
 import { Gear, Item } from '@/lib/appTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
+import { toast } from 'sonner';
 
 // Update existing gear
 
@@ -28,6 +29,7 @@ export function useUpdateGear() {
     return useMutation({
         mutationFn: async (gear: Gear) => {
             const supabaseGear = appToSupabaseGear(gear);
+            console.log('supabaseGear', supabaseGear);
             const { data, error } = await supabase
                 .from('gear')
                 .update(supabaseGear)
@@ -35,6 +37,15 @@ export function useUpdateGear() {
                 .select()
                 .single();
             if (error) throw error;
+
+            const { data: _userGearData, error: userGearError } = await supabase
+                .from('user_gear')
+                .upsert({
+                    gear_id: data.id,
+                    user_id: gear.createdById,
+                });
+            if (userGearError) throw userGearError;
+
             return data.id;
         },
         onMutate: async (gear) => {
@@ -53,10 +64,14 @@ export function useUpdateGear() {
             context?.rollbackData.forEach(({ queryKey, previousData }) => {
                 queryClient.setQueryData(queryKey, previousData);
             });
+            toast.error('Failed to update gear.', {
+                description:
+                    JSON.stringify(err, null, 2) || 'An error occurred',
+            });
         },
 
         onSuccess: async (_newGear, gear, _context) => {
-            queryClient.invalidateQueries(['gear']);
+            queryClient.invalidateQueries({ queryKey: ['gear'] });
 
             queryClient
                 .getQueriesData({ queryKey: ['items'] })
@@ -66,6 +81,8 @@ export function useUpdateGear() {
                         queryClient.invalidateQueries(key);
                     }
                 });
+
+            toast.success('Gear updated successfully');
         },
     });
 }

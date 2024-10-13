@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { usePack } from '../../hooks/usePack';
 import { Item, Kit } from '@/lib/appTypes';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
+import { KitQuickOptionsMenuButton } from './KitQuickOptionsMenuButton';
 
 interface PackKitProps {
     kit: Kit;
@@ -25,13 +26,19 @@ export const KitCard: React.FC<PackKitProps> = ({ kit, className }) => {
     return (
         <Card
             className={cn(
-                'hover:shadow-lg hover:scale-[101%] transition-all',
+                'hover:shadow-lg hover:scale-[101%] transition-all relative',
                 className
             )}
             onClick={(_) => setSelectedKitId(kit.id)}
         >
-            <CardHeader>
-                <CardTitle>{kit.name}</CardTitle>
+            <CardHeader className='flex justify-between'>
+                <CardTitle className='flex justify-between'>
+                    {kit.name}
+                </CardTitle>
+                <KitQuickOptionsMenuButton
+                    kit={kit}
+                    className='absolute !mt-0 top-1 right-1 rounded-xl'
+                />
             </CardHeader>
             <CardContent>
                 {kit.items.length === 0 ? (

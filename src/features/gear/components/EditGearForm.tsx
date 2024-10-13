@@ -7,6 +7,7 @@ import { useGear } from '../useGear';
 import { Gear } from '@/lib/appTypes';
 import { Optional, cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
+import { useAuth } from '@/features/auth/useAuth';
 
 export interface GearFormValues {
     name: string;
@@ -24,6 +25,7 @@ export function EditGearForm({
     gear?: Optional<Gear, 'id'>;
     onFinished?: (gear: Gear | undefined) => void;
 }) {
+    const { user } = useAuth();
     const { addGear, updateGear } = useGear();
 
     const {
@@ -33,17 +35,24 @@ export function EditGearForm({
         formState: { errors },
     } = useForm<GearFormValues>({
         defaultValues: {
-            name: '',
-            description: '',
-            brand: '',
-            image: '',
-            weight: 0,
-            price: 0,
-            ...gear,
+            name: gear?.name || '',
+            description: gear?.description || '',
+            brand: gear?.brand || '',
+            image: gear?.image || '',
+            weight: gear?.weight || 0,
+            price: gear?.price || 0,
         },
     });
 
-    const onSubmit = async (data: GearFormValues) => {
+    const onSubmitSave = async (data: GearFormValues) => {
+        onSubmit(data, false);
+    };
+
+    const onSubmitSaveAsNew = async (data: GearFormValues) => {
+        onSubmit(data, true);
+    };
+
+    const onSubmit = async (data: GearFormValues, saveAs: boolean) => {
         const newGear = {
             ...gear,
             name: data.name,
@@ -53,8 +62,11 @@ export function EditGearForm({
             weight: data.weight,
             price: data.price,
             isPublic: gear?.isPublic || false,
+            isDeleted: gear?.isDeleted || false,
             purchaseLinks: gear?.purchaseLinks || [],
+            createdById: gear?.createdById || user?.id || '',
         };
+        if (saveAs) delete newGear.id;
         let id;
         if (newGear.id) id = await updateGear(newGear as Gear);
         else id = await addGear(newGear as Omit<Gear, 'id'>);
@@ -62,7 +74,7 @@ export function EditGearForm({
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+        <form onSubmit={handleSubmit(onSubmitSave)} className='space-y-4'>
             <div className='flex gap-4'>
                 <GearImage />
                 <div className='space-y-4 flex-grow'>
@@ -78,9 +90,16 @@ export function EditGearForm({
             <GearImageUrlInput />
 
             <div className='flex gap-2'>
-                <Button type='submit'>
-                    {gear ? 'Update Gear' : 'Add Gear'}
-                </Button>
+                <Button type='submit'>Save</Button>
+                {gear?.id && (
+                    <Button
+                        type='button'
+                        variant={'outline'}
+                        onClick={handleSubmit(onSubmitSaveAsNew)}
+                    >
+                        Save As New
+                    </Button>
+                )}
                 <Button
                     variant='ghost'
                     type='button'

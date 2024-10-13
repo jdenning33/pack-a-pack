@@ -11,6 +11,7 @@ import { SupabaseGearProvider } from '@/features/gear/SupabaseGearProvider';
 import { useMemo } from 'react';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import { SupabaseAuthProvider } from '@/features/auth/SupabaseAuthProvider';
+import { Toaster } from '@/ui/sonner';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -75,7 +76,7 @@ export default function RootLayout({
                                         </Link>
                                         <Link
                                             className='text-sm font-medium hover:underline underline-offset-4'
-                                            href='#'
+                                            href='/community'
                                         >
                                             Community
                                         </Link>
@@ -91,6 +92,7 @@ export default function RootLayout({
                                 <SupabaseGearProvider>
                                     {children}
                                 </SupabaseGearProvider>
+                                <Toaster />
                             </main>
                             <footer className='bg-gray-100'>
                                 <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-gray-500'>

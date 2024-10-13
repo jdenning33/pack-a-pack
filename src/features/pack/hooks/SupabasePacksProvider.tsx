@@ -1,31 +1,25 @@
 import { useAddPack } from '@/lib/supabse/pack/useAddPack';
 import { useDeletePack } from '@/lib/supabse/pack/useDeletePack';
 import { usePacksQuery } from '@/lib/supabse/pack/usePacksQuery';
-import React, { ReactNode, use } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { PacksContext } from './usePacks';
 import { Pack } from '@/lib/appTypes';
+import { PackSearchOptions } from './usePacks';
 
-type SearchOptions = {
-    searchText: string;
-    orderBy: 'name' | 'created_at' | 'updated_at' | 'user_id';
-    orderDirection: 'asc' | 'desc';
-    limit: number;
-    page: number;
-    excludePublicPacks: boolean;
-    excludePrivatePacks: boolean;
-    packId: string;
-    packUserId: string;
-};
 export const SupabasePacksProvider: React.FC<{
     children: ReactNode;
-    searchDefaults?: Partial<SearchOptions>;
+    searchDefaults?: Partial<PackSearchOptions>;
 }> = ({ children, searchDefaults = {} }) => {
-    const packsQuery = usePacksQuery(searchDefaults);
+    const [searchParams, setSearchParams] = useState(searchDefaults);
+
+    const packsQuery = usePacksQuery(searchParams);
     const addPackMutation = useAddPack();
     const deletePackMutation = useDeletePack();
 
     const value = {
         packs: packsQuery.data?.packs || [],
+        searchParams,
+        setSearchParams,
         addPack: (pack: Omit<Pack, 'id'>) => addPackMutation.mutate(pack),
         deletePack: (id: string) => deletePackMutation.mutate(id),
     };

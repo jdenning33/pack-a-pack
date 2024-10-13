@@ -12,7 +12,8 @@ export function useItemsQuery(pack_id: string) {
             const { data, error } = await supabase
                 .from('items')
                 .select('*,user_gear(*,gear(*))')
-                .eq('pack_id', pack_id);
+                .eq('pack_id', pack_id)
+                .order('created_at', { ascending: true });
 
             if (error) throw error;
             const appItems = data.map((d) => supabaseToAppItem(d));

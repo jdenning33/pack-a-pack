@@ -8,10 +8,12 @@ import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { Check, Edit, X } from 'lucide-react';
 import { GearDetailsCard } from '@/features/gear/components/GearDetailsCard';
+import { useAuth } from '@/features/auth/useAuth';
 
 export const ItemPanel: React.FC<{
     item: Item;
 }> = ({ item }) => {
+    const { user } = useAuth();
     const { updateItem } = usePack();
     const { isEditingGearDetails, setIsEditingGearDetails } =
         usePackNavigation();
@@ -149,6 +151,7 @@ export const ItemPanel: React.FC<{
                         item.gear || {
                             id: undefined,
                             isPublic: false,
+                            isDeleted: false,
                             name: 'Generic ' + item.name,
                             description: '',
                             brand: 'N/A',
@@ -156,6 +159,7 @@ export const ItemPanel: React.FC<{
                             price: 0,
                             image: '',
                             purchaseLinks: [],
+                            createdById: user?.id || '',
                         }
                     }
                     isEditing={isEditingGearDetails}

@@ -12,8 +12,8 @@ export const ZustandGearProvider: React.FC<GearProviderProps> = ({
     children,
 }) => {
     const packStore = usePackStore();
-    const [searchTag, setSearchTag] = useState<string>('');
-    const [searchText, setSearchText] = useState<string>('');
+    const [searchTag] = useState<string>('');
+    const [searchText] = useState<string>('');
 
     const filteredGear = useMemo(() => {
         return packStore.gear.filter((gear) => {
@@ -54,12 +54,14 @@ export const ZustandGearProvider: React.FC<GearProviderProps> = ({
         isLoading: false,
         isError: false,
         error: null,
-        itemFilter: searchTag,
-        setItemFilter: setSearchTag,
-        kitFilter: '',
-        setKitFilter: () => {},
-        searchText,
-        setSearchText,
+        searchParams: {
+            searchText,
+            kitFilter: '',
+            itemFilter: '',
+        },
+        setSearchParams: () => {
+            return {};
+        },
         addGear,
         updateGear,
         removeGear,

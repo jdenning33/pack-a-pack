@@ -7,8 +7,12 @@ import { cn } from '@/lib/utils';
 import { SelectItemFilter } from './SelectItemFilter';
 
 export const GearSearchBar = ({ className }: { className?: string }) => {
-    const { searchText, setSearchText } = useGear();
+    const { searchParams, setSearchParams } = useGear();
 
+    const searchText = searchParams.searchText || '';
+    const setSearchText = (searchText: string) => {
+        setSearchParams((prev) => ({ ...prev, searchText }));
+    };
     return (
         <div className={cn('flex gap-1', className)}>
             <div className='relative flex-1 max-w-96'>
