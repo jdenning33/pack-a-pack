@@ -26,6 +26,7 @@ export function AddKitButton() {
                 packId: pack.id,
                 name: newKitName,
                 description: newKitDescription,
+                isDeleted: false,
                 items: [],
             });
             setNewKitName('');
