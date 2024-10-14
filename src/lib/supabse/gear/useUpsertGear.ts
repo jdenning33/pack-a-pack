@@ -12,7 +12,7 @@ export function useUpsertGear() {
     return useMutation({
         mutationFn: async (gear: Optional<Gear, 'id'>) => {
             const supabaseGear = appToSupabaseGear(gear);
-            let { data, error } = await supabase
+            const { data, error } = await supabase
                 .from('gear')
                 .upsert(supabaseGear)
                 .select()

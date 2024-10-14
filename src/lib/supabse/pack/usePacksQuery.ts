@@ -44,7 +44,9 @@ export function usePacksQuery({
         queryFn: async () => {
             let query = supabase
                 .from('packs')
-                .select('*', { count: 'exact' })
+                .select('*,user:profiles!packs_user_id_fkey(id,username)', {
+                    count: 'exact',
+                })
                 .eq('is_deleted', false);
 
             if (packId) {

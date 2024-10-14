@@ -14,13 +14,13 @@ export type PackSearchOptions = Partial<{
     packUserId: string;
 }>;
 
-interface PacksContextType {
+export interface PacksContextType {
     packs: PackSummary[];
     searchParams: PackSearchOptions;
     setSearchParams: (
         setter: (prev: PackSearchOptions) => PackSearchOptions
     ) => void;
-    addPack: (pack: Omit<Pack | PackSummary, 'id'>) => void;
+    upsertPack: (pack: Omit<Pack | PackSummary, 'id'>) => Promise<string>;
     deletePack: (pack: Pack | PackSummary) => void;
 }
 

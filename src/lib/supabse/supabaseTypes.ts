@@ -10,6 +10,7 @@ export type Upsert<
 export interface SupabasePack {
     id: string;
     user_id: string;
+    user?: { username: string };
     name: string;
     description: string;
     is_public: boolean;
@@ -74,9 +75,11 @@ export function supabaseToAppPack(
     supabasePack: SupabasePack,
     kits?: Kit[]
 ): Pack {
+    console.log(supabasePack);
     return {
         id: supabasePack.id,
         userId: supabasePack.user_id,
+        userName: supabasePack.user?.username || '',
         name: supabasePack.name,
         description: supabasePack.description,
         isPublic: supabasePack.is_public,

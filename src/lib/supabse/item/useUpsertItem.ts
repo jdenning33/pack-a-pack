@@ -10,7 +10,9 @@ export function useUpsertItem(packId: string, userId?: string) {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (item: Optional<Item, 'id'>) => {
-            if (!userId) throw new Error('userId is required');
+            if (!userId) {
+                throw new Error('You must be signed in to save items.');
+            }
 
             let userGearId;
             if (item.gearId) {
@@ -34,7 +36,7 @@ export function useUpsertItem(packId: string, userId?: string) {
                 .single();
 
             if (error) throw error;
-            return data;
+            return data.id;
         },
         onMutate: async (item) => {
             const rollbackData = await optimisticUpdateHandler(
@@ -51,7 +53,9 @@ export function useUpsertItem(packId: string, userId?: string) {
                 queryClient.setQueryData(queryKey, previousData);
             });
             toast.error('Failed to save item.', {
-                description: JSON.stringify(err, null, 2),
+                description:
+                    (err as { message: string }).message ||
+                    JSON.stringify(err, null, 2),
             });
         },
         onSuccess: () => {

@@ -51,7 +51,8 @@ export default function Home() {
                                 <TabsContent value='user'>
                                     <SupabaseGearProvider
                                         defaultSearchParams={{
-                                            gearForUserId: user?.id,
+                                            gearType: 'user',
+                                            gearUserId: user?.id,
                                         }}
                                     >
                                         <GearCarousel />
@@ -60,7 +61,7 @@ export default function Home() {
                                 <TabsContent value='community'>
                                     <SupabaseGearProvider
                                         defaultSearchParams={{
-                                            excludePrivateGear: true,
+                                            gearType: 'public',
                                         }}
                                     >
                                         <GearCarousel />
@@ -77,9 +78,10 @@ export default function Home() {
 function HomePagePackTabs() {
     const { user } = useAuth();
     const [selectedTab, setSelectedTab] = useState('community');
+    const hasUser = !!user;
     useEffect(() => {
-        if (user) setSelectedTab('my-packs');
-    }, [!user]);
+        if (hasUser) setSelectedTab('my-packs');
+    }, [hasUser]);
     return (
         <Tabs value={selectedTab} onValueChange={setSelectedTab}>
             <div className='flex flex-col h-full'>
@@ -116,7 +118,7 @@ function HomePagePackTabs() {
                                 >
                                     <SupabasePacksProvider
                                         searchDefaults={{
-                                            packUserId: user?.id,
+                                            packUserId: user?.id || '',
                                         }}
                                     >
                                         <PackList />

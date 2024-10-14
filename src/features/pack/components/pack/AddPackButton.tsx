@@ -13,19 +13,33 @@ import {
 import { Plus } from 'lucide-react';
 import { usePacks } from '../../hooks/usePacks';
 import { useAuth } from '@/features/auth/useAuth';
+import { toast } from 'sonner';
+import { PackModal } from './PackModal';
 
 // PackAddButton Component
 export const AddPackButton = (props: React.ComponentProps<typeof Button>) => {
+    return (
+        <PackModal>
+            <Button {...props}>
+                <Plus className='mr-2 h-4 w-4' /> Add New Pack
+            </Button>
+        </PackModal>
+    );
+};
+export const AddPackButton2 = (props: React.ComponentProps<typeof Button>) => {
     const [isOpen, setIsOpen] = useState(false);
     const [newPackName, setNewPackName] = useState('');
     const [newPackDescription, setNewPackDescription] = useState('');
-    const { addPack } = usePacks();
+    const { upsertPack: addPack } = usePacks();
     const { user } = useAuth();
 
     const handleAddPack = (e: React.FormEvent) => {
         e.preventDefault();
         if (newPackName.trim() && newPackDescription.trim()) {
-            if (!user?.id) throw new Error('User not found');
+            if (!user?.id) {
+                toast.error('You must be signed in to create a new pack.');
+                return;
+            }
             addPack({
                 userId: user.id,
                 name: newPackName,

@@ -6,8 +6,8 @@ export type GearQueryParams = Partial<{
     kitFilter: string;
     itemFilter: string;
     searchText: string;
-    excludePrivateGear: boolean;
-    gearForUserId: string;
+    gearType: 'all' | 'user' | 'public';
+    gearUserId: string;
 }>;
 export interface GearContract {
     gear: Gear[];

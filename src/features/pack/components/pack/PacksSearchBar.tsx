@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/ui/input';
 import { cn } from '@/lib/utils';
@@ -18,10 +18,22 @@ export const PackSearchBar = ({ className }: { className?: string }) => {
     const [localSearchText, setLocalSearchText] = useState<string>(
         searchParams.searchText || ''
     );
+    const [packType, setPackType] = useState<'mypacks' | 'allpacks'>(
+        user?.id ? 'mypacks' : 'allpacks'
+    );
 
     function setSearchText(searchText: string) {
         setSearchParams((prev) => ({ ...prev, searchText }));
     }
+
+    const userId = user?.id || 'no';
+    useEffect(() => {
+        setSearchParams((prev) => ({
+            ...prev,
+            excludePrivatePacks: packType === 'allpacks',
+            packUserId: packType === 'mypacks' ? userId : undefined,
+        }));
+    }, [packType, userId, setSearchParams]);
 
     return (
         <div className={cn('flex gap-1', className)}>
@@ -43,16 +55,8 @@ export const PackSearchBar = ({ className }: { className?: string }) => {
                 <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400' />
             </div>
             <Select
-                defaultValue={
-                    searchParams.excludePrivatePacks ? 'allpacks' : 'mypacks'
-                }
-                onValueChange={(v) => {
-                    setSearchParams((prev) => ({
-                        ...prev,
-                        excludePrivatePacks: v === 'allpacks',
-                        packUserId: v === 'mypacks' ? user?.id : undefined,
-                    }));
-                }}
+                defaultValue={packType}
+                onValueChange={(v) => setPackType(v as 'mypacks' | 'allpacks')}
             >
                 <SelectTrigger className='w-[180px]'>
                     <SelectValue />

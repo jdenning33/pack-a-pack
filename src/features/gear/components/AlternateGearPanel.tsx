@@ -20,7 +20,12 @@ export const AlternateGearPanel = ({
 }) => {
     return (
         <div className={cn('flex flex-col', className)}>
-            <SupabaseGearProvider itemFilter={itemFilter} kitFilter={kitFilter}>
+            <SupabaseGearProvider
+                defaultSearchParams={{
+                    kitFilter: kitFilter,
+                    itemFilter: itemFilter,
+                }}
+            >
                 <div className='flex items-center space-x-2 mb-2'>
                     <GearSearchBar className='flex-grow' />
                 </div>

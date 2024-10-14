@@ -1,6 +1,6 @@
 import { usePacksQuery } from '@/lib/supabse/pack/usePacksQuery';
 import React, { ReactNode, useState } from 'react';
-import { PacksContext } from './usePacks';
+import { PacksContext, PacksContextType } from './usePacks';
 import { Pack, PackSummary } from '@/lib/appTypes';
 import { PackSearchOptions } from './usePacks';
 import { useUpsertPack } from '@/lib/supabse/pack/useUpsertPack';
@@ -14,14 +14,14 @@ export const SupabasePacksProvider: React.FC<{
     const packsQuery = usePacksQuery(searchParams);
     const upsertPackMutation = useUpsertPack();
 
-    const value = {
+    const value: PacksContextType = {
         packs: packsQuery.data?.packs || [],
         searchParams,
         setSearchParams,
-        addPack: (pack: Omit<Pack | PackSummary, 'id'>) =>
-            upsertPackMutation.mutate(pack),
+        upsertPack: (pack: Omit<Pack | PackSummary, 'id'>) =>
+            upsertPackMutation.mutateAsync(pack),
         deletePack: (pack: Pack | PackSummary) =>
-            upsertPackMutation.mutate({ ...pack, isDeleted: true }),
+            upsertPackMutation.mutateAsync({ ...pack, isDeleted: true }),
     };
 
     return (

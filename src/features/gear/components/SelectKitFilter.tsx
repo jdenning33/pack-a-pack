@@ -19,8 +19,12 @@ import { useGear } from '../useGear';
 const kits = ['Sleep', 'Cook', 'Food', 'Shelter'];
 
 export function SelectKitFilter() {
-    const { kitFilter, setKitFilter } = useGear();
     const [open, setOpen] = React.useState(false);
+    const { searchParams, setSearchParams } = useGear();
+
+    const kitFilter = searchParams.kitFilter;
+    const setKitFilter = (filter: string) =>
+        setSearchParams((prev) => ({ ...prev, kitFilter: filter }));
 
     return (
         <Popover open={open} onOpenChange={setOpen}>

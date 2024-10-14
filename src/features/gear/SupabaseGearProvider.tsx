@@ -4,11 +4,13 @@ import { useGearQuery } from '@/lib/supabse/gear/useGearQuery';
 import React, { useState, ReactNode } from 'react';
 import { GearContract, GearContext, useGear, GearQueryParams } from './useGear';
 import { useUpsertGear } from '@/lib/supabse/gear/useUpsertGear';
+import { useAuth } from '../auth/useAuth';
 
 export const SupabaseGearProvider: React.FC<{
     children: ReactNode;
     defaultSearchParams?: GearQueryParams;
 }> = ({ children, defaultSearchParams }) => {
+    const { user } = useAuth();
     const [searchParams, setSearchParams] = useState<GearQueryParams>(
         defaultSearchParams || {}
     );
@@ -18,7 +20,7 @@ export const SupabaseGearProvider: React.FC<{
         isLoading,
         isError,
         error,
-    } = useGearQuery(searchParams);
+    } = useGearQuery({ ...searchParams, gearUserId: user?.id });
 
     const upsertGearMutation = useUpsertGear();
 

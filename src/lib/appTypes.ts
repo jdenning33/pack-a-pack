@@ -3,6 +3,7 @@ export interface Pack {
     id: string;
     userId: string;
     name: string;
+    userName?: string;
     description: string;
     isPublic: boolean;
     isGearLocker: boolean;

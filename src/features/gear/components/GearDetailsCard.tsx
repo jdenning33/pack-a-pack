@@ -27,7 +27,10 @@ export function GearDetailsCard({
     useEffect(() => {
         setIsEditingLocal(isEditing);
         onIsEditingChange?.(isEditing);
-    }, [isEditing]);
+    }, [isEditing, onIsEditingChange]);
+    useEffect(() => {
+        onIsEditingChange?.(isEditingLocal);
+    }, [isEditingLocal, onIsEditingChange]);
 
     return (
         <Card className='p-4 relative'>

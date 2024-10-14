@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { supabase } from '../supabaseClient';
 import { Pack, PackSummary } from '@/lib/appTypes';
-import { appToSupabasePack, supabaseToAppPack } from '../supabaseTypes';
+import { appToSupabasePack } from '../supabaseTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 import { toast } from 'sonner';
 import { Optional } from '@/lib/utils';
@@ -19,7 +19,7 @@ export function useUpsertPack() {
                 .single();
 
             if (error) throw error;
-            return supabaseToAppPack(data);
+            return data?.id;
         },
         onMutate: async (pack) => {
             // Optimistically update the cache with the new or updated pack

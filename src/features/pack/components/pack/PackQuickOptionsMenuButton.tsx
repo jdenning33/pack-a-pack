@@ -16,9 +16,11 @@ import Link from 'next/link';
 export function PackQuickOptionsMenuButton({
     pack,
     className,
+    onEditRequested,
 }: {
     pack: PackSummary;
     className?: string;
+    onEditRequested?: () => void;
 }) {
     const { deletePack } = usePacks();
 
@@ -33,6 +35,16 @@ export function PackQuickOptionsMenuButton({
                 <Link key={pack.id} href={`/packs/${pack.id}`}>
                     <DropdownMenuItem>Details</DropdownMenuItem>
                 </Link>
+                {onEditRequested && (
+                    <DropdownMenuItem
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onEditRequested();
+                        }}
+                    >
+                        Edit
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     onClick={(e) => {

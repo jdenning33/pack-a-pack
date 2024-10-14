@@ -34,7 +34,11 @@ const items = [
 
 export function SelectItemFilter() {
     const [open, setOpen] = React.useState(false);
-    const { itemFilter, setItemFilter } = useGear();
+    const { searchParams, setSearchParams } = useGear();
+
+    const itemFilter = searchParams.itemFilter;
+    const setItemFilter = (filter: string) =>
+        setSearchParams((prev) => ({ ...prev, itemFilter: filter }));
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
