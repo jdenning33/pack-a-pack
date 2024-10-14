@@ -10,27 +10,19 @@ import { GearQuickOptionsMenuButton } from './GearQuickOptionsMenuButton';
 
 export function GearDetailsCard({
     gear,
-    isEditing = false,
     allowEdit = true,
     onIsEditingChange,
     onFinished,
 }: {
     gear: Optional<Gear, 'id'>;
-    isEditing?: boolean;
     allowEdit?: boolean;
     onIsEditingChange?: (isEditing: boolean) => void;
     onFinished?: (gear: Gear | undefined) => void;
 }) {
-    const [isEditingLocal, setIsEditingLocal] = useState(
-        isEditing && allowEdit
-    );
+    const [isEditing, setIsEditing] = useState(false);
     useEffect(() => {
-        setIsEditingLocal(isEditing);
         onIsEditingChange?.(isEditing);
     }, [isEditing, onIsEditingChange]);
-    useEffect(() => {
-        onIsEditingChange?.(isEditingLocal);
-    }, [isEditingLocal, onIsEditingChange]);
 
     return (
         <Card className='p-4 relative'>
@@ -40,12 +32,12 @@ export function GearDetailsCard({
                     className='absolute top-1 right-1'
                 />
             )}
-            {isEditingLocal ? (
+            {isEditing ? (
                 <EditGearForm
                     gear={gear}
                     onFinished={(updatedGear) => {
                         onFinished?.(updatedGear);
-                        setIsEditingLocal(false);
+                        setIsEditing(false);
                     }}
                 />
             ) : (
@@ -57,7 +49,7 @@ export function GearDetailsCard({
                         >
                             <Edit
                                 className='h-4 w-4'
-                                onClick={(_) => setIsEditingLocal(true)}
+                                onClick={(_) => setIsEditing(true)}
                             />
                         </Button>
                     )}

@@ -162,7 +162,6 @@ export const ItemPanel: React.FC<{
                             createdById: user?.id || '',
                         }
                     }
-                    isEditing={isEditingGearDetails}
                     onIsEditingChange={(isEditing) => {
                         setIsEditingGearDetails(isEditing);
                     }}
