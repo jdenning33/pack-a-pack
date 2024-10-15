@@ -13,7 +13,7 @@ import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { useAuth } from '@/features/auth/useAuth';
-import { useGear } from '@/features/gear/useGear';
+import { useGearMutations } from '../../useGearMutations';
 
 export interface GearFormValues {
     name: string;
@@ -59,7 +59,7 @@ export function EditGearForm({
     children: React.ReactNode;
 }) {
     const { user } = useAuth();
-    const { addGear, updateGear } = useGear();
+    const { addGear, updateGear } = useGearMutations();
 
     const {
         control,

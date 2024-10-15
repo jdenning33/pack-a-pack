@@ -1,13 +1,13 @@
 'use client';
-import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
-import { PackList } from '@/features/pack/components/pack/PackList';
-import { PackSearchBar } from '@/features/pack/components/pack/PacksSearchBar';
-import { SupabasePacksProvider } from '@/features/pack/hooks/SupabasePacksProvider';
+import { AddPackButton } from '@/features/pack/components/AddPackButton';
+import { PackSearchBar } from '@/features/pack-search/components/PacksSearchBar';
+import { PackSearchProvider } from '@/features/pack-search/PackSearchProvider';
+import { PackList } from '@/features/pack-search/components/PackList';
 
 export default function PacksPage() {
     return (
         <main className='container flex flex-col gap-8 m-auto'>
-            <SupabasePacksProvider>
+            <PackSearchProvider>
                 <div className='mx-auto p-4 w-full flex flex-col'>
                     <div className='flex justify-between items-center mb-6'>
                         <h1 className='text-2xl font-bold'>Packs</h1>
@@ -18,7 +18,7 @@ export default function PacksPage() {
                         <PackList packClassName='break-inside-avoid' />
                     </div>
                 </div>
-            </SupabasePacksProvider>
+            </PackSearchProvider>
         </main>
     );
 }

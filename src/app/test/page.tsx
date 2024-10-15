@@ -1,47 +1,44 @@
 'use client';
-import { GearSearchBar } from '@/features/gear/components/search/GearSearchBar';
-import { SupabaseGearProvider } from '@/features/gear/SupabaseGearProvider';
-import { GearDetails } from '../../features/gear/components/details/GearDetails';
-import { NoGearSelectedHolder } from '@/features/gear/components/details/NoGearSelectedHolder';
-import { GearModal } from '@/features/gear/components/details/GearModal';
+import { GearProvider } from '../../features/gear/GearProvider';
+import { NoGearSelectedHolder } from '@/features/gear/components/NoGearSelectedHolder';
+import { GearModal } from '@/features/gear/components/GearModal';
 import {
     GearDeleteOption,
     GearEditOption,
     GearOpenModalOption,
-} from '@/features/gear/components/details/GearQuickOptionsMenu';
-import { GearQuickOptionsMenu } from '@/features/gear/components/details/GearQuickOptionsMenu';
+} from '@/features/gear/components/GearQuickOptionsMenu';
+import { GearQuickOptionsMenu } from '@/features/gear/components/GearQuickOptionsMenu';
 import { Gear } from '@/lib/appTypes';
-import { GearDetailCard } from '@/features/gear/components/details/GearDetailCard';
+import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
-import { SupabasePackProvider } from '@/features/pack/hooks/SupabasePackProvider';
-import { KitDetails } from '@/features/kit/KitDetails';
-import { KitCard } from '@/features/kit/components/details/KitCard';
-import {
-    KitModal,
-    KitModalTrigger,
-} from '@/features/kit/components/details/KitModal';
+import { PackProvider } from '@/features/pack/hooks/PackProvider';
+import { KitDetails } from '@/features/kit/KitProvider';
+import { KitCard } from '@/features/kit/components/KitCard';
+import { KitModal, KitModalTrigger } from '@/features/kit/components/KitModal';
 import { usePack } from '@/features/pack/hooks/usePack';
-import { KitQuickOptionsMenuButton } from '@/features/kit/components/details/KitQuickOptionsMenuButton';
+import { KitQuickOptionsMenuButton } from '@/features/kit/components/KitQuickOptionsMenuButton';
+import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
+import { GearSearchBar } from '@/features/gear-search/components/GearSearchBar';
 
 export default function PacksPage() {
     return (
         <main className='flex flex-col gap-8 container m-auto'>
             <div className='mx-auto p-4 w-full flex flex-col'>
-                <SupabaseGearProvider>
-                    <div className='flex justify-between items-center mb-6'>
-                        <h1 className='text-2xl font-bold'>Gear</h1>
-                    </div>
-                    <div>
+                <div className='flex justify-between items-center mb-6'>
+                    <h1 className='text-2xl font-bold'>Gear</h1>
+                </div>
+                <div>
+                    <GearSearchProvider>
                         <GearSearchBar className='mb-6' />
                         <GearDetailsCardList />
-                    </div>
-                </SupabaseGearProvider>
-                <SupabasePackProvider packId='4c1cd859-56bf-4d45-a675-227b66812c78'>
-                    <div className='flex justify-between items-center mb-6'>
-                        <h1 className='text-2xl font-bold'>Kit Details</h1>
-                    </div>
+                    </GearSearchProvider>
+                </div>
+                <div className='flex justify-between items-center my-6'>
+                    <h1 className='text-2xl font-bold'>Kit Details</h1>
+                </div>
+                <PackProvider packId='4c1cd859-56bf-4d45-a675-227b66812c78'>
                     <KitDetailsCardList />
-                </SupabasePackProvider>
+                </PackProvider>
             </div>
         </main>
     );
@@ -77,7 +74,7 @@ function GearDetailsCardList() {
     return (
         <div className=''>
             {/* <GearList gearClassName='break-inside-avoid' /> */}
-            <GearDetails className='max-w-lg' gear={gear} useModal={true}>
+            <GearProvider className='max-w-lg' gear={gear} useModal={true}>
                 <GearQuickOptionsMenu>
                     <GearEditOption />
                     <GearOpenModalOption />
@@ -87,7 +84,7 @@ function GearDetailsCardList() {
                 <GearDetailCard />
                 <NoGearSelectedHolder />
                 <GearModal />
-            </GearDetails>
+            </GearProvider>
         </div>
     );
 }

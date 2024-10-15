@@ -1,15 +1,15 @@
 'use client';
-import { PackContents } from '@/features/pack/components/pack/PackContents';
-import { SupabasePackProvider } from '@/features/pack/hooks/SupabasePackProvider';
+import { PackContents } from '@/features/pack/components/PackContents';
+import { PackProvider } from '@/features/pack/hooks/PackProvider';
 import { useParams } from 'next/navigation';
 
 export default function PackPage() {
     const { id } = useParams();
     return (
-        <SupabasePackProvider packId={id as string}>
+        <PackProvider packId={id as string}>
             <div className='flex flex-col'>
                 <PackContents />
             </div>
-        </SupabasePackProvider>
+        </PackProvider>
     );
 }

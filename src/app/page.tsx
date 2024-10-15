@@ -1,48 +1,46 @@
 'use client';
-import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
-import { PackList } from '@/features/pack/components/pack/PackList';
+import { AddPackButton } from '@/features/pack/components/AddPackButton';
 import { Button } from '@/ui/button';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { ScrollArea } from '@/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import Link from 'next/link';
-import { GearCarousel } from '@/features/gear/components/GearCarousel';
-import { SupabasePacksProvider } from '@/features/pack/hooks/SupabasePacksProvider';
-import { SupabaseGearProvider } from '@/features/gear/SupabaseGearProvider';
 import { useAuth } from '@/features/auth/useAuth';
 import { AuthGuard } from '@/features/auth/AuthGuard';
 import { useEffect, useState } from 'react';
 import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
+import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
+import { GearCarousel } from '@/features/gear-search/components/GearCarousel';
+import { PackSearchProvider } from '@/features/pack-search/PackSearchProvider';
+import { PackList } from '@/features/pack-search/components/PackList';
 
 export default function Home() {
     return (
         <main className='flex-1'>
-            <SupabaseGearProvider>
-                <SupabasePacksProvider>
-                    <div className='container mx-auto py-4 flex flex-col gap-8'>
-                        <div className='flex gap-8'>
-                            <div className=' flex-auto'>
-                                <HomePagePackTabs />
-                            </div>
-                            <div className='relative w-72 hidden sm:flex'>
-                                <Link href='#' className='absolute inset-0'>
-                                    <ImageWithFallback
-                                        src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
-                                        alt={''}
-                                        className='rounded-lg object-fill'
-                                        priority={true}
-                                        fill={true}
-                                        sizes='100% 100%'
-                                    />
-                                </Link>
-                            </div>
+            <PackSearchProvider>
+                <div className='container mx-auto py-4 flex flex-col gap-8'>
+                    <div className='flex gap-8'>
+                        <div className=' flex-auto'>
+                            <HomePagePackTabs />
                         </div>
-                        <div>
-                            <HomePageGearTabs />
+                        <div className='relative w-72 hidden sm:flex'>
+                            <Link href='#' className='absolute inset-0'>
+                                <ImageWithFallback
+                                    src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
+                                    alt={''}
+                                    className='rounded-lg object-fill'
+                                    priority={true}
+                                    fill={true}
+                                    sizes='100% 100%'
+                                />
+                            </Link>
                         </div>
                     </div>
-                </SupabasePacksProvider>
-            </SupabaseGearProvider>
+                    <div>
+                        <HomePageGearTabs />
+                    </div>
+                </div>
+            </PackSearchProvider>
         </main>
     );
 }
@@ -70,24 +68,24 @@ function HomePageGearTabs() {
                         </div>
                     }
                 >
-                    <SupabaseGearProvider
+                    <GearSearchProvider
                         defaultSearchParams={{
                             gearType: 'user',
                             gearUserId: user?.id,
                         }}
                     >
                         <GearCarousel />
-                    </SupabaseGearProvider>
+                    </GearSearchProvider>
                 </AuthGuard>
             </TabsContent>
             <TabsContent value='community'>
-                <SupabaseGearProvider
+                <GearSearchProvider
                     defaultSearchParams={{
                         gearType: 'public',
                     }}
                 >
                     <GearCarousel />
-                </SupabaseGearProvider>
+                </GearSearchProvider>
             </TabsContent>
         </Tabs>
     );
@@ -131,13 +129,13 @@ function HomePagePackTabs() {
                                         </div>
                                     }
                                 >
-                                    <SupabasePacksProvider
+                                    <PackSearchProvider
                                         searchDefaults={{
                                             packUserId: user?.id || '',
                                         }}
                                     >
                                         <PackList />
-                                    </SupabasePacksProvider>
+                                    </PackSearchProvider>
                                 </AuthGuard>
                             </div>
                         </ScrollArea>
@@ -151,13 +149,13 @@ function HomePagePackTabs() {
                     >
                         <ScrollArea className='overflow-auto h-[20rem]'>
                             <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
-                                <SupabasePacksProvider
+                                <PackSearchProvider
                                     searchDefaults={{
                                         excludePrivatePacks: true,
                                     }}
                                 >
                                     <PackList />
-                                </SupabasePacksProvider>
+                                </PackSearchProvider>
                             </div>
                         </ScrollArea>
                         <Button className='-mb-2 p-0 mx-auto' variant='link'>
