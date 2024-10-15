@@ -1,101 +1,156 @@
-import Image from "next/image";
+'use client';
+import { AddPackButton } from '@/features/pack/components/pack/AddPackButton';
+import { PackList } from '@/features/pack/components/pack/PackList';
+import { Button } from '@/ui/button';
+import { ImageWithFallback } from '@/ui/image-with-fallback';
+import { ScrollArea } from '@/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
+import Link from 'next/link';
+import { GearCarousel } from '@/features/gear/components/GearCarousel';
+import { SupabasePacksProvider } from '@/features/pack/hooks/SupabasePacksProvider';
+import { SupabaseGearProvider } from '@/features/gear/SupabaseGearProvider';
+import { useAuth } from '@/features/auth/useAuth';
+import { AuthGuard } from '@/features/auth/AuthGuard';
+import { useEffect, useState } from 'react';
+import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    const { user } = useAuth();
+    return (
+        <main className='flex-1'>
+            <SupabaseGearProvider>
+                <SupabasePacksProvider>
+                    <div className='container mx-auto py-4 flex flex-col gap-8'>
+                        <div className='flex gap-8'>
+                            <div className=' flex-auto'>
+                                <HomePagePackTabs />
+                            </div>
+                            <div className='relative w-72 hidden sm:flex'>
+                                <Link href='#' className='absolute inset-0'>
+                                    <ImageWithFallback
+                                        src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
+                                        alt={''}
+                                        className='rounded-lg object-fill'
+                                        priority={true}
+                                        fill={true}
+                                        sizes='100% 100%'
+                                    />
+                                </Link>
+                            </div>
+                        </div>
+                        <div>
+                            <Tabs defaultValue='community'>
+                                <TabsList>
+                                    <TabsTrigger value='user'>
+                                        My Gear
+                                    </TabsTrigger>
+                                    <TabsTrigger value='community'>
+                                        Popular Gear
+                                    </TabsTrigger>
+                                </TabsList>
+                                <TabsContent value='user'>
+                                    <SupabaseGearProvider
+                                        defaultSearchParams={{
+                                            gearType: 'user',
+                                            gearUserId: user?.id,
+                                        }}
+                                    >
+                                        <GearCarousel />
+                                    </SupabaseGearProvider>
+                                </TabsContent>
+                                <TabsContent value='community'>
+                                    <SupabaseGearProvider
+                                        defaultSearchParams={{
+                                            gearType: 'public',
+                                        }}
+                                    >
+                                        <GearCarousel />
+                                    </SupabaseGearProvider>
+                                </TabsContent>
+                            </Tabs>
+                        </div>
+                    </div>
+                </SupabasePacksProvider>
+            </SupabaseGearProvider>
+        </main>
+    );
+}
+function HomePagePackTabs() {
+    const { user } = useAuth();
+    const [selectedTab, setSelectedTab] = useState('community');
+    const hasUser = !!user;
+    useEffect(() => {
+        if (hasUser) setSelectedTab('my-packs');
+    }, [hasUser]);
+    return (
+        <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+            <div className='flex flex-col h-full'>
+                <div className='flex w-full items-end'>
+                    <TabsList>
+                        <TabsTrigger value='my-packs'>My Packs</TabsTrigger>
+                        <TabsTrigger value='community'>
+                            Community Packs
+                        </TabsTrigger>
+                    </TabsList>
+                    <AuthGuard fallback={<div className='ml-auto' />}>
+                        <AddPackButton
+                            variant='ghost'
+                            size='sm'
+                            className='ml-auto'
+                        />
+                    </AuthGuard>
+                </div>
+                <div className='border bg-muted rounded-lg p-2 mt-2 flex-1'>
+                    <TabsContent
+                        value='my-packs'
+                        className='mt-0 flex flex-col'
+                    >
+                        <ScrollArea className='overflow-auto h-[20rem]'>
+                            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
+                                <AuthGuard
+                                    fallback={
+                                        <div>
+                                            Sign in or sign up to view your
+                                            packs.
+                                            <AuthSignInButton />
+                                        </div>
+                                    }
+                                >
+                                    <SupabasePacksProvider
+                                        searchDefaults={{
+                                            packUserId: user?.id || '',
+                                        }}
+                                    >
+                                        <PackList />
+                                    </SupabasePacksProvider>
+                                </AuthGuard>
+                            </div>
+                        </ScrollArea>
+                        <Button className='-mb-2 p-0 mx-auto' variant='link'>
+                            View All Packs
+                        </Button>
+                    </TabsContent>
+                    <TabsContent
+                        value='community'
+                        className='mt-0 flex flex-col'
+                    >
+                        <ScrollArea className='overflow-auto h-[20rem]'>
+                            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
+                                <SupabasePacksProvider
+                                    searchDefaults={{
+                                        excludePrivatePacks: true,
+                                    }}
+                                >
+                                    <PackList />
+                                </SupabasePacksProvider>
+                            </div>
+                        </ScrollArea>
+                        <Button className='-mb-2 p-0 mx-auto' variant='link'>
+                            View All Packs
+                        </Button>
+                    </TabsContent>
+                </div>
+            </div>
+        </Tabs>
+    );
 }
