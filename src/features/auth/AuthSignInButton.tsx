@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { Button } from '@/ui/button';
@@ -11,10 +10,7 @@ import {
     DialogTrigger,
 } from '@/ui/dialog';
 import { useAuth } from './useAuth';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/lib/supabse/supabaseClient';
 
 export const AuthSignInButton: React.FC = () => {
     const { isSignedIn, signOut } = useAuth();
@@ -42,8 +38,8 @@ export const AuthSignInButton: React.FC = () => {
                                 variables: {
                                     default: {
                                         colors: {
-                                            brand: 'red',
-                                            brandAccent: 'darkred',
+                                            brand: 'hsl(136 10 30)',
+                                            brandAccent: 'hsl(136 10 20)',
                                         },
                                     },
                                 },
