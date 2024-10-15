@@ -1,7 +1,7 @@
 'use client';
 
 import { KitDetails } from '@/features/kit/KitProvider';
-import { usePack } from '../hooks/usePack';
+import { usePack } from '../usePack';
 import { AddKitButton } from '@/features/kit/components/AddKitButton';
 import { KitCard } from '@/features/kit/components/KitCard';
 import { KitModal, KitModalTrigger } from '@/features/kit/components/KitModal';
@@ -16,7 +16,7 @@ export function PackContents() {
             <div className='flex justify-between items-end'>
                 <h1 className='text-lg font-bold'>{pack.name}</h1>
                 {!isReadOnly && (
-                    <KitDetails>
+                    <KitDetails packId={pack.id}>
                         <AddKitButton />
                         <KitModal />
                     </KitDetails>
@@ -34,6 +34,7 @@ export function PackContents() {
                 {pack.kits.map((kit) => (
                     <KitDetails
                         key={kit.id}
+                        packId={kit.packId}
                         kit={kit}
                         className='break-inside-avoid'
                     >

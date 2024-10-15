@@ -10,8 +10,8 @@ import {
 import { cn } from '@/lib/utils';
 import { Item } from '@/lib/appTypes';
 import { useKitContext } from '../useKitContext';
-import { usePack } from '@/features/pack/hooks/usePack';
 import { StandardEditKitForm } from './edit/StandardEditKitForm';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export const KitCard = ({ className }: { className?: string }) => {
     const { kit, isEditing, setIsEditing, isModalOpen } = useKitContext();
@@ -28,6 +28,7 @@ export const KitCard = ({ className }: { className?: string }) => {
                 <StandardEditKitForm
                     className='p-4'
                     kit={kit}
+                    packId={kit.packId}
                     onCancel={() => setIsEditing(false)}
                     afterSave={(_) => setIsEditing(false)}
                 />
@@ -62,7 +63,7 @@ export const KitCard = ({ className }: { className?: string }) => {
 };
 
 function KitItemLineItem({ item }: { item: Item }) {
-    const { updateItem } = usePack();
+    const { updateItem } = useAppMutations();
     const { setSelectedItemId, setIsModalOpen } = useKitContext();
 
     const toggleItem = async (item: Item) => {

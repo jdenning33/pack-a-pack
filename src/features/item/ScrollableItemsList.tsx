@@ -2,10 +2,10 @@ import React from 'react';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import { Trash } from 'lucide-react';
-import { usePack } from '../pack/hooks/usePack';
 import { Item } from '@/lib/appTypes';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { cn } from '@/lib/utils';
+import { useAppMutations } from '../app-mutations/useAppMutations';
 
 export function ScrollableItemsList({
     items,
@@ -18,7 +18,7 @@ export function ScrollableItemsList({
     onItemSelected?: (item: Item) => void;
     className?: string;
 }) {
-    const { updateItem, deleteItem: removeItem } = usePack();
+    const { updateItem, deleteItem: removeItem } = useAppMutations();
     const toggleItem = async (item: Item) => {
         await updateItem({
             ...item,

@@ -11,6 +11,7 @@ import {
 
 export function StandardEditKitForm(props: {
     kit?: Kit;
+    packId: string;
     afterSave?: (kit: Kit) => void;
     onCancel?: () => void;
     className?: string;

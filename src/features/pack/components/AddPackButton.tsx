@@ -11,10 +11,10 @@ import {
     DialogTrigger,
 } from '@/ui/dialog';
 import { Plus } from 'lucide-react';
-import { usePacks } from '../../pack-search/usePackSearch';
 import { useAuth } from '@/features/auth/useAuth';
 import { toast } from 'sonner';
 import { PackModal } from './PackModal';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 // PackAddButton Component
 export const AddPackButton = (props: React.ComponentProps<typeof Button>) => {
@@ -30,7 +30,7 @@ export const AddPackButton2 = (props: React.ComponentProps<typeof Button>) => {
     const [isOpen, setIsOpen] = useState(false);
     const [newPackName, setNewPackName] = useState('');
     const [newPackDescription, setNewPackDescription] = useState('');
-    const { upsertPack: addPack } = usePacks();
+    const { upsertPack: addPack } = useAppMutations();
     const { user } = useAuth();
 
     const handleAddPack = (e: React.FormEvent) => {

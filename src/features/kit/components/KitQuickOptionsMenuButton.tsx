@@ -1,6 +1,5 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { usePack } from '../../pack/hooks/usePack';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,13 +10,14 @@ import {
 import { Button } from '@/ui/button';
 import { Settings } from 'lucide-react';
 import { useKitContext } from '../useKitContext';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export function KitQuickOptionsMenuButton({
     className,
 }: {
     className?: string;
 }) {
-    const { deleteKit } = usePack();
+    const { deleteKit } = useAppMutations();
     const { kit, setIsEditing, setIsModalOpen } = useKitContext();
 
     if (!kit) return null;

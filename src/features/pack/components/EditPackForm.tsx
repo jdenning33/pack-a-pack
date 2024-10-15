@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
-import { usePacks } from '../../pack-search/usePackSearch';
 import { useAuth } from '@/features/auth/useAuth';
 import { toast } from 'sonner';
 import { PackSummary } from '@/lib/appTypes';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export function EditPackForm({
     pack,
@@ -26,7 +26,7 @@ export function EditPackForm({
         isPublic: pack?.isPublic || false,
         isGearLocker: pack?.isGearLocker || false,
     });
-    const { upsertPack } = usePacks();
+    const { upsertPack } = useAppMutations();
     const { user } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {

@@ -94,7 +94,7 @@ function KitModalContent({}) {
                     )}
                 >
                     <div className='px-4'>
-                        <QuickAddPackItem kitId={kit.id} />
+                        <QuickAddPackItem packId={kit.packId} kitId={kit.id} />
                     </div>
                     <ScrollableItemsList
                         className='py-2'
@@ -128,7 +128,7 @@ function KitModalContent({}) {
 }
 
 function EditingKitModalContent({}) {
-    const { kit, setIsEditing, afterKitUpdated } = useKitContext();
+    const { kit, setIsEditing, afterKitUpdated, packId } = useKitContext();
 
     return (
         <>
@@ -138,6 +138,7 @@ function EditingKitModalContent({}) {
             {/* <EditKitForm kit={kit} onFinished={() => setIsEditing(false)} /> */}
             <EditKitForm
                 kit={kit}
+                packId={packId}
                 afterSave={(k) => {
                     setIsEditing(false);
                     afterKitUpdated?.(k);

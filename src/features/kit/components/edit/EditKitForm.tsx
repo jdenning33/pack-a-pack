@@ -11,8 +11,8 @@ import { Textarea } from '@/ui/textarea';
 import { Kit } from '@/lib/appTypes';
 import { Optional, cn } from '@/lib/utils';
 import { useAuth } from '@/features/auth/useAuth';
-import { usePack } from '@/features/pack/hooks/usePack';
 import { toast } from 'sonner';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export interface KitFormValues {
     name: string;
@@ -45,19 +45,21 @@ function useEditKitForm() {
 
 export function EditKitForm({
     kit,
+    packId,
     afterSave,
     onCancel,
     children,
     className,
 }: {
     kit?: Kit;
+    packId: string;
     afterSave?: (kit: Kit) => void;
     onCancel?: () => void;
     children: React.ReactNode;
     className?: string;
 }) {
     const { user } = useAuth();
-    const { pack, addKit, updateKit } = usePack();
+    const { addKit, updateKit } = useAppMutations();
 
     const {
         control,
@@ -80,7 +82,7 @@ export function EditKitForm({
 
         const newKit: Optional<Kit, 'id'> = {
             ...kit,
-            packId: pack.id,
+            packId: packId,
             name: data.name,
             description: data.description,
             isDeleted: false,

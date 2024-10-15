@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 import { Item, Kit } from '@/lib/appTypes';
 
 export type KitContextType = {
+    packId: string;
     kit?: Kit;
     isEditing: boolean;
     setIsEditing: (isEditing: boolean) => void;

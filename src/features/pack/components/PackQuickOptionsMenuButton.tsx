@@ -9,9 +9,9 @@ import {
 } from '@/ui/dropdown-menu';
 import { Button } from '@/ui/button';
 import { Settings } from 'lucide-react';
-import { usePacks } from '../../pack-search/usePackSearch';
 import { PackSummary } from '@/lib/appTypes';
 import Link from 'next/link';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export function PackQuickOptionsMenuButton({
     pack,
@@ -22,7 +22,7 @@ export function PackQuickOptionsMenuButton({
     className?: string;
     onEditRequested?: () => void;
 }) {
-    const { deletePack } = usePacks();
+    const { deletePack } = useAppMutations();
 
     return (
         <DropdownMenu>

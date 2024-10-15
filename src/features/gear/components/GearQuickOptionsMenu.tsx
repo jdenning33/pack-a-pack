@@ -10,8 +10,7 @@ import { DropdownMenuItem } from '@/ui/dropdown-menu';
 import { Edit, Trash, Maximize } from 'lucide-react';
 import { useGearContext } from '../useGearContext';
 import { Item } from '@/lib/appTypes';
-import { usePack } from '@/features/pack/hooks/usePack';
-import { useGearMutations } from '../useGearMutations';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 // GearQuickOptions component
 export const GearQuickOptionsMenu: React.FC<{ children: React.ReactNode }> = ({
@@ -51,7 +50,7 @@ export const GearEditOption: React.FC = () => {
 };
 
 export const GearRemoveFromItemOption = ({ item }: { item: Item }) => {
-    const { updateItem } = usePack();
+    const { updateItem } = useAppMutations();
     return (
         <DropdownMenuItem
             onClick={(_) => updateItem({ ...item, gearId: undefined })}
@@ -74,7 +73,7 @@ export const GearOpenModalOption: React.FC = () => {
 
 export const GearDeleteOption: React.FC = () => {
     const { gear } = useGearContext();
-    const { removeGear } = useGearMutations();
+    const { removeGear } = useAppMutations();
     if (!gear) return null;
     return (
         <DropdownMenuItem onClick={() => removeGear(gear)}>

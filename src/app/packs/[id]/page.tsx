@@ -1,6 +1,6 @@
 'use client';
+import { PackProvider } from '@/features/pack/PackProvider';
 import { PackContents } from '@/features/pack/components/PackContents';
-import { PackProvider } from '@/features/pack/hooks/PackProvider';
 import { useParams } from 'next/navigation';
 
 export default function PackPage() {

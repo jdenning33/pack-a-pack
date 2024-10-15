@@ -121,12 +121,11 @@ export function supabaseToAppKit(
 
 // Convert application Kit to Supabase Kit
 export function appToSupabaseKit(
-    appKit: Kit | Optional<Kit, 'id'>,
-    packId: string
+    appKit: Kit | Optional<Kit, 'id'>
 ): Upsert<SupabaseKit> {
     return {
         id: appKit.id,
-        pack_id: packId,
+        pack_id: appKit.packId,
         name: appKit.name,
         description: appKit.description,
         is_deleted: appKit.isDeleted,

@@ -2,17 +2,23 @@ import { Button } from '@/ui/button';
 import { Plus } from 'lucide-react';
 import { Input } from '@/ui/input';
 import React from 'react';
-import { usePack } from '../pack/hooks/usePack';
+import { useAppMutations } from '../app-mutations/useAppMutations';
 
-export const QuickAddPackItem = ({ kitId }: { kitId: string }) => {
-    const { pack, addItem } = usePack();
+export const QuickAddPackItem = ({
+    packId,
+    kitId,
+}: {
+    packId: string;
+    kitId: string;
+}) => {
+    const { addItem } = useAppMutations();
     const [newItemName, setNewItemName] = React.useState('');
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
         if (newItemName.trim()) {
             await addItem({
                 kitId: kitId,
-                packId: pack.id,
+                packId: packId,
                 name: newItemName.trim(),
                 quantity: 1,
                 isPacked: false,

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { usePack } from '../pack/hooks/usePack';
 import { Item } from '@/lib/appTypes';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { Check, Edit, X } from 'lucide-react';
+import { useAppMutations } from '../app-mutations/useAppMutations';
 
 export function QuickEditItemName({
     item,
@@ -12,7 +12,7 @@ export function QuickEditItemName({
     item: Item;
     className?: string;
 }) {
-    const { updateItem } = usePack();
+    const { updateItem } = useAppMutations();
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(item.name);
 

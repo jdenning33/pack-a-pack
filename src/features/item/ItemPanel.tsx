@@ -1,5 +1,4 @@
 import React from 'react';
-import { usePack } from '../pack/hooks/usePack';
 import { Gear, Item } from '@/lib/appTypes';
 import { AlternateGearPanel } from '../gear-search/components/AlternateGearPanel';
 import { Label } from '@/ui/label';
@@ -17,13 +16,14 @@ import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 import { QuickEditItemName } from './QuickEditItemName';
 import { cn } from '@/lib/utils';
 import { GearProvider } from '@/features/gear/GearProvider';
+import { useAppMutations } from '../app-mutations/useAppMutations';
 
 export const ItemPanel: React.FC<{
     item: Item;
     isEditingGearDetails: boolean;
     setIsEditingGearDetails: (isEditing: boolean) => void;
 }> = ({ item, isEditingGearDetails, setIsEditingGearDetails }) => {
-    const { updateItem } = usePack();
+    const { updateItem } = useAppMutations();
 
     function afterGearUpdated(gear: Gear) {
         updateItem({
@@ -73,7 +73,7 @@ export const ItemPanel: React.FC<{
     );
 };
 function QuickEditItemQuantity({ item }: { item: Item }) {
-    const { updateItem } = usePack();
+    const { updateItem } = useAppMutations();
 
     function setQuantity(quantity: number) {
         updateItem({ ...item, quantity });
@@ -96,7 +96,7 @@ function QuickEditItemQuantity({ item }: { item: Item }) {
 }
 
 function QuickEditItemIsPacked({ item }: { item: Item }) {
-    const { updateItem } = usePack();
+    const { updateItem } = useAppMutations();
     function setIsPacked(isPacked: boolean) {
         updateItem({ ...item, isPacked });
     }

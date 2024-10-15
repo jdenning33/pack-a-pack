@@ -7,6 +7,7 @@ import { KitContextType, KitContext } from './useKitContext';
 export const KitDetails: React.FC<{
     className?: string;
     kit?: Kit;
+    packId: string;
     afterKitUpdated?: (kit: Kit) => void;
     onIsEditingChanged?: (isEditing: boolean) => void;
     children: React.ReactNode;
@@ -15,6 +16,7 @@ export const KitDetails: React.FC<{
 }> = ({
     className,
     kit,
+    packId,
     afterKitUpdated,
     onIsEditingChanged,
     children,
@@ -46,6 +48,7 @@ export const KitDetails: React.FC<{
 
     const contextValue: KitContextType = {
         kit: kit || newKit,
+        packId,
         isEditing,
         setIsEditing,
         afterKitUpdated: (kit) => {

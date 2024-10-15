@@ -11,14 +11,14 @@ import { GearQuickOptionsMenu } from '@/features/gear/components/GearQuickOption
 import { Gear } from '@/lib/appTypes';
 import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
-import { PackProvider } from '@/features/pack/hooks/PackProvider';
 import { KitDetails } from '@/features/kit/KitProvider';
 import { KitCard } from '@/features/kit/components/KitCard';
 import { KitModal, KitModalTrigger } from '@/features/kit/components/KitModal';
-import { usePack } from '@/features/pack/hooks/usePack';
+import { usePack } from '@/features/pack/usePack';
 import { KitQuickOptionsMenuButton } from '@/features/kit/components/KitQuickOptionsMenuButton';
 import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
 import { GearSearchBar } from '@/features/gear-search/components/GearSearchBar';
+import { PackProvider } from '@/features/pack/PackProvider';
 
 export default function PacksPage() {
     return (
@@ -47,7 +47,13 @@ export default function PacksPage() {
 function KitDetailsCardList() {
     const { pack } = usePack();
     return pack.kits.map((kit) => (
-        <KitDetails key={kit.id} className='max-w-lg' useModal={true} kit={kit}>
+        <KitDetails
+            key={kit.id}
+            packId={pack.id}
+            className='max-w-lg'
+            useModal={true}
+            kit={kit}
+        >
             <KitModalTrigger>
                 <KitCard />
             </KitModalTrigger>

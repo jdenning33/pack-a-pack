@@ -11,7 +11,7 @@ import { useMemo } from 'react';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import { SupabaseAuthProvider } from '@/features/auth/SupabaseAuthProvider';
 import { Toaster } from '@/ui/sonner';
-import { GearMutationsProvider } from '@/features/gear/GearMutationsProvider';
+import { AppMutationsProvider } from '@/features/app-mutations/AppMutationsProvider';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -49,7 +49,7 @@ export default function RootLayout({
             >
                 <QueryClientProvider client={queryClient}>
                     <SupabaseAuthProvider auth={auth}>
-                        <GearMutationsProvider>
+                        <AppMutationsProvider>
                             <div className='min-h-screen flex flex-col'>
                                 <header className='border-b sticky top-0 bg-background z-30'>
                                     <div className='m-auto px-4 sm:px-6 h-14 flex gap-6 items-center max-w-7xl'>
@@ -102,7 +102,7 @@ export default function RootLayout({
                                     </div>
                                 </footer>
                             </div>
-                        </GearMutationsProvider>
+                        </AppMutationsProvider>
                     </SupabaseAuthProvider>
                 </QueryClientProvider>
             </body>

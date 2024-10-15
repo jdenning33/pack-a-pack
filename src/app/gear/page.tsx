@@ -14,29 +14,26 @@ import {
     GearSearchProvider,
     useGearSearch,
 } from '@/features/gear-search/GearSearchProvider';
-import { GearMutationsProvider } from '@/features/gear/GearMutationsProvider';
 import { GearProvider } from '@/features/gear/GearProvider';
 
 export default function GearPage() {
     return (
         <main className='flex flex-col gap-8 container m-auto'>
-            <GearMutationsProvider>
-                <div className='mx-auto p-4 w-full flex flex-col'>
-                    <div className='flex justify-between items-center mb-6'>
-                        <h1 className='text-2xl font-bold'>Gear</h1>
-                        <GearProvider closeModalOnSave={false}>
-                            <AddGearButton />
-                            <GearModal />
-                        </GearProvider>
-                    </div>
-                    <div>
-                        <GearSearchProvider>
-                            <GearSearchBar className='mb-6' />
-                            <GearDetailsCardList />
-                        </GearSearchProvider>
-                    </div>
+            <div className='mx-auto p-4 w-full flex flex-col'>
+                <div className='flex justify-between items-center mb-6'>
+                    <h1 className='text-2xl font-bold'>Gear</h1>
+                    <GearProvider closeModalOnSave={false}>
+                        <AddGearButton />
+                        <GearModal />
+                    </GearProvider>
                 </div>
-            </GearMutationsProvider>
+                <div>
+                    <GearSearchProvider>
+                        <GearSearchBar className='mb-6' />
+                        <GearDetailsCardList />
+                    </GearSearchProvider>
+                </div>
+            </div>
         </main>
     );
 }
@@ -45,10 +42,7 @@ function GearDetailsCardList() {
     const { gear } = useGearSearch();
     return (
         <div className='grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4'>
-            {/* <GearList gearClassName='break-inside-avoid' /> */}
             {gear.map((gear) => (
-                // <GearModal gear={gear} key={gear.id}>
-                //     <div>
                 <GearProvider key={gear.id} gear={gear} useModal={true}>
                     <GearQuickOptionsMenu>
                         <GearOpenModalOption />
@@ -59,8 +53,6 @@ function GearDetailsCardList() {
                     <GearDetailCard />
                     <GearModal />
                 </GearProvider>
-                //     </div>
-                // </GearModal>
             ))}
         </div>
     );
