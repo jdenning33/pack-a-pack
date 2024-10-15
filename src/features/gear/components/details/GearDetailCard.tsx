@@ -1,14 +1,27 @@
 import React from 'react';
-import { Badge } from '@/ui/badge';
+import { Card } from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
-import { Gear } from '@/lib/appTypes';
-import { Optional } from '@/lib/utils';
+import { Badge } from '@/ui/badge';
+import { useGearContext } from './GearContext';
+import { StandardEditGearForm } from '../edit/StandardEditGearForm';
 
-export function GearDetailsPanel({
-    gear,
-}: {
-    gear: Optional<Gear, 'id'>;
-}): React.ReactNode {
+// GearDetailCard component
+
+export const GearDetailCard: React.FC = () => {
+    const { isEditing, gear, isModalOpen } = useGearContext();
+    const isEditingCard = isEditing && !isModalOpen;
+    if (!gear && !isEditingCard) return null;
+    return (
+        <Card className='p-4 relative'>
+            {isEditingCard ? <EditDetailPanel /> : <GearDetailCardContent />}
+        </Card>
+    );
+};
+
+export const GearDetailCardContent: React.FC = () => {
+    const { gear } = useGearContext();
+    if (!gear) return null;
+
     return (
         <div className='w-full max-w-md flex '>
             {/* gear image */}
@@ -43,4 +56,19 @@ export function GearDetailsPanel({
             </div>
         </div>
     );
-}
+};
+
+export const EditDetailPanel: React.FC = () => {
+    const { gear, setIsEditing, afterGearUpdated } = useGearContext();
+
+    return (
+        <StandardEditGearForm
+            gear={gear}
+            afterSave={(gear) => {
+                setIsEditing(false);
+                afterGearUpdated(gear);
+            }}
+            onCancel={() => setIsEditing(false)}
+        />
+    );
+};

@@ -25,7 +25,7 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
             .flatMap((k) => k.items)
             .find((i) => i.id === itemId);
         if (!item) return;
-        upsertItemMutation.mutateAsync(item);
+        return upsertItemMutation.mutateAsync(item);
     };
 
     const packContract: PackContract = {
@@ -35,9 +35,7 @@ export const SupabasePackProvider: React.FC<PackProviderProps> = ({
         updateKit: (kit) => upsertKitMutation.mutateAsync(kit),
         deleteKit: (kit) =>
             upsertKitMutation.mutateAsync({ ...kit, isDeleted: true }),
-        addItem: async (item) => {
-            upsertItemMutation.mutateAsync(item);
-        },
+        addItem: async (item) => upsertItemMutation.mutateAsync(item),
         updateItem: (item) => upsertItemMutation.mutateAsync(item),
         deleteItem: (item) =>
             upsertItemMutation.mutateAsync({ ...item, isDeleted: true }),

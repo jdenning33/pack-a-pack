@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useGear } from '../useGear';
+import { useGear } from '../../useGear';
 import {
     Select,
     SelectContent,

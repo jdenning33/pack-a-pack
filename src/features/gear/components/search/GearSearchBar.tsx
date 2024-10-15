@@ -1,7 +1,7 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/ui/input';
-import { useGear } from '../useGear';
+import { useGear } from '../../useGear';
 // import { SelectKitFilter } from './SelectKitFilter';
 import { cn } from '@/lib/utils';
 // import { SelectItemFilter } from './SelectItemFilter';

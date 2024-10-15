@@ -1,179 +1,64 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { usePack } from '../../hooks/usePack';
-import { Item } from '@/lib/appTypes';
+import { Gear, Item } from '@/lib/appTypes';
 import { AlternateGearPanel } from '../../../gear/components/AlternateGearPanel';
 import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
-import { Check, Edit, X } from 'lucide-react';
-import { GearDetailsCard } from '@/features/gear/components/GearDetailsCard';
-import { useAuth } from '@/features/auth/useAuth';
+import { GearDetails } from '@/features/gear/components/details/GearContext';
+import { NoGearSelectedHolder } from '@/features/gear/components/details/NoGearSelectedHolder';
+import { GearDetailCard } from '@/features/gear/components/details/GearDetailCard';
+import {
+    GearDeleteOption,
+    GearEditOption,
+    GearRemoveFromItemOption,
+} from '@/features/gear/components/details/GearQuickOptionsMenu';
+import { GearQuickOptionsMenu } from '@/features/gear/components/details/GearQuickOptionsMenu';
+import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
+import { QuickEditItemName } from './QuickEditItemName';
 
 export const ItemPanel: React.FC<{
     item: Item;
 }> = ({ item }) => {
-    const { user } = useAuth();
     const { updateItem } = usePack();
     const { isEditingGearDetails, setIsEditingGearDetails } =
         usePackNavigation();
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedName, setEditedName] = useState(item.name);
-
-    function setQuantity(quantity: number) {
-        updateItem({ ...item, quantity });
+    function afterGearUpdated(gear: Gear) {
+        updateItem({
+            ...item,
+            gear: gear,
+            gearId: gear?.id,
+        });
+        setIsEditingGearDetails(false);
     }
-
-    function setIsPacked(isPacked: boolean) {
-        updateItem({ ...item, isPacked });
-    }
-
-    const handleEdit = () => {
-        setIsEditing(true);
-        setEditedName(item.name);
-    };
-
-    const handleConfirm = () => {
-        updateItem({ ...item, name: editedName });
-        setIsEditing(false);
-    };
-
-    const handleCancel = () => {
-        setIsEditing(false);
-        setEditedName(item.name);
-    };
 
     return (
         <div className='h-full flex flex-col'>
             <div className='flex-1'>
                 <div className='flex flex-col sm:flex-row sm:items-end justify-between mb-2 space-y-4 sm:space-y-0'>
-                    {isEditing ? (
-                        <div className='flex items-center'>
-                            <Input
-                                value={editedName}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        handleConfirm();
-                                    } else if (e.key === 'Escape') {
-                                        handleCancel();
-                                    }
-                                }}
-                                onChange={(e) => setEditedName(e.target.value)}
-                                className='text-xl h-10 w-40 mr-1 bg-background'
-                            />
-                            <Button
-                                size='icon'
-                                variant='ghost'
-                                onClick={handleConfirm}
-                                className='w-6'
-                            >
-                                <Check className='h-4' />
-                            </Button>
-                            <Button
-                                size='icon'
-                                variant='ghost'
-                                onClick={handleCancel}
-                                className='w-6'
-                            >
-                                <X className='h-4' />
-                            </Button>
-                        </div>
-                    ) : (
-                        <div
-                            className='flex items-center group'
-                            onClick={(e) => e.detail === 2 && handleEdit()}
-                        >
-                            <h2 className='text-2xl font-bold mr-1'>
-                                {item.name}
-                            </h2>
-                            <Button
-                                size='icon'
-                                variant='ghost'
-                                className='opacity-0 group-hover:opacity-100 h-8 w-6 pt-1'
-                                onClick={handleEdit}
-                            >
-                                <Edit className='h-[.85rem]' />
-                            </Button>
-                        </div>
-                    )}
+                    <QuickEditItemName item={item} />
                     <div className='flex items-center gap-4'>
-                        <div className='flex items-center space-x-1'>
-                            <Label
-                                htmlFor='quantity'
-                                className='text-sm font-medium'
-                            >
-                                Qty:
-                            </Label>
-                            <Input
-                                id='quantity'
-                                type='number'
-                                value={item.quantity}
-                                onChange={(e) =>
-                                    setQuantity(Number(e.target.value))
-                                }
-                                className='w-16 h-8 bg-background'
-                                min={1}
-                            />
-                        </div>
-                        <div className='flex items-center space-x-1'>
-                            <span className='text-sm font-medium'>Packed:</span>
-                            <div
-                                id='packed-group'
-                                className='flex rounded-md items-center'
-                            >
-                                <Button
-                                    variant={
-                                        !item.isPacked ? 'default' : 'outline'
-                                    }
-                                    size='sm'
-                                    className='rounded-r-none'
-                                    onClick={() => setIsPacked(false)}
-                                >
-                                    No
-                                </Button>
-                                <Button
-                                    variant={
-                                        item.isPacked ? 'default' : 'outline'
-                                    }
-                                    size='sm'
-                                    className='rounded-l-none'
-                                    onClick={() => setIsPacked(true)}
-                                >
-                                    Yes
-                                </Button>
-                            </div>
-                        </div>
+                        <QuickEditItemQuantity item={item} />
+                        <QuickEditItemIsPacked item={item} />
                     </div>
                 </div>
-                <GearDetailsCard
-                    gear={
-                        item.gear || {
-                            id: undefined,
-                            isPublic: false,
-                            isDeleted: false,
-                            name: 'Generic ' + item.name,
-                            description: '',
-                            brand: 'N/A',
-                            weight: 0,
-                            price: 0,
-                            image: '',
-                            purchaseLinks: [],
-                            createdById: user?.id || '',
-                        }
-                    }
-                    onIsEditingChange={(isEditing) => {
-                        setIsEditingGearDetails(isEditing);
-                    }}
-                    onFinished={(gear) => {
-                        if (!gear) return;
-                        updateItem({
-                            ...item,
-                            gear: gear,
-                            gearId: gear?.id,
-                        });
-                    }}
-                />
+                <GearDetails
+                    gear={item.gear}
+                    useModal={false}
+                    onIsEditingChanged={setIsEditingGearDetails}
+                    afterGearUpdated={afterGearUpdated}
+                >
+                    <GearQuickOptionsMenu>
+                        <GearRemoveFromItemOption item={item} />
+                        <GearEditOption />
+                        <DropdownMenuSeparator />
+                        <GearDeleteOption />
+                    </GearQuickOptionsMenu>
+                    <GearDetailCard />
+                    <NoGearSelectedHolder className='p-2' />
+                </GearDetails>
             </div>
 
             {!isEditingGearDetails && (
@@ -181,17 +66,64 @@ export const ItemPanel: React.FC<{
                     <AlternateGearPanel
                         className='pt-12 shrink-0'
                         itemFilter={item.name}
-                        onSelected={(gear) => {
-                            item = {
-                                ...item,
-                                gear: gear,
-                                gearId: gear.id,
-                            };
-                            updateItem(item);
-                        }}
+                        onSelected={afterGearUpdated}
                     />
                 </>
             )}
         </div>
     );
 };
+function QuickEditItemQuantity({ item }: { item: Item }) {
+    const { updateItem } = usePack();
+
+    function setQuantity(quantity: number) {
+        updateItem({ ...item, quantity });
+    }
+    return (
+        <div className='flex items-center space-x-1'>
+            <Label htmlFor='quantity' className='text-sm font-medium'>
+                Qty:
+            </Label>
+            <Input
+                id='quantity'
+                type='number'
+                value={item.quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                className='w-16 h-8 bg-background'
+                min={1}
+            />
+        </div>
+    );
+}
+
+function QuickEditItemIsPacked({ item }: { item: Item }) {
+    const { updateItem } = usePack();
+    function setIsPacked(isPacked: boolean) {
+        updateItem({ ...item, isPacked });
+    }
+    return (
+        <div className='flex items-center space-x-1'>
+            <Label htmlFor='packed' className='text-sm font-medium'>
+                Packed:
+            </Label>
+            <div id='packed-group' className='flex rounded-md items-center'>
+                <Button
+                    variant={!item.isPacked ? 'default' : 'outline'}
+                    size='sm'
+                    className='rounded-r-none'
+                    onClick={() => setIsPacked(false)}
+                >
+                    No
+                </Button>
+                <Button
+                    variant={item.isPacked ? 'default' : 'outline'}
+                    size='sm'
+                    className='rounded-l-none'
+                    onClick={() => setIsPacked(true)}
+                >
+                    Yes
+                </Button>
+            </div>
+        </div>
+    );
+}

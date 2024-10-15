@@ -17,7 +17,7 @@ export function useUpsertKit(packId: string) {
                 .select()
                 .single();
             if (error) throw error;
-            return data;
+            return data?.id;
         },
         onMutate: async (kit) => {
             // Optimistically update the cache with the new or updated kit

@@ -51,17 +51,19 @@ export default function RootLayout({
                     <SupabaseAuthProvider auth={auth}>
                         <div className='min-h-screen flex flex-col'>
                             <header className='border-b sticky top-0 bg-background z-30'>
-                                <div className='m-auto px-4 sm:px-6 h-14 flex items-center max-w-7xl'>
-                                    <Link
-                                        className='flex items-center justify-center'
-                                        href='/'
-                                    >
-                                        <Backpack className='h-6 w-6' />
-                                        <span className='ml-2 text-2xl font-bold'>
-                                            packapack.co
-                                        </span>
-                                    </Link>
-                                    <nav className='ml-auto flex items-center gap-4 sm:gap-6'>
+                                <div className='m-auto px-4 sm:px-6 h-14 flex gap-6 items-center max-w-7xl'>
+                                    <div className='flex-1'>
+                                        <Link
+                                            className='flex items-center'
+                                            href='/'
+                                        >
+                                            <Backpack className='h-6 w-6' />
+                                            <span className='ml-2 text-2xl font-bold'>
+                                                packapack.co
+                                            </span>
+                                        </Link>
+                                    </div>
+                                    <nav className='ml-auto hidden sm:flex items-center gap-4 sm:gap-6'>
                                         <Link
                                             className='text-sm font-medium hover:underline underline-offset-4'
                                             href='/packs'
@@ -80,12 +82,10 @@ export default function RootLayout({
                                         >
                                             Community
                                         </Link>
-                                        <AuthGuard
-                                            fallback={<AuthSignInButton />}
-                                        >
-                                            <UserProfileDropdown />
-                                        </AuthGuard>
                                     </nav>{' '}
+                                    <AuthGuard fallback={<AuthSignInButton />}>
+                                        <UserProfileDropdown />
+                                    </AuthGuard>
                                 </div>
                             </header>
                             <main className='max-w-7xl flex-grow container mx-auto px-4 sm:px-6 py-8'>

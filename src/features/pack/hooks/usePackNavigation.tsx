@@ -5,6 +5,8 @@ import { Kit, Item } from '@/lib/appTypes';
 interface PackNavigationContextType {
     selectedKit: Kit | null;
     setSelectedKitId: (kitId: string | null) => void;
+    isEditingKit: boolean;
+    setIsEditingKit: (isEditingKit: boolean) => void;
     selectedItem: Item | null;
     setSelectedItemId: (itemId: string | null) => void;
     isEditingGearDetails: boolean;
@@ -37,6 +39,8 @@ export const PackNavigationProvider: React.FC<{ children: ReactNode }> = ({
     const selectedKit =
         pack.kits.find((kit) => kit.id === selectedKitId) || null;
 
+    const [isEditingKit, setIsEditingKit] = useState(false);
+
     const [selectedItemId, _setSelectedItemId] = useState<string | null>(null);
     const setSelectedItemId = (itemId: string | null) => {
         _setSelectedItemId(itemId);
@@ -52,6 +56,8 @@ export const PackNavigationProvider: React.FC<{ children: ReactNode }> = ({
             value={{
                 selectedKit: selectedKit,
                 setSelectedKitId: setSelectedKitId,
+                isEditingKit: isEditingKit,
+                setIsEditingKit: setIsEditingKit,
                 selectedItem: selectedItem,
                 setSelectedItemId: setSelectedItemId,
                 isEditingGearDetails: isEditingGearDetails,

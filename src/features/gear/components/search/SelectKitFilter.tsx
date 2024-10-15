@@ -14,31 +14,17 @@ import {
     CommandList,
 } from '@/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
-import { useGear } from '../useGear';
+import { useGear } from '../../useGear';
 
-const items = [
-    'Stove',
-    'Utensils',
-    'Cookware',
-    'Dishes',
-    'Food',
-    'Water',
-    'Shelter',
-    'Sleeping',
-    'Clothing',
-    'First Aid',
-    'Hygiene',
-    'Electronics',
-    'Miscellaneous',
-];
+const kits = ['Sleep', 'Cook', 'Food', 'Shelter'];
 
-export function SelectItemFilter() {
+export function SelectKitFilter() {
     const [open, setOpen] = React.useState(false);
     const { searchParams, setSearchParams } = useGear();
 
-    const itemFilter = searchParams.itemFilter;
-    const setItemFilter = (filter: string) =>
-        setSearchParams((prev) => ({ ...prev, itemFilter: filter }));
+    const kitFilter = searchParams.kitFilter;
+    const setKitFilter = (filter: string) =>
+        setSearchParams((prev) => ({ ...prev, kitFilter: filter }));
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -49,23 +35,23 @@ export function SelectItemFilter() {
                     aria-expanded={open}
                     className='justify-between'
                 >
-                    {itemFilter ? itemFilter : 'Any Item'}
+                    {kitFilter ? kitFilter : 'Any Kit'}
                     <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className='w-[200px] p-0' align='start'>
                 <Command>
-                    <CommandInput placeholder='Search items...' />
+                    <CommandInput placeholder='Search kits...' />
                     <CommandList>
-                        <CommandEmpty>No items found.</CommandEmpty>
+                        <CommandEmpty>No kits found.</CommandEmpty>
                         <CommandGroup>
-                            {items.map((item) => (
+                            {kits.map((kit) => (
                                 <CommandItem
-                                    key={item}
-                                    value={item}
+                                    key={kit}
+                                    value={kit}
                                     onSelect={(currentValue) => {
-                                        setItemFilter(
-                                            currentValue === itemFilter
+                                        setKitFilter(
+                                            currentValue === kitFilter
                                                 ? ''
                                                 : currentValue
                                         );
@@ -75,12 +61,12 @@ export function SelectItemFilter() {
                                     <Check
                                         className={cn(
                                             'mr-2 h-4 w-4',
-                                            itemFilter === item
+                                            kitFilter === kit
                                                 ? 'opacity-100'
                                                 : 'opacity-0'
                                         )}
                                     />
-                                    {item}
+                                    {kit}
                                 </CommandItem>
                             ))}
                         </CommandGroup>

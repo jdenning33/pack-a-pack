@@ -1,27 +1,18 @@
+import React from 'react';
 import { Card, CardContent } from '@/ui/card';
-import { Button } from '@/ui/button';
-import { Badge } from '@/ui/badge';
-import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
+import { Badge } from '@/ui/badge';
+import { useGearContext } from './GearContext';
+import { cn } from '@/lib/utils';
+import { Button } from '@/ui/button';
 import { Gear } from '@/lib/appTypes';
 
-export function GearCard({
-    gear,
-    onSelect,
-    className,
-}: {
-    gear: Gear;
-    onSelect?: (gear: Gear) => void;
-    className?: string;
-}) {
+// GearDetailPanel component
+export const GearCard: React.FC<{ className?: string }> = ({ className }) => {
+    const { gear } = useGearContext();
+    if (!gear) return null;
     return (
-        <Card
-            key={gear.id}
-            className={cn(
-                'relative flex-shrink-0 transition-shadow duration-300 ease-in-out hover:shadow group',
-                className
-            )}
-        >
+        <Card className={className}>
             <CardContent className='p-3 flex flex-col h-full'>
                 <div className='w-24 h-24 mb-2 relative flex self-center shrink-0'>
                     <ImageWithFallback
@@ -59,24 +50,33 @@ export function GearCard({
                     </p>
                 </div>
             </CardContent>
-            {onSelect && (
-                <div
-                    className={cn(
-                        'flex opacity-0 group-hover:opacity-100',
-                        'absolute inset-0 top-3/4 bg-primary/30 items-center justify-center rounded-b-xl transition-all'
-                    )}
-                >
-                    <div className='bg-primary rounded-lg'>
-                        <Button
-                            variant='secondary'
-                            className='!bg-opacity-100'
-                            onClick={() => onSelect(gear)}
-                        >
-                            Select
-                        </Button>
-                    </div>
-                </div>
-            )}
         </Card>
+    );
+};
+
+export function GearSelectBanner({
+    onSelect,
+}: {
+    onSelect?: (gear: Gear) => void;
+}) {
+    const { gear } = useGearContext();
+    if (!gear) return null;
+    return (
+        <div
+            className={cn(
+                'flex opacity-0 group-hover:opacity-100 z-10',
+                'absolute inset-0 top-3/4 bg-primary/30 items-center justify-center rounded-b-xl transition-all'
+            )}
+        >
+            <div className='bg-primary rounded-lg'>
+                <Button
+                    variant='secondary'
+                    className='!bg-opacity-100'
+                    onClick={() => onSelect?.(gear)}
+                >
+                    Select
+                </Button>
+            </div>
+        </div>
     );
 }

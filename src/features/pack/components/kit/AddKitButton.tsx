@@ -12,17 +12,19 @@ import {
 } from '@/ui/dialog';
 import { Plus } from 'lucide-react';
 import { usePack } from '../../hooks/usePack';
+import { usePackNavigation } from '../../hooks/usePackNavigation';
 
 export function AddKitButton() {
     const [isOpen, setIsOpen] = useState(false);
     const [newKitName, setNewKitName] = useState('');
     const [newKitDescription, setNewKitDescription] = useState('');
     const { pack, addKit } = usePack();
+    const { setSelectedKitId } = usePackNavigation();
 
     const handleAddKit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (newKitName.trim()) {
-            await addKit({
+            const kitId = await addKit({
                 packId: pack.id,
                 name: newKitName,
                 description: newKitDescription,
@@ -31,6 +33,8 @@ export function AddKitButton() {
             });
             setNewKitName('');
             setNewKitDescription('');
+            setSelectedKitId(kitId);
+            console.log('kitId', kitId);
             setIsOpen(false);
         }
     };

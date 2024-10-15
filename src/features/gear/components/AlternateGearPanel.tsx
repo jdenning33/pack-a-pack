@@ -1,7 +1,7 @@
 import React from 'react';
 import { Gear } from '@/lib/appTypes';
 import { GearCarousel } from './GearCarousel';
-import { GearSearchBar } from './GearSearchBar';
+import { GearSearchBar } from './search/GearSearchBar';
 import { SupabaseGearProvider } from '../SupabaseGearProvider';
 import Link from 'next/link';
 import { Button } from '@/ui/button';

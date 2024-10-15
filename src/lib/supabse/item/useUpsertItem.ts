@@ -29,12 +29,12 @@ export function useUpsertItem(packId: string, userId?: string) {
             }
 
             const supabaseItem = appToSupabaseItem(item, userGearId);
+            console.log('supabaseItem', supabaseItem);
             const { data, error } = await supabase
                 .from('items')
                 .upsert(supabaseItem)
                 .select()
                 .single();
-
             if (error) throw error;
             return data.id;
         },

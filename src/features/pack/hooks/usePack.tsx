@@ -5,13 +5,13 @@ import { createContext, useContext } from 'react';
 export interface PackContract {
     pack: Pack;
     isReadOnly: boolean;
-    addKit: (kit: Omit<Kit, 'id'>) => Promise<void>;
-    updateKit: (kit: Kit) => Promise<void>;
-    deleteKit: (kit: Kit) => Promise<void>;
-    addItem: (item: Omit<Item, 'id'>) => Promise<void>;
-    updateItem: (item: Item) => Promise<void>;
-    deleteItem: (item: Item) => Promise<void>;
-    toggleItemPacked: (itemId: string) => Promise<void>;
+    addKit: (kit: Omit<Kit, 'id'>) => Promise<string>;
+    updateKit: (kit: Kit) => Promise<string>;
+    deleteKit: (kit: Kit) => Promise<string>;
+    addItem: (item: Omit<Item, 'id'>) => Promise<string>;
+    updateItem: (item: Item) => Promise<string>;
+    deleteItem: (item: Item) => Promise<string>;
+    toggleItemPacked: (itemId: string) => Promise<string>;
 }
 
 export const PackContext = createContext<PackContract | undefined>(undefined);

@@ -11,6 +11,7 @@ import {
 } from '@/ui/dropdown-menu';
 import { Button } from '@/ui/button';
 import { Settings } from 'lucide-react';
+import { usePackNavigation } from '../../hooks/usePackNavigation';
 
 export function KitQuickOptionsMenuButton({
     kit,
@@ -20,6 +21,7 @@ export function KitQuickOptionsMenuButton({
     className?: string;
 }) {
     const { deleteKit } = usePack();
+    const { setIsEditingKit, setSelectedKitId } = usePackNavigation();
 
     return (
         <DropdownMenu>
@@ -30,6 +32,14 @@ export function KitQuickOptionsMenuButton({
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56' align='end' forceMount>
                 <DropdownMenuItem>Details</DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={(_) => {
+                        setSelectedKitId(kit.id);
+                        setIsEditingKit(true);
+                    }}
+                >
+                    Edit
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     onClick={(e) => {

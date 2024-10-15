@@ -39,7 +39,7 @@ interface SupabaseItem {
     quantity: number;
     is_packed: boolean;
     notes: string;
-    user_gear_id?: string;
+    user_gear_id?: string | null;
     created_at: string;
     updated_at: string;
     user_gear?: SupabaseUserGear;
@@ -164,7 +164,7 @@ export function appToSupabaseItem(
         quantity: appItem.quantity,
         is_packed: appItem.isPacked,
         notes: appItem.notes,
-        user_gear_id: userGearId,
+        user_gear_id: userGearId || null,
         is_deleted: appItem.isDeleted,
     };
 }
