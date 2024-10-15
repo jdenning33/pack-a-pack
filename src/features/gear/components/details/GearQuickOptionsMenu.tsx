@@ -9,7 +9,7 @@ import { Minus, Settings } from 'lucide-react';
 import { useGear } from '@/features/gear/useGear';
 import { DropdownMenuItem } from '@/ui/dropdown-menu';
 import { Edit, Trash, Maximize } from 'lucide-react';
-import { useGearContext } from './GearContext';
+import { useGearContext } from './GearDetails';
 import { Item } from '@/lib/appTypes';
 import { usePack } from '@/features/pack/hooks/usePack';
 

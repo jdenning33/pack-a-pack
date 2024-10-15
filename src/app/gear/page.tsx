@@ -4,7 +4,6 @@ import {
     SupabaseGearProvider,
     useGear,
 } from '@/features/gear/SupabaseGearProvider';
-import { GearDetails } from '@/features/gear/components/details/GearContext';
 import { AddGearButton } from '@/features/gear/components/details/AddGearButton';
 import { GearModal } from '@/features/gear/components/details/GearModal';
 import { GearDetailCard } from '@/features/gear/components/details/GearDetailCard';
@@ -15,6 +14,7 @@ import {
     GearDeleteOption,
 } from '@/features/gear/components/details/GearQuickOptionsMenu';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
+import { GearDetails } from '@/features/gear/components/details/GearDetails';
 
 export default function GearPage() {
     return (

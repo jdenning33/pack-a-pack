@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
-import { useGearContext } from './GearContext';
+import { useGearContext } from './GearDetails';
 import { StandardEditGearForm } from '../edit/StandardEditGearForm';
 
 // GearDetailCard component
@@ -23,7 +23,7 @@ export const GearDetailCardContent: React.FC = () => {
     if (!gear) return null;
 
     return (
-        <div className='w-full max-w-md flex '>
+        <div className='w-full flex '>
             {/* gear image */}
             <div className='relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0'>
                 <ImageWithFallback

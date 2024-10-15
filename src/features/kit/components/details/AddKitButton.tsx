@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from '@/ui/button';
-import { useGearContext } from './GearDetails';
 import { Plus } from 'lucide-react';
+import { useKitContext } from '../../KitDetails';
 
-export const AddGearButton: React.FC<{
+export const AddKitButton: React.FC<{
     className?: string;
     children?: React.ReactNode;
 }> = ({ className, children }) => {
-    const { setIsEditing, setIsModalOpen } = useGearContext();
+    const { setIsEditing, setIsModalOpen } = useKitContext();
     return (
         <Button
             className={className}
@@ -23,7 +23,7 @@ export const AddGearButton: React.FC<{
             ) : (
                 <>
                     <Plus className='mr-2 h-4 w-4' />
-                    Add Gear
+                    Add Kit
                 </>
             )}
         </Button>

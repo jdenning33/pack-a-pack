@@ -2,11 +2,10 @@ import React from 'react';
 import { usePack } from '../../hooks/usePack';
 import { Gear, Item } from '@/lib/appTypes';
 import { AlternateGearPanel } from '../../../gear/components/AlternateGearPanel';
-import { usePackNavigation } from '../../hooks/usePackNavigation';
 import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
-import { GearDetails } from '@/features/gear/components/details/GearContext';
+import { GearDetails } from '@/features/gear/components/details/GearDetails';
 import { NoGearSelectedHolder } from '@/features/gear/components/details/NoGearSelectedHolder';
 import { GearDetailCard } from '@/features/gear/components/details/GearDetailCard';
 import {
@@ -20,10 +19,10 @@ import { QuickEditItemName } from './QuickEditItemName';
 
 export const ItemPanel: React.FC<{
     item: Item;
-}> = ({ item }) => {
+    isEditingGearDetails: boolean;
+    setIsEditingGearDetails: (isEditing: boolean) => void;
+}> = ({ item, isEditingGearDetails, setIsEditingGearDetails }) => {
     const { updateItem } = usePack();
-    const { isEditingGearDetails, setIsEditingGearDetails } =
-        usePackNavigation();
 
     function afterGearUpdated(gear: Gear) {
         updateItem({

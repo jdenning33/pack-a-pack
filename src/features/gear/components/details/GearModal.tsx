@@ -7,7 +7,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/ui/dialog';
-import { useGearContext } from './GearContext';
+import { useGearContext } from './GearDetails';
 import { EditGearForm } from '../edit/EditGearForm';
 import {
     StandardEditGearInputs,
@@ -109,5 +109,16 @@ const EditGearModalContent: React.FC = () => {
                 </DialogFooter>
             </EditGearForm>
         </>
+    );
+};
+
+export const GearModalTrigger: React.FC<{
+    children: React.ReactNode;
+}> = ({ children }) => {
+    const { setIsModalOpen } = useGearContext();
+    return (
+        <div onClick={() => setIsModalOpen(true)} className='cursor-pointer'>
+            {children}
+        </div>
     );
 };

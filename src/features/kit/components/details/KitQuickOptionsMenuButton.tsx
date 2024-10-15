@@ -1,7 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { usePack } from '../../hooks/usePack';
-import { Kit } from '@/lib/appTypes';
+import { usePack } from '../../../pack/hooks/usePack';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,22 +10,25 @@ import {
 } from '@/ui/dropdown-menu';
 import { Button } from '@/ui/button';
 import { Settings } from 'lucide-react';
-import { usePackNavigation } from '../../hooks/usePackNavigation';
+import { useKitContext } from '../../KitDetails';
 
 export function KitQuickOptionsMenuButton({
-    kit,
     className,
 }: {
-    kit: Kit;
     className?: string;
 }) {
     const { deleteKit } = usePack();
-    const { setIsEditingKit, setSelectedKitId } = usePackNavigation();
+    const { kit, setIsEditing, setIsModalOpen } = useKitContext();
 
+    if (!kit) return null;
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant='ghost' size='sm' className={cn('', className)}>
+                <Button
+                    variant='ghost'
+                    size='sm'
+                    className={cn('absolute top-1 right-1', className)}
+                >
                     <Settings size={12} />
                 </Button>
             </DropdownMenuTrigger>
@@ -34,8 +36,8 @@ export function KitQuickOptionsMenuButton({
                 <DropdownMenuItem>Details</DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={(_) => {
-                        setSelectedKitId(kit.id);
-                        setIsEditingKit(true);
+                        setIsModalOpen(true);
+                        setIsEditing(true);
                     }}
                 >
                     Edit

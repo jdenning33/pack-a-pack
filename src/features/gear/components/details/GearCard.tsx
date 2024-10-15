@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
-import { useGearContext } from './GearContext';
+import { useGearContext } from './GearDetails';
 import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Gear } from '@/lib/appTypes';

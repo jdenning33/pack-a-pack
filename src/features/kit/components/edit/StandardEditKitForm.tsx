@@ -1,0 +1,43 @@
+import React from 'react';
+import { Kit } from '@/lib/appTypes';
+import { cn } from '@/lib/utils';
+import {
+    EditKitForm,
+    KitNameInput,
+    KitDescriptionInput,
+    KitSaveButton,
+    KitCancelButton,
+} from './EditKitForm';
+
+export function StandardEditKitForm(props: {
+    kit?: Kit;
+    afterSave?: (kit: Kit) => void;
+    onCancel?: () => void;
+    className?: string;
+}) {
+    return (
+        <EditKitForm {...props}>
+            <StandardEditKitInputs />
+            <br />
+            <StandardEditKitButtons />
+        </EditKitForm>
+    );
+}
+
+export function StandardEditKitInputs({ className }: { className?: string }) {
+    return (
+        <div className={cn('space-y-4', className)}>
+            <KitNameInput />
+            <KitDescriptionInput />
+        </div>
+    );
+}
+
+export function StandardEditKitButtons({ className }: { className?: string }) {
+    return (
+        <div className={cn('flex gap-4', className)}>
+            <KitSaveButton />
+            <KitCancelButton />
+        </div>
+    );
+}

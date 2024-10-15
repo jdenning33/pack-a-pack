@@ -8,18 +8,20 @@ import {
 } from '@/ui/carousel';
 import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
-import { GearDetails } from './details/GearContext';
+import { GearDetails } from './details/GearDetails';
 import { AddGearButton } from './details/AddGearButton';
 import { GearCard, GearSelectBanner } from './details/GearCard';
 import { useGear } from '../useGear';
-import { GearModal } from './details/GearModal';
+import { GearModal, GearModalTrigger } from './details/GearModal';
 
 export function GearCarousel({
     onSelected,
     variant = 'default',
+    useModal = true,
 }: {
     className?: string;
     variant?: 'default' | 'compact';
+    useModal?: boolean;
     onSelected?: (gear: Gear) => void;
 }) {
     const { gear } = useGear();
@@ -34,27 +36,38 @@ export function GearCarousel({
             >
                 <div
                     className={cn(
-                        'flex items-center',
+                        'flex items-center h-52',
                         variant === 'compact'
                             ? ''
                             : 'bg-muted border-t border-b px-2'
                     )}
                 >
-                    <CarouselContent className='-ml-2 '>
+                    <CarouselContent className='-ml-2'>
                         {gear.map((g) => (
                             <CarouselItem
                                 key={g.id}
                                 className='w-36 max-w-36 pl-2 '
                             >
-                                <GearDetails gear={g} className=''>
-                                    <GearCard
-                                        className={
-                                            variant === 'compact'
-                                                ? 'h-52 shadow-sm'
-                                                : 'h-[12.5rem] shadow-sm'
-                                        }
-                                    />
-                                    <GearSelectBanner onSelect={onSelected} />
+                                <GearDetails
+                                    gear={g}
+                                    className=''
+                                    useModal={useModal}
+                                >
+                                    <GearModalTrigger>
+                                        <GearCard
+                                            className={
+                                                variant === 'compact'
+                                                    ? 'h-52'
+                                                    : 'h-[12.5rem] shadow-sm'
+                                            }
+                                        />
+                                    </GearModalTrigger>
+                                    <GearModal />
+                                    {onSelected && (
+                                        <GearSelectBanner
+                                            onSelect={onSelected}
+                                        />
+                                    )}
                                 </GearDetails>
                             </CarouselItem>
                         ))}
@@ -62,7 +75,7 @@ export function GearCarousel({
                             <GearDetails afterGearUpdated={onSelected}>
                                 <AddGearButton
                                     className={cn(
-                                        'bg-[unset] border-0 shadow-none h-48',
+                                        'bg-[unset] border-0 shadow-none',
                                         variant === 'compact' ? 'h-52' : 'h-48'
                                     )}
                                 />

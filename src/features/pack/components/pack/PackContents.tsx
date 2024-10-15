@@ -1,9 +1,14 @@
 'use client';
 
+import { KitDetails } from '@/features/kit/KitDetails';
 import { usePack } from '../../hooks/usePack';
-import { AddKitButton } from '../kit/AddKitButton';
-import { KitCard } from '../kit/KitCard';
-import { SelectedKitModal } from '../kit/SelectedKitModal';
+import { AddKitButton } from '@/features/kit/components/details/AddKitButton';
+import { KitCard } from '@/features/kit/components/details/KitCard';
+import {
+    KitModal,
+    KitModalTrigger,
+} from '@/features/kit/components/details/KitModal';
+import { KitQuickOptionsMenuButton } from '@/features/kit/components/details/KitQuickOptionsMenuButton';
 
 export function PackContents() {
     const { pack, isReadOnly } = usePack();
@@ -13,7 +18,12 @@ export function PackContents() {
         <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-end'>
                 <h1 className='text-lg font-bold'>{pack.name}</h1>
-                {!isReadOnly && <AddKitButton />}
+                {!isReadOnly && (
+                    <KitDetails>
+                        <AddKitButton />
+                        <KitModal />
+                    </KitDetails>
+                )}
             </div>
 
             {pack.kits.length === 0 && (
@@ -25,15 +35,19 @@ export function PackContents() {
 
             <div className='columns-[10rem] gap-4 space-y-4'>
                 {pack.kits.map((kit) => (
-                    <KitCard
+                    <KitDetails
                         key={kit.id}
                         kit={kit}
                         className='break-inside-avoid'
-                    />
+                    >
+                        <KitModalTrigger>
+                            <KitCard />
+                        </KitModalTrigger>
+                        <KitModal />
+                        <KitQuickOptionsMenuButton />
+                    </KitDetails>
                 ))}
             </div>
-
-            <SelectedKitModal />
         </div>
     );
 }

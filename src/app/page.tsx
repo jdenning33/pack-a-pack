@@ -15,7 +15,6 @@ import { useEffect, useState } from 'react';
 import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
 
 export default function Home() {
-    const { user } = useAuth();
     return (
         <main className='flex-1'>
             <SupabaseGearProvider>
@@ -39,35 +38,7 @@ export default function Home() {
                             </div>
                         </div>
                         <div>
-                            <Tabs defaultValue='community'>
-                                <TabsList>
-                                    <TabsTrigger value='user'>
-                                        My Gear
-                                    </TabsTrigger>
-                                    <TabsTrigger value='community'>
-                                        Popular Gear
-                                    </TabsTrigger>
-                                </TabsList>
-                                <TabsContent value='user'>
-                                    <SupabaseGearProvider
-                                        defaultSearchParams={{
-                                            gearType: 'user',
-                                            gearUserId: user?.id,
-                                        }}
-                                    >
-                                        <GearCarousel />
-                                    </SupabaseGearProvider>
-                                </TabsContent>
-                                <TabsContent value='community'>
-                                    <SupabaseGearProvider
-                                        defaultSearchParams={{
-                                            gearType: 'public',
-                                        }}
-                                    >
-                                        <GearCarousel />
-                                    </SupabaseGearProvider>
-                                </TabsContent>
-                            </Tabs>
+                            <HomePageGearTabs />
                         </div>
                     </div>
                 </SupabasePacksProvider>
@@ -75,19 +46,66 @@ export default function Home() {
         </main>
     );
 }
+
+function HomePageGearTabs() {
+    const { user } = useAuth();
+    const [selectedTab, setSelectedTab] = useState('community');
+    const hasUser = !!user;
+    useEffect(() => {
+        if (hasUser) setSelectedTab('user');
+    }, [hasUser]);
+
+    return (
+        <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+            <TabsList>
+                <TabsTrigger value='user'>My Gear</TabsTrigger>
+                <TabsTrigger value='community'>Community Gear</TabsTrigger>
+            </TabsList>
+            <TabsContent value='user'>
+                <AuthGuard
+                    fallback={
+                        <div>
+                            Sign in or sign up to view your gear.
+                            <AuthSignInButton />
+                        </div>
+                    }
+                >
+                    <SupabaseGearProvider
+                        defaultSearchParams={{
+                            gearType: 'user',
+                            gearUserId: user?.id,
+                        }}
+                    >
+                        <GearCarousel />
+                    </SupabaseGearProvider>
+                </AuthGuard>
+            </TabsContent>
+            <TabsContent value='community'>
+                <SupabaseGearProvider
+                    defaultSearchParams={{
+                        gearType: 'public',
+                    }}
+                >
+                    <GearCarousel />
+                </SupabaseGearProvider>
+            </TabsContent>
+        </Tabs>
+    );
+}
+
 function HomePagePackTabs() {
     const { user } = useAuth();
     const [selectedTab, setSelectedTab] = useState('community');
     const hasUser = !!user;
     useEffect(() => {
-        if (hasUser) setSelectedTab('my-packs');
+        if (hasUser) setSelectedTab('user');
     }, [hasUser]);
     return (
         <Tabs value={selectedTab} onValueChange={setSelectedTab}>
             <div className='flex flex-col h-full'>
                 <div className='flex w-full items-end'>
                     <TabsList>
-                        <TabsTrigger value='my-packs'>My Packs</TabsTrigger>
+                        <TabsTrigger value='user'>My Packs</TabsTrigger>
                         <TabsTrigger value='community'>
                             Community Packs
                         </TabsTrigger>
@@ -101,10 +119,7 @@ function HomePagePackTabs() {
                     </AuthGuard>
                 </div>
                 <div className='border bg-muted rounded-lg p-2 mt-2 flex-1'>
-                    <TabsContent
-                        value='my-packs'
-                        className='mt-0 flex flex-col'
-                    >
+                    <TabsContent value='user' className='mt-0 flex flex-col'>
                         <ScrollArea className='overflow-auto h-[20rem]'>
                             <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
                                 <AuthGuard
