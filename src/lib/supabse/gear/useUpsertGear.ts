@@ -10,7 +10,7 @@ export function useUpsertGear() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (gear: Optional<Gear, 'id'>) => {
+        mutationFn: async (gear: Optional<Gear, 'id'>): Promise<string> => {
             const supabaseGear = appToSupabaseGear(gear);
             const { data, error } = await supabase
                 .from('gear')

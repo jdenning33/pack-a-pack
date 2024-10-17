@@ -1,7 +1,0 @@
-npx shadcn add button dialog          
-npm install @supabase/auth-ui-react @supabase/auth-ui-shared
-add env vars
-update tailwind config to include proper folders
-
-
-npx shadcn-ui@latest add avatar button dropdown-menu

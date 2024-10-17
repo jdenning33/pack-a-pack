@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { supabaseToAppGear } from '../supabaseTypes';
 import { Gear } from '@/lib/appTypes';
 import { supabase } from '../supabaseClient';
-import { GearQueryParams } from '@/features/gear/useGear';
+import { GearQueryParams } from '@/features/gear-search/useGearSearch';
 
 export function useGearQuery(queryParams: GearQueryParams) {
     return useQuery<Gear[]>({
