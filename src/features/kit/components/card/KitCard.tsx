@@ -58,11 +58,13 @@ export const KitCard = ({
                     />
                 ) : (
                     <>
-                        <CardHeader className='flex justify-between'>
+                        <CardHeader className='flex justify-between pb-4'>
                             <CardTitle className='flex justify-between'>
                                 {kit.name}
                             </CardTitle>
-                            <CardDescription>{kit.description}</CardDescription>
+                            <CardDescription className='line-clamp-1'>
+                                {kit.description}
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             {kit.items.length === 0 ? (

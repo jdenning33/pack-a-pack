@@ -18,8 +18,11 @@ import {
     useGearSearch,
 } from '@/features/gear-search/GearSearchProvider';
 import { GearProvider } from '@/features/gear/GearProvider';
+import { useAuth } from '@/features/auth/useAuth';
 
 export default function GearPage() {
+    const { user } = useAuth();
+    const gearType = user ? 'user' : 'public';
     return (
         <main className='flex flex-col gap-8 container m-auto'>
             <div className='mx-auto p-4 w-full flex flex-col'>
@@ -31,7 +34,11 @@ export default function GearPage() {
                     </GearProvider>
                 </div>
                 <div>
-                    <GearSearchProvider>
+                    <GearSearchProvider
+                        defaultSearchParams={{
+                            gearType,
+                        }}
+                    >
                         <GearSearchBar className='mb-6' />
                         <GearDetailsCardList />
                     </GearSearchProvider>

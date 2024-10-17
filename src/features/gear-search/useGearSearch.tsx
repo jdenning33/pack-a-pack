@@ -6,7 +6,7 @@ export type GearQueryParams = Partial<{
     kitFilter: string;
     itemFilter: string;
     searchText: string;
-    gearType: 'all' | 'user' | 'public';
+    gearType: 'user' | 'public';
     gearUserId: string;
 }>;
 

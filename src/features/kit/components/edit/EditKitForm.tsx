@@ -140,9 +140,7 @@ export function KitDescriptionInput({ className }: { className?: string }) {
         <div className={className}>
             <Textarea
                 placeholder='Description'
-                {...register('description', {
-                    required: 'Description is required',
-                })}
+                {...register('description')}
                 aria-invalid={!!errors.description}
             />
             {errors.description && (

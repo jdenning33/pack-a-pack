@@ -15,6 +15,7 @@ export function usePackQueryShallow(packId: string) {
                 .from('packs')
                 .select('*')
                 .eq('id', packId)
+                .order('created_at', { ascending: true })
                 .single();
 
             if (error) throw error;

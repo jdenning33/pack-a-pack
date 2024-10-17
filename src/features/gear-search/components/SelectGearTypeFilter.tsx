@@ -15,7 +15,7 @@ export function SelectGearTypeFilter() {
     const { searchParams, setSearchParams } = useGearSearch();
 
     const gearType = searchParams.gearType || 'public';
-
+    console.log('gearTypeA', gearType);
     const setGearType = (gearType: 'user' | 'public') =>
         setSearchParams((prev) => ({
             ...prev,
@@ -24,7 +24,7 @@ export function SelectGearTypeFilter() {
 
     return (
         <Select
-            defaultValue={gearType}
+            value={gearType}
             onValueChange={(v) => setGearType(v as 'user' | 'public')}
         >
             <SelectTrigger className='w-[180px]'>

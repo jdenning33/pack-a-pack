@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import { useGearQuery } from '@/lib/supabse/gear/useGearQuery';
 import {
     GearSearchContract,
@@ -17,6 +17,9 @@ export const GearSearchProvider: React.FC<{
     const [searchParams, setSearchParams] = useState<GearQueryParams>(
         defaultSearchParams || {}
     );
+    useEffect(() => {
+        setSearchParams(defaultSearchParams || {});
+    }, [defaultSearchParams]);
 
     const {
         data: gear = [],

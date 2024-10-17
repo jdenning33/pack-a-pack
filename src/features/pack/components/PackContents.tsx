@@ -35,18 +35,21 @@ export function PackContents() {
                     {!isReadOnly && ' Add a kit to get started!'}
                 </div>
             )}
-            <div className='columns-[10rem] gap-4 space-y-4'>
+            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
                 {pack.kits.map((kit) => (
                     <KitProvider
                         key={kit.id}
                         packId={kit.packId}
                         isReadOnly={isReadOnly}
                         kit={kit}
-                        className='break-inside-avoid'
+                        className='h-full'
+                        style={{
+                            gridRow: `span ${kit.items.length + 3}`,
+                        }}
                     >
                         <KitModal>
-                            <KitModalTrigger>
-                                <KitCard>
+                            <KitModalTrigger className='h-full'>
+                                <KitCard className='h-full'>
                                     <KitQuickOptionsMenuButton>
                                         <KitOpenModalOption />
                                         <KitOpenEditModalOption />

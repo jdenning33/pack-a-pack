@@ -73,10 +73,19 @@ export const KitModal = ({
     );
 };
 
-export function KitModalTrigger({ children }: { children: ReactNode }) {
+export function KitModalTrigger({
+    className,
+    children,
+}: {
+    className?: string;
+    children: ReactNode;
+}) {
     const { setIsOpen } = useKitModalContext();
     return (
-        <div className='cursor-pointer' onClick={(_) => setIsOpen(true)}>
+        <div
+            className={cn('cursor-pointer', className)}
+            onClick={(_) => setIsOpen(true)}
+        >
             {children}
         </div>
     );
