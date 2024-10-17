@@ -30,6 +30,8 @@ The core of the application, containing all business logic. It's organized into:
 
 Each feature typically has a single context providing a hook for component functionality. A provider encapsulates the business logic needed to implement the context. Components build upon the context and should aim to minimize their prop usage to promote the context pattern. This allows for flexible and composable components.
 
+Features may have sub-features, for example the 'kit' feature may have a 'card' feature with it's own card specific context. 
+
 ### `/lib`
 This is for business logic and utilities that extend beyond the front-end. For example, the actual connection and database interaction with supabase lives here. This is also an acceptable spot for frontend helper utilities that are applicable across multiple features. 
 

@@ -12,13 +12,21 @@ import { Gear } from '@/lib/appTypes';
 import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 import { KitProvider } from '@/features/kit/KitProvider';
-import { KitCard } from '@/features/kit/components/KitCard';
-import { KitModal, KitModalTrigger } from '@/features/kit/components/KitModal';
+import { KitCard } from '@/features/kit/components/card/KitCard';
+import {
+    KitModal,
+    KitModalTrigger,
+} from '@/features/kit/components/modal/KitModal';
 import { usePack } from '@/features/pack/usePack';
 import { KitQuickOptionsMenuButton } from '@/features/kit/components/KitQuickOptionsMenuButton';
 import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
 import { GearSearchBar } from '@/features/gear-search/components/GearSearchBar';
 import { PackProvider } from '@/features/pack/PackProvider';
+import { EditKitCardOption } from '@/features/kit/components/card/EditKitCardOption';
+import {
+    KitOpenEditModalOption,
+    KitOpenModalOption,
+} from '@/features/kit/components/modal/KitOpenModalOption';
 
 export default function PacksPage() {
     return (
@@ -36,7 +44,7 @@ export default function PacksPage() {
                 <div className='flex justify-between items-center my-6'>
                     <h1 className='text-2xl font-bold'>Kit Details</h1>
                 </div>
-                <PackProvider packId='4c1cd859-56bf-4d45-a675-227b66812c78'>
+                <PackProvider packId='c542f6a8-b4e6-4477-85a4-ffe1583d544c'>
                     <KitDetailsCardList />
                 </PackProvider>
             </div>
@@ -52,14 +60,19 @@ function KitDetailsCardList() {
             isReadOnly={false}
             packId={pack.id}
             className='max-w-lg'
-            useModal={true}
             kit={kit}
         >
-            <KitModalTrigger>
-                <KitCard />
-            </KitModalTrigger>
-            <KitQuickOptionsMenuButton />
-            <KitModal />
+            <KitModal>
+                <KitModalTrigger>
+                    <KitCard>
+                        <KitQuickOptionsMenuButton>
+                            <EditKitCardOption />
+                            <KitOpenModalOption />
+                            <KitOpenEditModalOption />
+                        </KitQuickOptionsMenuButton>
+                    </KitCard>
+                </KitModalTrigger>
+            </KitModal>
         </KitProvider>
     ));
 }

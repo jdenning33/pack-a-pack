@@ -24,7 +24,7 @@ export const AppMutationsProvider: React.FC<{
         // Pack mutations
         upsertPack: async (pack: Omit<Pack | PackSummary, 'id'>) => {
             const result = await upsertPackMutation.mutateAsync(pack);
-            return result.id;
+            return result;
         },
         deletePack: (pack: Pack | PackSummary) => {
             upsertPackMutation.mutate({ ...pack, isDeleted: true });
@@ -33,45 +33,45 @@ export const AppMutationsProvider: React.FC<{
         // Kit mutations
         addKit: async (kit: Omit<Kit, 'id'>) => {
             const result = await upsertKitMutation.mutateAsync(kit);
-            return result.id;
+            return result;
         },
         updateKit: async (kit: Kit) => {
             const result = await upsertKitMutation.mutateAsync(kit);
-            return result.id;
+            return result;
         },
         deleteKit: async (kit: Kit) => {
             const result = await upsertKitMutation.mutateAsync({
                 ...kit,
                 isDeleted: true,
             });
-            return result.id;
+            return result;
         },
 
         // Item mutations
         addItem: async (item: Omit<Item, 'id'>) => {
             const result = await upsertItemMutation.mutateAsync(item);
-            return result.id;
+            return result;
         },
         updateItem: async (item: Item) => {
             const result = await upsertItemMutation.mutateAsync(item);
-            return result.id;
+            return result;
         },
         deleteItem: async (item: Item) => {
             const result = await upsertItemMutation.mutateAsync({
                 ...item,
                 isDeleted: true,
             });
-            return result.id;
+            return result;
         },
 
         // Gear mutations
         addGear: async (gear: Omit<Gear, 'id'>) => {
             const result = await upsertGearMutation.mutateAsync(gear);
-            return result.id;
+            return result;
         },
         updateGear: async (gear: Gear) => {
             const result = await upsertGearMutation.mutateAsync(gear);
-            return result.id;
+            return result;
         },
         removeGear: async (gear: Gear) => {
             await upsertGearMutation.mutateAsync({ ...gear, isDeleted: true });

@@ -9,7 +9,7 @@ import { Optional } from '@/lib/utils';
 export function useUpsertItem(userId: string | undefined) {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (item: Optional<Item, 'id'>) => {
+        mutationFn: async (item: Optional<Item, 'id'>): Promise<string> => {
             if (!userId) {
                 throw new Error('You must be signed in to save items.');
             }

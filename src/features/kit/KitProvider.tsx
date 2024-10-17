@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Kit } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import { KitContextType, KitContext } from './useKitContext';
@@ -12,51 +12,14 @@ export const KitProvider: React.FC<{
     afterKitUpdated?: (kit: Kit) => void;
     onIsEditingChanged?: (isEditing: boolean) => void;
     children: React.ReactNode;
-    useModal?: boolean;
-    closeModalOnSave?: boolean;
-}> = ({
-    className,
-    kit,
-    packId,
-    isReadOnly,
-    afterKitUpdated,
-    onIsEditingChanged,
-    children,
-    useModal = true,
-    closeModalOnSave = false,
-}) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const [newKit, setNewKit] = useState<Kit | undefined>(kit);
-
-    useEffect(() => {
-        onIsEditingChanged?.(isEditing);
-    }, [isEditing, onIsEditingChanged]);
-
-    useEffect(() => {
-        setNewKit(undefined);
-    }, [isModalOpen]);
-
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const selectedItem =
-        kit?.items.find((item) => item.id === selectedItemId) || null;
-
+}> = ({ className, kit, packId, isReadOnly, afterKitUpdated, children }) => {
     const contextValue: KitContextType = {
-        kit: kit || newKit,
+        kit: kit,
         packId,
         isReadOnly,
-        isEditing,
-        setIsEditing,
         afterKitUpdated: (kit) => {
             afterKitUpdated?.(kit);
-            if (closeModalOnSave) setIsModalOpen(false);
-            else setNewKit(kit);
         },
-        isModalOpen: useModal ? isModalOpen : false,
-        setIsModalOpen,
-        selectedItem: selectedItem,
-        setSelectedItemId: setSelectedItemId,
     };
 
     return (

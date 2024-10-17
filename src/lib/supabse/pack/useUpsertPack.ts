@@ -10,7 +10,9 @@ export function useUpsertPack() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (pack: Optional<Pack | PackSummary, 'id'>) => {
+        mutationFn: async (
+            pack: Optional<Pack | PackSummary, 'id'>
+        ): Promise<string> => {
             const supabasePack = appToSupabasePack(pack);
             const { data, error } = await supabase
                 .from('packs')

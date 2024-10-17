@@ -9,7 +9,7 @@ import { Optional } from '@/lib/utils';
 export function useUpsertKit() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (kit: Optional<Kit, 'id'>) => {
+        mutationFn: async (kit: Optional<Kit, 'id'>): Promise<string> => {
             const supabaseKit = appToSupabaseKit(kit);
             const { data, error } = await supabase
                 .from('kits')

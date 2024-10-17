@@ -8,7 +8,9 @@ import {
     KitCancelButton,
 } from './EditKitForm';
 
-export function StandardEditKitForm(props: { className?: string }) {
+export function StandardEditKitForm(
+    props: Omit<React.ComponentProps<typeof EditKitForm>, 'children'>
+) {
     return (
         <EditKitForm {...props}>
             <StandardEditKitInputs />

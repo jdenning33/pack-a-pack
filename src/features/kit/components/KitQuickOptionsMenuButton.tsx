@@ -4,7 +4,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import { Button } from '@/ui/button';
@@ -14,12 +13,12 @@ import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export function KitQuickOptionsMenuButton({
     className,
+    children,
 }: {
     className?: string;
+    children?: React.ReactNode;
 }) {
-    const { deleteKit } = useAppMutations();
-    const { kit, setIsEditing, setIsModalOpen, isReadOnly } = useKitContext();
-
+    const { kit } = useKitContext();
     if (!kit) return null;
     return (
         <DropdownMenu>
@@ -32,32 +31,32 @@ export function KitQuickOptionsMenuButton({
                     <Settings size={12} />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-56' align='end' forceMount>
-                <DropdownMenuItem onClick={() => setIsModalOpen(true)}>
-                    Details
-                </DropdownMenuItem>
-                {!isReadOnly && (
-                    <>
-                        <DropdownMenuItem
-                            onClick={(_) => {
-                                setIsModalOpen(true);
-                                setIsEditing(true);
-                            }}
-                        >
-                            Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                deleteKit(kit);
-                            }}
-                        >
-                            Delete
-                        </DropdownMenuItem>
-                    </>
-                )}
+            <DropdownMenuContent
+                className='w-56'
+                align='end'
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
+                forceMount
+            >
+                {children}
             </DropdownMenuContent>
         </DropdownMenu>
+    );
+}
+
+export function DeleteKitOption() {
+    const { kit } = useKitContext();
+    const { deleteKit } = useAppMutations();
+    if (!kit) return null;
+    return (
+        <DropdownMenuItem
+            onClick={(e) => {
+                e.stopPropagation();
+                deleteKit(kit);
+            }}
+        >
+            Delete
+        </DropdownMenuItem>
     );
 }

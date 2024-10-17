@@ -2,10 +2,22 @@
 
 import { KitProvider } from '@/features/kit/KitProvider';
 import { usePack } from '../usePack';
-import { AddKitButton } from '@/features/kit/components/AddKitButton';
-import { KitCard } from '@/features/kit/components/KitCard';
-import { KitModal, KitModalTrigger } from '@/features/kit/components/KitModal';
-import { KitQuickOptionsMenuButton } from '@/features/kit/components/KitQuickOptionsMenuButton';
+import { KitCard } from '@/features/kit/components/card/KitCard';
+import {
+    KitModal,
+    KitModalTrigger,
+} from '@/features/kit/components/modal/KitModal';
+import {
+    DeleteKitOption,
+    KitQuickOptionsMenuButton,
+} from '@/features/kit/components/KitQuickOptionsMenuButton';
+import { useState } from 'react';
+import { Button } from '@/ui/button';
+import {
+    KitOpenEditModalOption,
+    KitOpenModalOption,
+} from '@/features/kit/components/modal/KitOpenModalOption';
+import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 
 export function PackContents() {
     const { pack, isReadOnly } = usePack();
@@ -15,21 +27,14 @@ export function PackContents() {
         <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-end'>
                 <h1 className='text-lg font-bold'>{pack.name}</h1>
-                {!isReadOnly && (
-                    <KitProvider packId={pack.id} isReadOnly={isReadOnly}>
-                        <AddKitButton />
-                        <KitModal />
-                    </KitProvider>
-                )}
+                <StandardAddKitButton />
             </div>
-
             {pack.kits.length === 0 && (
                 <div className=''>
                     Looks like this pack is empty.
                     {!isReadOnly && ' Add a kit to get started!'}
                 </div>
             )}
-
             <div className='columns-[10rem] gap-4 space-y-4'>
                 {pack.kits.map((kit) => (
                     <KitProvider
@@ -39,14 +44,48 @@ export function PackContents() {
                         kit={kit}
                         className='break-inside-avoid'
                     >
-                        <KitModalTrigger>
-                            <KitCard />
-                        </KitModalTrigger>
-                        <KitModal />
-                        <KitQuickOptionsMenuButton />
+                        <KitModal>
+                            <KitModalTrigger>
+                                <KitCard>
+                                    <KitQuickOptionsMenuButton>
+                                        <KitOpenModalOption />
+                                        <KitOpenEditModalOption />
+                                        <DropdownMenuSeparator />
+                                        <DeleteKitOption />
+                                    </KitQuickOptionsMenuButton>
+                                </KitCard>
+                            </KitModalTrigger>
+                        </KitModal>
                     </KitProvider>
                 ))}
             </div>
+        </div>
+    );
+}
+
+function StandardAddKitButton() {
+    const { pack, isReadOnly } = usePack();
+    const [editKitId, setEditKitId] = useState<string | null>(null);
+    const editKit = pack.kits.find((kit) => kit.id === editKitId);
+
+    return (
+        <div>
+            {editKitId && (
+                <KitProvider
+                    packId={pack.id}
+                    isReadOnly={isReadOnly}
+                    kit={editKit}
+                    afterKitUpdated={(kit) => setEditKitId(kit.id)}
+                >
+                    <KitModal
+                        isOpen={true}
+                        onIsOpenChange={(open) => !open && setEditKitId(null)}
+                    />
+                </KitProvider>
+            )}
+            {!isReadOnly && (
+                <Button onClick={() => setEditKitId('new')}>Add Kit</Button>
+            )}
         </div>
     );
 }

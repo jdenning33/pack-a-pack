@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from '@/ui/button';
 import { Plus } from 'lucide-react';
-import { useKitContext } from '../useKitContext';
+import { useKitModalContext } from './KitModal';
 
 export const AddKitButton: React.FC<{
     className?: string;
     children?: React.ReactNode;
 }> = ({ className, children }) => {
-    const { setIsEditing, setIsModalOpen } = useKitContext();
+    const { setIsEditing, setIsOpen } = useKitModalContext();
     return (
         <Button
             className={className}
@@ -15,7 +15,7 @@ export const AddKitButton: React.FC<{
             size='sm'
             onClick={() => {
                 setIsEditing(true);
-                setIsModalOpen(true);
+                setIsOpen(true);
             }}
         >
             {children ? (

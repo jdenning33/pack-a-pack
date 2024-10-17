@@ -45,15 +45,17 @@ function useEditKitForm() {
 }
 
 export function EditKitForm({
+    onFinished,
     children,
     className,
 }: {
+    onFinished?: (kit?: Kit) => void;
     children: React.ReactNode;
     className?: string;
 }) {
     const { user } = useAuth();
     const { addKit, updateKit } = useAppMutations();
-    const { kit, packId, setIsEditing, afterKitUpdated } = useKitContext();
+    const { kit, packId, afterKitUpdated } = useKitContext();
 
     const {
         control,
@@ -85,13 +87,14 @@ export function EditKitForm({
         let id: string;
         if (newKit.id) id = await updateKit(newKit as Kit);
         else id = await addKit(newKit as Omit<Kit, 'id'>);
+        console.log('Kit saved', id);
         afterKitUpdated?.({ ...newKit, id });
         reset();
-        setIsEditing(false);
+        onFinished?.({ ...newKit, id });
     }
 
     function onCancel() {
-        setIsEditing(false);
+        onFinished?.();
     }
 
     const provider: KitContract = {
@@ -153,7 +156,11 @@ export function KitDescriptionInput({ className }: { className?: string }) {
 
 export function KitSaveButton() {
     const {} = useEditKitForm();
-    return <Button type='submit'>Save</Button>;
+    return (
+        <Button type='submit' onClick={(e) => e.stopPropagation()}>
+            Save
+        </Button>
+    );
 }
 
 export function KitCancelButton() {
