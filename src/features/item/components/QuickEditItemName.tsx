@@ -3,7 +3,7 @@ import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { Check, Edit, X } from 'lucide-react';
 import { useAppMutations } from '../../app-mutations/useAppMutations';
-import { useConfirmedItemContext, useItemContext } from '../useItem';
+import { useConfirmedItemContext } from '../useItem';
 
 export function QuickEditItemName({ className }: { className?: string }) {
     const { item } = useConfirmedItemContext();
