@@ -1,6 +1,6 @@
 import React from 'react';
-import { Gear, Item } from '@/lib/appTypes';
-import { AlternateGearPanel } from '../gear-search/components/AlternateGearPanel';
+import { Gear } from '@/lib/appTypes';
+import { AlternateGearPanel } from '../../gear-search/components/AlternateGearPanel';
 import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
@@ -16,18 +16,24 @@ import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 import { QuickEditItemName } from './QuickEditItemName';
 import { cn } from '@/lib/utils';
 import { GearProvider } from '@/features/gear/GearProvider';
-import { useAppMutations } from '../app-mutations/useAppMutations';
+import { useAppMutations } from '../../app-mutations/useAppMutations';
+import { useConfirmedItemContext, useItemContext } from '../useItem';
 
-export const ItemPanel: React.FC<{
-    item: Item;
-    isEditingGearDetails: boolean;
-    setIsEditingGearDetails: (isEditing: boolean) => void;
-}> = ({ item, isEditingGearDetails, setIsEditingGearDetails }) => {
+export const ItemPanel: React.FC = () => {
     const { updateItem } = useAppMutations();
+    const { item, isEditingGearDetails, setIsEditingGearDetails } =
+        useItemContext();
+
+    if (!item)
+        return (
+            <div>
+                <h1>Item not found</h1>
+            </div>
+        );
 
     function afterGearUpdated(gear: Gear) {
         updateItem({
-            ...item,
+            ...item!,
             gear: gear,
             gearId: gear?.id,
         });
@@ -38,10 +44,10 @@ export const ItemPanel: React.FC<{
         <div className='h-full flex flex-col'>
             <div className='flex-1'>
                 <div className='flex flex-col sm:flex-row sm:items-end justify-between mb-2 space-y-4 sm:space-y-0'>
-                    <QuickEditItemName item={item} />
+                    <QuickEditItemName />
                     <div className='flex items-center gap-4'>
-                        <QuickEditItemQuantity item={item} />
-                        <QuickEditItemIsPacked item={item} />
+                        <QuickEditItemQuantity />
+                        <QuickEditItemIsPacked />
                     </div>
                 </div>
                 <GearProvider
@@ -72,7 +78,9 @@ export const ItemPanel: React.FC<{
         </div>
     );
 };
-function QuickEditItemQuantity({ item }: { item: Item }) {
+
+function QuickEditItemQuantity() {
+    const { item } = useConfirmedItemContext();
     const { updateItem } = useAppMutations();
 
     function setQuantity(quantity: number) {
@@ -95,7 +103,8 @@ function QuickEditItemQuantity({ item }: { item: Item }) {
     );
 }
 
-function QuickEditItemIsPacked({ item }: { item: Item }) {
+function QuickEditItemIsPacked() {
+    const { item } = useConfirmedItemContext();
     const { updateItem } = useAppMutations();
     function setIsPacked(isPacked: boolean) {
         updateItem({ ...item, isPacked });

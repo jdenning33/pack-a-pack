@@ -1,5 +1,4 @@
 import React from 'react';
-import { Kit } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import {
     EditKitForm,
@@ -9,13 +8,7 @@ import {
     KitCancelButton,
 } from './EditKitForm';
 
-export function StandardEditKitForm(props: {
-    kit?: Kit;
-    packId: string;
-    afterSave?: (kit: Kit) => void;
-    onCancel?: () => void;
-    className?: string;
-}) {
+export function StandardEditKitForm(props: { className?: string }) {
     return (
         <EditKitForm {...props}>
             <StandardEditKitInputs />

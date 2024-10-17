@@ -14,7 +14,7 @@ import { StandardEditKitForm } from './edit/StandardEditKitForm';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export const KitCard = ({ className }: { className?: string }) => {
-    const { kit, isEditing, setIsEditing, isModalOpen } = useKitContext();
+    const { kit, isEditing, isModalOpen } = useKitContext();
 
     if (!kit) return null;
     return (
@@ -25,13 +25,7 @@ export const KitCard = ({ className }: { className?: string }) => {
             )}
         >
             {isEditing && !isModalOpen ? (
-                <StandardEditKitForm
-                    className='p-4'
-                    kit={kit}
-                    packId={kit.packId}
-                    onCancel={() => setIsEditing(false)}
-                    afterSave={(_) => setIsEditing(false)}
-                />
+                <StandardEditKitForm className='p-4' />
             ) : (
                 <>
                     <CardHeader className='flex justify-between'>

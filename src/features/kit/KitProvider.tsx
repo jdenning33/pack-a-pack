@@ -4,10 +4,11 @@ import { cn } from '@/lib/utils';
 import { KitContextType, KitContext } from './useKitContext';
 
 // Main Kit component
-export const KitDetails: React.FC<{
+export const KitProvider: React.FC<{
     className?: string;
     kit?: Kit;
     packId: string;
+    isReadOnly: boolean;
     afterKitUpdated?: (kit: Kit) => void;
     onIsEditingChanged?: (isEditing: boolean) => void;
     children: React.ReactNode;
@@ -17,6 +18,7 @@ export const KitDetails: React.FC<{
     className,
     kit,
     packId,
+    isReadOnly,
     afterKitUpdated,
     onIsEditingChanged,
     children,
@@ -36,19 +38,14 @@ export const KitDetails: React.FC<{
         setNewKit(undefined);
     }, [isModalOpen]);
 
-    const [selectedItemId, _setSelectedItemId] = useState<string | null>(null);
-    const setSelectedItemId = (itemId: string | null) => {
-        _setSelectedItemId(itemId);
-        setIsEditingGearDetails(false);
-    };
+    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
     const selectedItem =
         kit?.items.find((item) => item.id === selectedItemId) || null;
-
-    const [isEditingGearDetails, setIsEditingGearDetails] = useState(false);
 
     const contextValue: KitContextType = {
         kit: kit || newKit,
         packId,
+        isReadOnly,
         isEditing,
         setIsEditing,
         afterKitUpdated: (kit) => {
@@ -60,8 +57,6 @@ export const KitDetails: React.FC<{
         setIsModalOpen,
         selectedItem: selectedItem,
         setSelectedItemId: setSelectedItemId,
-        isEditingGearDetails: isEditingGearDetails,
-        setIsEditingGearDetails: setIsEditingGearDetails,
     };
 
     return (

@@ -2,14 +2,13 @@
 import localFont from 'next/font/local';
 import './globals.css';
 import Link from 'next/link';
-import { UserProfileDropdown } from '@/features/auth/UserProfileDropdown';
-import { AuthGuard } from '@/features/auth/AuthGuard';
-import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
+import { UserProfileDropdown } from '@/features/auth/components/UserProfileDropdown';
+import { AuthGuard } from '@/features/auth/components/AuthGuard';
+import { AuthSignInButton } from '@/features/auth/components/AuthSignInButton';
 import { Backpack } from 'lucide-react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useMemo } from 'react';
-import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
-import { SupabaseAuthProvider } from '@/features/auth/SupabaseAuthProvider';
+import { AuthProvider } from '@/features/auth/components/AuthProvider';
 import { Toaster } from '@/ui/sonner';
 import { AppMutationsProvider } from '@/features/app-mutations/AppMutationsProvider';
 
@@ -35,7 +34,6 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     const queryClient = useMemo(() => new QueryClient(), []);
-    const auth = useSupabaseAuth();
 
     return (
         <html lang='en'>
@@ -48,64 +46,70 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <QueryClientProvider client={queryClient}>
-                    <SupabaseAuthProvider auth={auth}>
+                    <AuthProvider>
                         <AppMutationsProvider>
                             <div className='min-h-screen flex flex-col'>
-                                <header className='border-b sticky top-0 bg-background z-30'>
-                                    <div className='m-auto px-4 sm:px-6 h-14 flex gap-6 items-center max-w-7xl'>
-                                        <div className='flex-1'>
-                                            <Link
-                                                className='flex items-center'
-                                                href='/'
-                                            >
-                                                <Backpack className='h-6 w-6' />
-                                                <span className='ml-2 text-2xl font-bold'>
-                                                    packapack.co
-                                                </span>
-                                            </Link>
-                                        </div>
-                                        <nav className='ml-auto hidden sm:flex items-center gap-4 sm:gap-6'>
-                                            <Link
-                                                className='text-sm font-medium hover:underline underline-offset-4'
-                                                href='/packs'
-                                            >
-                                                Packs
-                                            </Link>
-                                            <Link
-                                                className='text-sm font-medium hover:underline underline-offset-4'
-                                                href='/gear'
-                                            >
-                                                Gear
-                                            </Link>
-                                            <Link
-                                                className='text-sm font-medium hover:underline underline-offset-4'
-                                                href='/community'
-                                            >
-                                                Community
-                                            </Link>
-                                        </nav>{' '}
-                                        <AuthGuard
-                                            fallback={<AuthSignInButton />}
-                                        >
-                                            <UserProfileDropdown />
-                                        </AuthGuard>
-                                    </div>
-                                </header>
+                                <AppHeader />
                                 <main className='max-w-7xl flex-grow container mx-auto px-4 sm:px-6 py-8'>
                                     {children}
                                     <Toaster />
                                 </main>
-                                <footer className='bg-gray-100'>
-                                    <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-gray-500'>
-                                        © 2024 packapack.co. All rights
-                                        reserved.
-                                    </div>
-                                </footer>
+                                <AppFooter />
                             </div>
                         </AppMutationsProvider>
-                    </SupabaseAuthProvider>
+                    </AuthProvider>
                 </QueryClientProvider>
             </body>
         </html>
+    );
+}
+
+function AppHeader() {
+    return (
+        <header className='border-b sticky top-0 bg-background z-30'>
+            <div className='m-auto px-4 sm:px-6 h-14 flex gap-6 items-center max-w-7xl'>
+                <div className='flex-1'>
+                    <Link className='flex items-center' href='/'>
+                        <Backpack className='h-6 w-6' />
+                        <span className='ml-2 text-2xl font-bold'>
+                            packapack.co
+                        </span>
+                    </Link>
+                </div>
+                <nav className='ml-auto hidden sm:flex items-center gap-4 sm:gap-6'>
+                    <Link
+                        className='text-sm font-medium hover:underline underline-offset-4'
+                        href='/packs'
+                    >
+                        Packs
+                    </Link>
+                    <Link
+                        className='text-sm font-medium hover:underline underline-offset-4'
+                        href='/gear'
+                    >
+                        Gear
+                    </Link>
+                    <Link
+                        className='text-sm font-medium hover:underline underline-offset-4'
+                        href='/community'
+                    >
+                        Community
+                    </Link>
+                </nav>{' '}
+                <AuthGuard fallback={<AuthSignInButton />}>
+                    <UserProfileDropdown />
+                </AuthGuard>
+            </div>
+        </header>
+    );
+}
+
+function AppFooter() {
+    return (
+        <footer className='bg-gray-100'>
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-gray-500'>
+                © 2024 packapack.co. All rights reserved.
+            </div>
+        </footer>
     );
 }

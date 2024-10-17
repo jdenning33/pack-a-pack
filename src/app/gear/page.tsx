@@ -1,6 +1,9 @@
 'use client';
 import { AddGearButton } from '@/features/gear/components/AddGearButton';
-import { GearModal } from '@/features/gear/components/GearModal';
+import {
+    GearModal,
+    GearModalTrigger,
+} from '@/features/gear/components/GearModal';
 import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
 import {
     GearQuickOptionsMenu,
@@ -50,7 +53,9 @@ function GearDetailsCardList() {
                         <DropdownMenuSeparator />
                         <GearDeleteOption />
                     </GearQuickOptionsMenu>
-                    <GearDetailCard />
+                    <GearModalTrigger>
+                        <GearDetailCard />
+                    </GearModalTrigger>
                     <GearModal />
                 </GearProvider>
             ))}

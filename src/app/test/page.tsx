@@ -11,7 +11,7 @@ import { GearQuickOptionsMenu } from '@/features/gear/components/GearQuickOption
 import { Gear } from '@/lib/appTypes';
 import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
-import { KitDetails } from '@/features/kit/KitProvider';
+import { KitProvider } from '@/features/kit/KitProvider';
 import { KitCard } from '@/features/kit/components/KitCard';
 import { KitModal, KitModalTrigger } from '@/features/kit/components/KitModal';
 import { usePack } from '@/features/pack/usePack';
@@ -47,8 +47,9 @@ export default function PacksPage() {
 function KitDetailsCardList() {
     const { pack } = usePack();
     return pack.kits.map((kit) => (
-        <KitDetails
+        <KitProvider
             key={kit.id}
+            isReadOnly={false}
             packId={pack.id}
             className='max-w-lg'
             useModal={true}
@@ -59,7 +60,7 @@ function KitDetailsCardList() {
             </KitModalTrigger>
             <KitQuickOptionsMenuButton />
             <KitModal />
-        </KitDetails>
+        </KitProvider>
     ));
 }
 

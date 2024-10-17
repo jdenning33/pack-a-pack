@@ -4,6 +4,7 @@ import { Item, Kit } from '@/lib/appTypes';
 export type KitContextType = {
     packId: string;
     kit?: Kit;
+    isReadOnly: boolean;
     isEditing: boolean;
     setIsEditing: (isEditing: boolean) => void;
     isModalOpen: boolean;
@@ -11,8 +12,6 @@ export type KitContextType = {
     afterKitUpdated: (kit: Kit) => void;
     selectedItem: Item | null;
     setSelectedItemId: (itemId: string | null) => void;
-    isEditingGearDetails: boolean;
-    setIsEditingGearDetails: (isEditingGearDetails: boolean) => void;
 };
 // Context
 export const KitContext = createContext<KitContextType | null>(null);

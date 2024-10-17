@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext } from 'react';
-import { Pack, PackSummary } from '@/lib/appTypes';
+import { PackSummary } from '@/lib/appTypes';
 
 export type PackSearchOptions = Partial<{
     searchText: string;
@@ -20,8 +20,6 @@ export interface PacksContextType {
     setSearchParams: (
         setter: (prev: PackSearchOptions) => PackSearchOptions
     ) => void;
-    upsertPack: (pack: Omit<Pack | PackSummary, 'id'>) => Promise<string>;
-    deletePack: (pack: Pack | PackSummary) => void;
 }
 
 export const PacksContext = createContext<PacksContextType | undefined>(

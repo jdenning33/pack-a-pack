@@ -18,7 +18,7 @@ export function KitQuickOptionsMenuButton({
     className?: string;
 }) {
     const { deleteKit } = useAppMutations();
-    const { kit, setIsEditing, setIsModalOpen } = useKitContext();
+    const { kit, setIsEditing, setIsModalOpen, isReadOnly } = useKitContext();
 
     if (!kit) return null;
     return (
@@ -33,24 +33,30 @@ export function KitQuickOptionsMenuButton({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56' align='end' forceMount>
-                <DropdownMenuItem>Details</DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={(_) => {
-                        setIsModalOpen(true);
-                        setIsEditing(true);
-                    }}
-                >
-                    Edit
+                <DropdownMenuItem onClick={() => setIsModalOpen(true)}>
+                    Details
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        deleteKit(kit);
-                    }}
-                >
-                    Delete
-                </DropdownMenuItem>
+                {!isReadOnly && (
+                    <>
+                        <DropdownMenuItem
+                            onClick={(_) => {
+                                setIsModalOpen(true);
+                                setIsEditing(true);
+                            }}
+                        >
+                            Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                deleteKit(kit);
+                            }}
+                        >
+                            Delete
+                        </DropdownMenuItem>
+                    </>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     );

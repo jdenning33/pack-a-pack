@@ -13,6 +13,7 @@ import { Optional, cn } from '@/lib/utils';
 import { useAuth } from '@/features/auth/useAuth';
 import { toast } from 'sonner';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
+import { useKitContext } from '../../useKitContext';
 
 export interface KitFormValues {
     name: string;
@@ -44,22 +45,15 @@ function useEditKitForm() {
 }
 
 export function EditKitForm({
-    kit,
-    packId,
-    afterSave,
-    onCancel,
     children,
     className,
 }: {
-    kit?: Kit;
-    packId: string;
-    afterSave?: (kit: Kit) => void;
-    onCancel?: () => void;
     children: React.ReactNode;
     className?: string;
 }) {
     const { user } = useAuth();
     const { addKit, updateKit } = useAppMutations();
+    const { kit, packId, setIsEditing, afterKitUpdated } = useKitContext();
 
     const {
         control,
@@ -91,8 +85,13 @@ export function EditKitForm({
         let id: string;
         if (newKit.id) id = await updateKit(newKit as Kit);
         else id = await addKit(newKit as Omit<Kit, 'id'>);
-        afterSave?.({ ...newKit, id });
+        afterKitUpdated?.({ ...newKit, id });
         reset();
+        setIsEditing(false);
+    }
+
+    function onCancel() {
+        setIsEditing(false);
     }
 
     const provider: KitContract = {

@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from 'react';
 import { AuthSignInButton } from './AuthSignInButton';
-import { useAuth } from './useAuth';
+import { useAuth } from '../useAuth';
 
 interface AuthGuardProps {
     children: ReactNode;

@@ -9,7 +9,7 @@ import {
     DialogDescription,
     DialogTrigger,
 } from '@/ui/dialog';
-import { useAuth } from './useAuth';
+import { useAuth } from '../useAuth';
 import { supabase } from '@/lib/supabse/supabaseClient';
 
 export const AuthSignInButton: React.FC = () => {

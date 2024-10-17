@@ -60,7 +60,8 @@ const GearModalContent: React.FC = () => {
                         <DialogTitle className='leading-tight mb-2'>
                             {gear.name}
                         </DialogTitle>
-                        <DialogDescription className='flex flex-wrap gap-2 mb-2'>
+
+                        <div className='flex flex-wrap gap-2 mb-2'>
                             <Badge variant='outline' className='bg-background'>
                                 {gear.brand}
                             </Badge>
@@ -70,13 +71,13 @@ const GearModalContent: React.FC = () => {
                             <Badge variant='outline'>
                                 $ {gear.price?.toFixed(0) || '_'}
                             </Badge>
-                        </DialogDescription>
+                        </div>
                     </div>
                 </div>
             </DialogHeader>
-            <p className='text-sm text-muted-foreground line-clamp-4'>
+            <DialogDescription className=''>
                 {gear.description}
-            </p>
+            </DialogDescription>
             <DialogFooter className='mt-4 !justify-start'>
                 <Button onClick={() => setIsEditing(true)}>Edit</Button>
             </DialogFooter>

@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
-import { Item } from '@/lib/appTypes';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { Check, Edit, X } from 'lucide-react';
-import { useAppMutations } from '../app-mutations/useAppMutations';
+import { useAppMutations } from '../../app-mutations/useAppMutations';
+import { useConfirmedItemContext, useItemContext } from '../useItem';
 
-export function QuickEditItemName({
-    item,
-    className,
-}: {
-    item: Item;
-    className?: string;
-}) {
+export function QuickEditItemName({ className }: { className?: string }) {
+    const { item } = useConfirmedItemContext();
     const { updateItem } = useAppMutations();
     const [isEditing, setIsEditing] = useState(false);
-    const [editedName, setEditedName] = useState(item.name);
+    const [editedName, setEditedName] = useState(item?.name);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -22,7 +17,7 @@ export function QuickEditItemName({
     };
 
     const handleConfirm = () => {
-        updateItem({ ...item, name: editedName });
+        updateItem({ ...item, name: editedName || '' });
         setIsEditing(false);
     };
 

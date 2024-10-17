@@ -36,9 +36,7 @@ export const GearDetailCardContent: React.FC = () => {
                 />
             </div>
             <div className='ml-4 flex-grow flex flex-col'>
-                <h3 className='font-bold text-lg leading-tight mb-2'>
-                    {gear.name}
-                </h3>
+                <h3 className='font-bold leading-tight mb-2'>{gear.name}</h3>
                 <div className='flex flex-wrap gap-2 mb-2'>
                     <Badge variant='outline' className='bg-background'>
                         {gear.brand}

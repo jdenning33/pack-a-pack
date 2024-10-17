@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import { User } from 'lucide-react';
-import { useAuth } from './useAuth';
+import { useAuth } from '../useAuth';
 
 export const UserProfileDropdown: React.FC = () => {
     const { user, isSignedIn, signOut } = useAuth();
