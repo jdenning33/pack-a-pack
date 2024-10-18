@@ -6,11 +6,12 @@ import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 import { toast } from 'sonner';
 import { Optional } from '@/lib/utils';
 
-export function useUpsertKit(packId: string) {
+export function useUpsertKit() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (kit: Optional<Kit, 'id'>) => {
-            const supabaseKit = appToSupabaseKit(kit, packId);
+        mutationFn: async (kit: Optional<Kit, 'id'>): Promise<string> => {
+            const supabaseKit = appToSupabaseKit(kit);
+            console.log('supabaseKit', supabaseKit);
             const { data, error } = await supabase
                 .from('kits')
                 .upsert(supabaseKit)

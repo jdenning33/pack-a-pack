@@ -6,10 +6,10 @@ import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 import { toast } from 'sonner';
 import { Optional } from '@/lib/utils';
 
-export function useUpsertItem(packId: string, userId?: string) {
+export function useUpsertItem(userId: string | undefined) {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (item: Optional<Item, 'id'>) => {
+        mutationFn: async (item: Optional<Item, 'id'>): Promise<string> => {
             if (!userId) {
                 throw new Error('You must be signed in to save items.');
             }
@@ -59,7 +59,7 @@ export function useUpsertItem(packId: string, userId?: string) {
             });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['items', packId]);
+            queryClient.invalidateQueries({ queryKey: ['items'] });
             toast.success('Item saved.');
         },
     });

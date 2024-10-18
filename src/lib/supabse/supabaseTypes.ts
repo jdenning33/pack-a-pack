@@ -68,6 +68,7 @@ interface SupabaseGear {
     created_at: string;
     updated_at: string;
     is_deleted: boolean;
+    user?: { username: string };
 }
 
 // Convert Supabase Pack to application Pack
@@ -79,7 +80,7 @@ export function supabaseToAppPack(
     return {
         id: supabasePack.id,
         userId: supabasePack.user_id,
-        userName: supabasePack.user?.username || '',
+        userName: supabasePack.user?.username || 'unknown',
         name: supabasePack.name,
         description: supabasePack.description,
         isPublic: supabasePack.is_public,
@@ -121,12 +122,11 @@ export function supabaseToAppKit(
 
 // Convert application Kit to Supabase Kit
 export function appToSupabaseKit(
-    appKit: Kit | Optional<Kit, 'id'>,
-    packId: string
+    appKit: Kit | Optional<Kit, 'id'>
 ): Upsert<SupabaseKit> {
     return {
         id: appKit.id,
-        pack_id: packId,
+        pack_id: appKit.packId,
         name: appKit.name,
         description: appKit.description,
         is_deleted: appKit.isDeleted,
@@ -212,6 +212,7 @@ export function supabaseToAppGear(supabaseGear: SupabaseGear): Gear {
         isPublic: supabaseGear.is_public,
         purchaseLinks: supabaseGear.purchase_links,
         createdById: supabaseGear.created_by_id,
+        createdByUserName: supabaseGear.user?.username || 'unknown',
         isDeleted: supabaseGear.is_deleted,
     };
 }

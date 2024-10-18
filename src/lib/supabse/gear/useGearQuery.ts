@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { supabaseToAppGear } from '../supabaseTypes';
 import { Gear } from '@/lib/appTypes';
 import { supabase } from '../supabaseClient';
-import { GearQueryParams } from '@/features/gear/useGear';
+import { GearQueryParams } from '@/features/gear-search/useGearSearch';
 
 export function useGearQuery(queryParams: GearQueryParams) {
     return useQuery<Gear[]>({
@@ -13,9 +13,10 @@ export function useGearQuery(queryParams: GearQueryParams) {
                 .select(
                     `
                         *,
-                        user_gear (
+                        user_gear!inner (
                             user_id
-                        )
+                        ),
+                        user:profiles!gear_created_by_id_fkey (username)
                     `
                 )
                 .eq('is_deleted', false);
@@ -28,7 +29,6 @@ export function useGearQuery(queryParams: GearQueryParams) {
             }
 
             if (queryParams.gearType === 'user') {
-                console.log('yup');
                 query = query.eq('user_gear.user_id', queryParams.gearUserId);
             } else {
                 query = query.eq('is_public', true);

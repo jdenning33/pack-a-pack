@@ -47,5 +47,6 @@ export interface Gear {
     isPublic: boolean;
     purchaseLinks: string[];
     createdById: string;
+    createdByUserName: string;
     isDeleted: boolean;
 }

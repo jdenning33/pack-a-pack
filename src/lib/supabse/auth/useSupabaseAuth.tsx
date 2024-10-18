@@ -12,7 +12,7 @@ function mapUser(supabaseUser: SupabaseUser | null): User | null {
         id: supabaseUser.id,
         email: supabaseUser.email || '',
         emailVerified: supabaseUser.email_confirmed_at != null,
-        name: supabaseUser.user_metadata?.full_name,
+        name: supabaseUser.user_metadata?.full_name || supabaseUser.email,
         avatarUrl: supabaseUser.user_metadata?.avatar_url,
     };
 }

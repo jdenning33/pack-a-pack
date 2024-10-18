@@ -33,7 +33,7 @@ export class ErrorBoundary extends React.Component<
         }, 3000);
 
         // You can use your own error logging service here
-        console.log({ error, errorInfo });
+        console.error({ error, errorInfo });
     }
 
     render() {
