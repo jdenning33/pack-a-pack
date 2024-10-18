@@ -13,9 +13,10 @@ export function useGearQuery(queryParams: GearQueryParams) {
                 .select(
                     `
                         *,
-                        user_gear (
+                        user_gear!inner (
                             user_id
-                        )
+                        ),
+                        user:profiles!gear_created_by_id_fkey (username)
                     `
                 )
                 .eq('is_deleted', false);

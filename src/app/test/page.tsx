@@ -88,6 +88,7 @@ function GearDetailsCardList() {
         isPublic: false,
         purchaseLinks: [],
         createdById: '',
+        createdByUserName: 'unknown',
         isDeleted: false,
     };
     return (

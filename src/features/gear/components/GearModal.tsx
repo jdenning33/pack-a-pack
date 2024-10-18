@@ -78,6 +78,10 @@ const GearModalContent: React.FC = () => {
                 </div>
             </DialogHeader>
             <DialogDescription className=''>
+                <div>
+                    {gear.isPublic ? 'Public ' : 'Private '}
+                    gear. Contributed by {gear.createdByUserName}
+                </div>
                 {gear.description}
             </DialogDescription>
             {user && (
