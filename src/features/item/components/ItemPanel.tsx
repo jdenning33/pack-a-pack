@@ -4,11 +4,12 @@ import { AlternateGearPanel } from '../../gear-search/components/AlternateGearPa
 import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
-import { NoGearSelectedHolder } from '@/features/gear/components/NoGearSelectedHolder';
+import { NoGearSelectedHolder } from '@/features/item/components/NoGearSelectedHolder';
 import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
 import {
     GearDeleteOption,
     GearEditOption,
+    GearOpenModalOption,
     GearRemoveFromItemOption,
 } from '@/features/gear/components/GearQuickOptionsMenu';
 import { GearQuickOptionsMenu } from '@/features/gear/components/GearQuickOptionsMenu';
@@ -18,10 +19,14 @@ import { cn } from '@/lib/utils';
 import { GearProvider } from '@/features/gear/GearProvider';
 import { useAppMutations } from '../../app-mutations/useAppMutations';
 import { useConfirmedItemContext, useItemContext } from '../useItem';
+import {
+    GearModal,
+    GearModalTrigger,
+} from '@/features/gear/components/GearModal';
 
 export const ItemPanel: React.FC = () => {
     const { updateItem } = useAppMutations();
-    const { item, isEditingGearDetails, setIsEditingGearDetails } =
+    const { item, isReadOnly, isEditingGearDetails, setIsEditingGearDetails } =
         useItemContext();
 
     if (!item)
@@ -52,18 +57,24 @@ export const ItemPanel: React.FC = () => {
                 </div>
                 <GearProvider
                     gear={item.gear}
-                    useModal={false}
+                    useModal={true}
                     onIsEditingChanged={setIsEditingGearDetails}
                     afterGearUpdated={afterGearUpdated}
                 >
-                    <GearQuickOptionsMenu>
-                        <GearRemoveFromItemOption item={item} />
-                        <GearEditOption />
-                        <DropdownMenuSeparator />
-                        <GearDeleteOption />
-                    </GearQuickOptionsMenu>
-                    <GearDetailCard />
+                    {!isReadOnly && (
+                        <GearQuickOptionsMenu>
+                            <GearOpenModalOption />
+                            <GearRemoveFromItemOption item={item} />
+                            <GearEditOption />
+                            <DropdownMenuSeparator />
+                            <GearDeleteOption />
+                        </GearQuickOptionsMenu>
+                    )}
+                    <GearModalTrigger>
+                        <GearDetailCard />
+                    </GearModalTrigger>
                     <NoGearSelectedHolder className='p-2' />
+                    <GearModal />
                 </GearProvider>
             </div>
 
@@ -73,14 +84,14 @@ export const ItemPanel: React.FC = () => {
                     isEditingGearDetails ? 'hidden' : ''
                 )}
                 itemFilter={item.name}
-                onSelected={afterGearUpdated}
+                onSelected={isReadOnly ? undefined : afterGearUpdated}
             />
         </div>
     );
 };
 
 function QuickEditItemQuantity() {
-    const { item } = useConfirmedItemContext();
+    const { item, isReadOnly } = useConfirmedItemContext();
     const { updateItem } = useAppMutations();
 
     function setQuantity(quantity: number) {
@@ -91,20 +102,24 @@ function QuickEditItemQuantity() {
             <Label htmlFor='quantity' className='text-sm font-medium'>
                 Qty:
             </Label>
-            <Input
-                id='quantity'
-                type='number'
-                value={item.quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                className='w-16 h-8 bg-background'
-                min={1}
-            />
+            {isReadOnly ? (
+                <span>{item.quantity}</span>
+            ) : (
+                <Input
+                    id='quantity'
+                    type='number'
+                    value={item.quantity}
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    className='w-16 h-8 bg-background'
+                    min={1}
+                />
+            )}
         </div>
     );
 }
 
 function QuickEditItemIsPacked() {
-    const { item } = useConfirmedItemContext();
+    const { item, isReadOnly } = useConfirmedItemContext();
     const { updateItem } = useAppMutations();
     function setIsPacked(isPacked: boolean) {
         updateItem({ ...item, isPacked });
@@ -114,24 +129,28 @@ function QuickEditItemIsPacked() {
             <Label htmlFor='packed' className='text-sm font-medium'>
                 Packed:
             </Label>
-            <div id='packed-group' className='flex rounded-md items-center'>
-                <Button
-                    variant={!item.isPacked ? 'default' : 'outline'}
-                    size='sm'
-                    className='rounded-r-none'
-                    onClick={() => setIsPacked(false)}
-                >
-                    No
-                </Button>
-                <Button
-                    variant={item.isPacked ? 'default' : 'outline'}
-                    size='sm'
-                    className='rounded-l-none'
-                    onClick={() => setIsPacked(true)}
-                >
-                    Yes
-                </Button>
-            </div>
+            {isReadOnly ? (
+                <span>{item.isPacked ? 'Yes' : 'No'}</span>
+            ) : (
+                <div id='packed-group' className='flex rounded-md items-center'>
+                    <Button
+                        variant={!item.isPacked ? 'default' : 'outline'}
+                        size='sm'
+                        className='rounded-r-none'
+                        onClick={() => setIsPacked(false)}
+                    >
+                        No
+                    </Button>
+                    <Button
+                        variant={item.isPacked ? 'default' : 'outline'}
+                        size='sm'
+                        className='rounded-l-none'
+                        onClick={() => setIsPacked(true)}
+                    >
+                        Yes
+                    </Button>
+                </div>
+            )}
         </div>
     );
 }

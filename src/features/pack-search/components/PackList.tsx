@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { usePacks } from '../usePackSearch';
 import { PackCard } from '../../pack/components/PackCard';
 import { ReactElement } from 'react';
+import { PackProvider } from '@/features/pack/PackProvider';
 
 // PackList Component
 export const PackList = ({
@@ -19,11 +20,13 @@ export const PackList = ({
                     href={`/packs/${pack.id}`}
                     className='hover:scale-[102%] transition-all'
                 >
-                    <PackCard
-                        key={pack.id}
-                        pack={pack}
-                        className={packClassName}
-                    />
+                    <PackProvider packId={pack.id}>
+                        <PackCard
+                            key={pack.id}
+                            pack={pack}
+                            className={packClassName}
+                        />
+                    </PackProvider>
                 </Link>
             ))}
         </>

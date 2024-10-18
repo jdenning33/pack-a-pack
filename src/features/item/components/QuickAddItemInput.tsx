@@ -7,7 +7,7 @@ import { useItemContext } from '../useItem';
 
 export const QuickAddPackItem = () => {
     const { addItem } = useAppMutations();
-    const { kit } = useItemContext();
+    const { kit, isReadOnly } = useItemContext();
     const [newItemName, setNewItemName] = React.useState('');
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,6 +24,7 @@ export const QuickAddPackItem = () => {
             setNewItemName('');
         }
     };
+
     return (
         <form onSubmit={handleAddItem} className='flex space-x-2'>
             <Input
@@ -31,8 +32,14 @@ export const QuickAddPackItem = () => {
                 value={newItemName}
                 onChange={(e) => setNewItemName(e.target.value)}
                 placeholder='Add new item'
+                disabled={isReadOnly}
+                title='You do not have access to add items to this pack'
             />
-            <Button type='submit'>
+            <Button
+                type='submit'
+                disabled={isReadOnly}
+                disabledTitle='You do not have access to add items to this pack'
+            >
                 <Plus className='h-4 w-4' />
             </Button>
         </form>

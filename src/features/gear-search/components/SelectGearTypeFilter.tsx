@@ -15,7 +15,6 @@ export function SelectGearTypeFilter() {
     const { searchParams, setSearchParams } = useGearSearch();
 
     const gearType = searchParams.gearType || 'public';
-    console.log('gearTypeA', gearType);
     const setGearType = (gearType: 'user' | 'public') =>
         setSearchParams((prev) => ({
             ...prev,

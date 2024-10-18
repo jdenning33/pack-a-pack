@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DialogHeader, DialogTitle, DialogDescription } from '@/ui/dialog';
 import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
@@ -10,17 +10,15 @@ import { KitOverviewPanel } from '../KitOverviewPanel';
 import { ItemProvider } from '@/features/item/ItemProvider';
 import { ItemLi } from '@/features/item/components/ItemLi';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { useKitModalContext } from './KitModal';
 
 export function KitModalContent({
     setIsEditing,
 }: {
     setIsEditing?: (isEditing: boolean) => void;
 }) {
-    const { kit } = useKitContext();
-
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const selectedItem =
-        kit?.items.find((item) => item.id === selectedItemId) || null;
+    const { kit, isReadOnly } = useKitContext();
+    const { selectedItem, setSelectedItemId } = useKitModalContext();
 
     if (!kit) return null;
 
@@ -54,11 +52,13 @@ export function KitModalContent({
                         'py-4 w-2/5'
                     )}
                 >
-                    <div className='px-4'>
-                        <ItemProvider kit={kit}>
-                            <QuickAddPackItem />
-                        </ItemProvider>
-                    </div>
+                    {!isReadOnly && (
+                        <div className='px-4'>
+                            <ItemProvider kit={kit} isReadOnly={isReadOnly}>
+                                <QuickAddPackItem />
+                            </ItemProvider>
+                        </div>
+                    )}
                     <ScrollArea
                         className={cn('flex-1 overflow-auto py-2')}
                         type='scroll'
@@ -66,6 +66,7 @@ export function KitModalContent({
                         <ul className='flex-1 w-full'>
                             {kit.items.map((item) => (
                                 <ItemProvider
+                                    isReadOnly={isReadOnly}
                                     key={item.id}
                                     item={item}
                                     kit={kit}
@@ -89,7 +90,11 @@ export function KitModalContent({
 
                     <div className='p-4 flex-1'>
                         {selectedItem ? (
-                            <ItemProvider item={selectedItem} kit={kit}>
+                            <ItemProvider
+                                item={selectedItem}
+                                kit={kit}
+                                isReadOnly={isReadOnly}
+                            >
                                 <ItemPanel />
                             </ItemProvider>
                         ) : (
@@ -108,7 +113,7 @@ export function KitModalContent({
                     variant='link'
                     size='sm'
                     className='px-0 pt-0 h-[unset]'
-                    onClick={() => setSelectedItemId(null)}
+                    onClick={() => setSelectedItemId(undefined)}
                 >
                     {kit?.name}
                 </Button>

@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { useAuth } from '@/features/auth/useAuth';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
+import { AuthGuard } from '@/features/auth/components/AuthGuard';
 
 export interface GearFormValues {
     name: string;
@@ -87,7 +88,7 @@ export function EditGearForm({
     }
 
     async function onSubmit(data: GearFormValues, saveAs: boolean) {
-        const newGear = {
+        let newGear = {
             ...gear,
             name: data.name,
             description: data.description || '',
@@ -100,11 +101,17 @@ export function EditGearForm({
             purchaseLinks: gear?.purchaseLinks || [],
             createdById: gear?.createdById || user?.id || '',
         };
-        if (saveAs) delete newGear.id;
+        if (saveAs) {
+            newGear = {
+                ...newGear,
+                id: undefined,
+                createdById: user?.id || '',
+            };
+        }
         let id;
         if (newGear.id) id = await updateGear(newGear as Gear);
         else id = await addGear(newGear as Omit<Gear, 'id'>);
-        afterSave?.({ ...newGear, id });
+        afterSave?.({ ...newGear, id, createdByUserName: '' });
         //reset the form
         reset();
     }
@@ -121,9 +128,11 @@ export function EditGearForm({
     };
 
     return (
-        <EditGearContext.Provider value={provider}>
-            <form onSubmit={handleSubmit(onSubmitSave)}>{children}</form>
-        </EditGearContext.Provider>
+        <AuthGuard>
+            <EditGearContext.Provider value={provider}>
+                <form onSubmit={handleSubmit(onSubmitSave)}>{children}</form>
+            </EditGearContext.Provider>
+        </AuthGuard>
     );
 }
 
@@ -265,8 +274,16 @@ export function GearBrandInput({ className }: { className?: string }) {
 }
 
 export function GearSaveButton() {
-    const {} = useEditGearForm();
-    return <Button type='submit'>Save</Button>;
+    const { gear } = useEditGearForm();
+    return (
+        <Button
+            type='submit'
+            disabled={gear?.isPublic}
+            disabledTitle='You cannot edit public gear directly, use "Save As New" instead'
+        >
+            Save
+        </Button>
+    );
 }
 
 export function GearSaveAsNewButton() {

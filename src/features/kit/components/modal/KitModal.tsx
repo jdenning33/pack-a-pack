@@ -4,12 +4,15 @@ import { cn } from '@/lib/utils';
 import { useKitContext } from '../../useKitContext';
 import { KitModalContent } from './KitModalContent';
 import { EditKitModalContent } from './EditKitModalContent';
+import { Item } from '@/lib/appTypes';
 
 export const KitModalContext = React.createContext<{
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     isEditing: boolean;
     setIsEditing: (isEditing: boolean) => void;
+    setSelectedItemId: (itemId: string | undefined) => void;
+    selectedItem: Item | undefined;
 } | null>(null);
 
 export function useKitModalContext() {
@@ -36,12 +39,18 @@ export const KitModal = ({
     const { kit } = useKitContext();
     const [isOpen, setIsOpen] = useState(isOpenProp);
     const [isEditing, setIsEditing] = useState(isEditingProp);
+    const [selectedItemId, setSelectedItemId] = useState<string | undefined>();
+    const selectedItem = kit?.items.find((item) => item.id === selectedItemId);
 
     useEffect(() => {
         setIsOpen(isOpenProp);
     }, [isOpenProp]);
     useEffect(() => {
         onIsOpenChange?.(isOpen);
+        if (!isOpen) {
+            setSelectedItemId(undefined);
+            setIsEditing(false);
+        }
     }, [isOpen, onIsOpenChange]);
 
     const kitExists = !!kit;
@@ -54,7 +63,14 @@ export const KitModal = ({
 
     return (
         <KitModalContext.Provider
-            value={{ isOpen, setIsOpen, isEditing, setIsEditing }}
+            value={{
+                isOpen,
+                setIsOpen,
+                isEditing,
+                setIsEditing,
+                setSelectedItemId,
+                selectedItem,
+            }}
         >
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 {children}
@@ -80,11 +96,14 @@ export function KitModalTrigger({
     className?: string;
     children: ReactNode;
 }) {
-    const { setIsOpen } = useKitModalContext();
+    const { setIsOpen, setIsEditing } = useKitModalContext();
     return (
         <div
             className={cn('cursor-pointer', className)}
-            onClick={(_) => setIsOpen(true)}
+            onClick={(_) => {
+                setIsOpen(true);
+                setIsEditing(false);
+            }}
         >
             {children}
         </div>

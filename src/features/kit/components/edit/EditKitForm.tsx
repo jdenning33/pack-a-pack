@@ -87,7 +87,6 @@ export function EditKitForm({
         let id: string;
         if (newKit.id) id = await updateKit(newKit as Kit);
         else id = await addKit(newKit as Omit<Kit, 'id'>);
-        console.log('Kit saved', id);
         afterKitUpdated?.({ ...newKit, id });
         reset();
         onFinished?.({ ...newKit, id });

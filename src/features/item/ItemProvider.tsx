@@ -6,7 +6,7 @@ interface ItemProviderProps {
     children: ReactNode;
     item?: Item;
     kit: Kit;
-    isReadOnly?: boolean;
+    isReadOnly: boolean;
     afterItemUpdated?: (item: Item) => void;
 }
 
@@ -14,7 +14,7 @@ export const ItemProvider: React.FC<ItemProviderProps> = ({
     children,
     kit,
     item,
-    isReadOnly = false,
+    isReadOnly,
     afterItemUpdated,
 }) => {
     const [isEditingGearDetails, setIsEditingGearDetails] = useState(false);

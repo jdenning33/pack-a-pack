@@ -39,6 +39,7 @@ export const KitCard = ({
     children?: React.ReactNode;
 }) => {
     const { kit } = useKitContext();
+    const modalContext = useContext(KitModalContext);
     const [isEditing, setIsEditing] = useState(false);
 
     if (!kit) return null;
@@ -75,7 +76,12 @@ export const KitCard = ({
                                 <ul className='space-y-2'>
                                     {kit.items.map((item) => (
                                         <KitItemLineItem
-                                            onItemSelected={onItemSelected}
+                                            onItemSelected={() => {
+                                                onItemSelected?.(item);
+                                                modalContext?.setSelectedItemId(
+                                                    item.id
+                                                );
+                                            }}
                                             key={item.id}
                                             item={item}
                                         />
@@ -98,6 +104,7 @@ function KitItemLineItem({
     onItemSelected?: (item: Item) => void;
 }) {
     const { updateItem } = useAppMutations();
+    const { isReadOnly } = useKitContext();
 
     const modalContext = useContext(KitModalContext);
 
@@ -117,6 +124,7 @@ function KitItemLineItem({
                 onClick={(e) => {
                     e.stopPropagation();
                 }}
+                disabled={isReadOnly}
             />
             <label
                 htmlFor={`item-${item.id}`}
@@ -126,7 +134,7 @@ function KitItemLineItem({
                     modalContext?.setIsOpen(true);
                     onItemSelected?.(item);
                 }}
-                className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:underline hover:cursor-pointer'
+                className='text-sm font-medium leading-none hover:underline hover:cursor-pointer'
             >
                 {item.name}{' '}
                 {item.quantity > 1 && (

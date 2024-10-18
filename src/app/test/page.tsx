@@ -1,6 +1,5 @@
 'use client';
 import { GearProvider } from '../../features/gear/GearProvider';
-import { NoGearSelectedHolder } from '@/features/gear/components/NoGearSelectedHolder';
 import { GearModal } from '@/features/gear/components/GearModal';
 import {
     GearDeleteOption,
@@ -53,11 +52,11 @@ export default function PacksPage() {
 }
 
 function KitDetailsCardList() {
-    const { pack } = usePack();
+    const { pack, isReadOnly } = usePack();
     return pack.kits.map((kit) => (
         <KitProvider
             key={kit.id}
-            isReadOnly={false}
+            isReadOnly={isReadOnly}
             packId={pack.id}
             className='max-w-lg'
             kit={kit}
@@ -89,6 +88,7 @@ function GearDetailsCardList() {
         isPublic: false,
         purchaseLinks: [],
         createdById: '',
+        createdByUserName: 'unknown',
         isDeleted: false,
     };
     return (
@@ -102,7 +102,6 @@ function GearDetailsCardList() {
                     <GearDeleteOption />
                 </GearQuickOptionsMenu>
                 <GearDetailCard />
-                <NoGearSelectedHolder />
                 <GearModal />
             </GearProvider>
         </div>

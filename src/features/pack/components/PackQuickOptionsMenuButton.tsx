@@ -12,6 +12,7 @@ import { Settings } from 'lucide-react';
 import { PackSummary } from '@/lib/appTypes';
 import Link from 'next/link';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
+import { usePack } from '../usePack';
 
 export function PackQuickOptionsMenuButton({
     pack,
@@ -23,6 +24,7 @@ export function PackQuickOptionsMenuButton({
     onEditRequested?: () => void;
 }) {
     const { deletePack } = useAppMutations();
+    const { isReadOnly } = usePack();
 
     return (
         <DropdownMenu>
@@ -35,7 +37,7 @@ export function PackQuickOptionsMenuButton({
                 <Link key={pack.id} href={`/packs/${pack.id}`}>
                     <DropdownMenuItem>Details</DropdownMenuItem>
                 </Link>
-                {onEditRequested && (
+                {onEditRequested && !isReadOnly && (
                     <DropdownMenuItem
                         onClick={(e) => {
                             e.stopPropagation();
@@ -45,15 +47,19 @@ export function PackQuickOptionsMenuButton({
                         Edit
                     </DropdownMenuItem>
                 )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        deletePack(pack);
-                    }}
-                >
-                    Delete
-                </DropdownMenuItem>
+                {!isReadOnly && (
+                    <>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                deletePack(pack);
+                            }}
+                        >
+                            Delete
+                        </DropdownMenuItem>
+                    </>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     );

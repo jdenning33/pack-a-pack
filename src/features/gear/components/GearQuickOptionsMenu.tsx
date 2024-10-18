@@ -11,6 +11,7 @@ import { Edit, Trash, Maximize } from 'lucide-react';
 import { useGearContext } from '../useGearContext';
 import { Item } from '@/lib/appTypes';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
+import { useAuth } from '@/features/auth/useAuth';
 
 // GearQuickOptions component
 export const GearQuickOptionsMenu: React.FC<{ children: React.ReactNode }> = ({
@@ -35,7 +36,9 @@ export const GearQuickOptionsMenu: React.FC<{ children: React.ReactNode }> = ({
 };
 
 export const GearEditOption: React.FC = () => {
+    const { user } = useAuth();
     const { setIsEditing, setIsModalOpen } = useGearContext();
+    if (!user) return null;
     return (
         <DropdownMenuItem
             onClick={() => {
@@ -50,7 +53,10 @@ export const GearEditOption: React.FC = () => {
 };
 
 export const GearRemoveFromItemOption = ({ item }: { item: Item }) => {
+    const { user } = useAuth();
     const { updateItem } = useAppMutations();
+
+    if (!user) return null;
     return (
         <DropdownMenuItem
             onClick={(_) => updateItem({ ...item, gearId: undefined })}
@@ -64,7 +70,11 @@ export const GearRemoveFromItemOption = ({ item }: { item: Item }) => {
 export const GearOpenModalOption: React.FC = () => {
     const { setIsModalOpen } = useGearContext();
     return (
-        <DropdownMenuItem onClick={(_) => setIsModalOpen(true)}>
+        <DropdownMenuItem
+            onClick={(_) => {
+                setIsModalOpen(true);
+            }}
+        >
             <Maximize className='mr-2 h-4 w-4' />
             Open in Modal
         </DropdownMenuItem>
@@ -72,9 +82,11 @@ export const GearOpenModalOption: React.FC = () => {
 };
 
 export const GearDeleteOption: React.FC = () => {
+    const { user } = useAuth();
     const { gear } = useGearContext();
     const { removeGear } = useAppMutations();
     if (!gear) return null;
+    if (!user) return null;
     return (
         <DropdownMenuItem onClick={() => removeGear(gear)}>
             <Trash className='mr-2 h-4 w-4' />

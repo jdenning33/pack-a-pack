@@ -18,6 +18,7 @@ import {
     KitOpenModalOption,
 } from '@/features/kit/components/modal/KitOpenModalOption';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
+import { Plus } from 'lucide-react';
 
 export function PackContents() {
     const { pack, isReadOnly } = usePack();
@@ -26,7 +27,7 @@ export function PackContents() {
     return (
         <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-end'>
-                <h1 className='text-lg font-bold'>{pack.name}</h1>
+                <h1 className='text-2xl font-bold'>{pack.name}</h1>
                 <StandardAddKitButton />
             </div>
             {pack.kits.length === 0 && (
@@ -86,9 +87,15 @@ function StandardAddKitButton() {
                     />
                 </KitProvider>
             )}
-            {!isReadOnly && (
-                <Button onClick={() => setEditKitId('new')}>Add Kit</Button>
-            )}
+            <Button
+                onClick={() => setEditKitId('new')}
+                variant='outline'
+                size='sm'
+                disabled={isReadOnly}
+                disabledTitle='You cannot edit this pack'
+            >
+                <Plus className='mr-2 h-4 w-4' /> Add New Kit
+            </Button>
         </div>
     );
 }
