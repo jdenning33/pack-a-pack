@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { useAuth } from '@/features/auth/useAuth';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
+import { AuthGuard } from '@/features/auth/components/AuthGuard';
 
 export interface GearFormValues {
     name: string;
@@ -121,9 +122,11 @@ export function EditGearForm({
     };
 
     return (
-        <EditGearContext.Provider value={provider}>
-            <form onSubmit={handleSubmit(onSubmitSave)}>{children}</form>
-        </EditGearContext.Provider>
+        <AuthGuard>
+            <EditGearContext.Provider value={provider}>
+                <form onSubmit={handleSubmit(onSubmitSave)}>{children}</form>
+            </EditGearContext.Provider>
+        </AuthGuard>
     );
 }
 

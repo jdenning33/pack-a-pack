@@ -14,7 +14,7 @@ export function ItemLi({
     onItemSelected?: (item: Item) => void;
     selectedItemId?: string;
 }): React.JSX.Element {
-    const { item } = useConfirmedItemContext();
+    const { item, isReadOnly } = useConfirmedItemContext();
     const { updateItem, deleteItem } = useAppMutations();
     const toggleItem = async (item: Item) => {
         await updateItem({
@@ -27,7 +27,7 @@ export function ItemLi({
         <li
             key={item.id}
             className={cn(
-                'flex items-center justify-between px-4',
+                'flex items-center justify-between px-4 min-h-6',
                 'hover:bg-primary/30 group cursor-pointer transition-all',
                 item.id === selectedItemId && 'bg-primary/20 font-semibold'
             )}
@@ -45,13 +45,14 @@ export function ItemLi({
                     onCheckedChange={(_) => {
                         toggleItem(item);
                     }}
+                    disabled={isReadOnly}
                 />
                 <label
                     htmlFor={`drawer-item-${item.id}`}
                     onClick={(e) => {
                         e.preventDefault();
                     }}
-                    className='text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 group-hover:underline cursor-pointer'
+                    className='text-sm leading-none group-hover:underline cursor-pointer'
                 >
                     {item.name}{' '}
                     {item.quantity > 1 && (
@@ -61,16 +62,18 @@ export function ItemLi({
                     )}
                 </label>
             </div>
-            <Button
-                variant='ghost'
-                size='sm'
-                onClick={(e) => {
-                    e.stopPropagation();
-                    deleteItem(item);
-                }}
-            >
-                <Trash className='h-4 w-4' />
-            </Button>
+            {!isReadOnly && (
+                <Button
+                    variant='ghost'
+                    size='sm'
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        deleteItem(item);
+                    }}
+                >
+                    <Trash className='h-4 w-4' />
+                </Button>
+            )}
         </li>
     );
 }

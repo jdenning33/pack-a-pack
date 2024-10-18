@@ -28,7 +28,6 @@ export function useGearQuery(queryParams: GearQueryParams) {
             }
 
             if (queryParams.gearType === 'user') {
-                console.log('yup');
                 query = query.eq('user_gear.user_id', queryParams.gearUserId);
             } else {
                 query = query.eq('is_public', true);

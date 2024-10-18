@@ -16,6 +16,7 @@ import {
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
 import { Button } from '@/ui/button';
+import { useAuth } from '@/features/auth/useAuth';
 
 // GearModal component
 
@@ -38,6 +39,7 @@ export const GearModal: React.FC = () => {
 };
 
 const GearModalContent: React.FC = () => {
+    const { user } = useAuth();
     const { gear, setIsEditing } = useGearContext();
     if (!gear) return null;
 
@@ -78,9 +80,11 @@ const GearModalContent: React.FC = () => {
             <DialogDescription className=''>
                 {gear.description}
             </DialogDescription>
-            <DialogFooter className='mt-4 !justify-start'>
-                <Button onClick={() => setIsEditing(true)}>Edit</Button>
-            </DialogFooter>
+            {user && (
+                <DialogFooter className='mt-4 !justify-start'>
+                    <Button onClick={() => setIsEditing(true)}>Edit</Button>
+                </DialogFooter>
+            )}
         </>
     );
 };
@@ -118,7 +122,10 @@ export const GearModalTrigger: React.FC<{
 }> = ({ children }) => {
     const { setIsModalOpen } = useGearContext();
     return (
-        <div onClick={() => setIsModalOpen(true)} className='cursor-pointer'>
+        <div
+            onClick={() => setIsModalOpen(true)}
+            className='cursor-pointer hover:scale-[99%] transition-all'
+        >
             {children}
         </div>
     );

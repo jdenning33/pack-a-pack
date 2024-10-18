@@ -46,9 +46,9 @@ export function KitQuickOptionsMenuButton({
 }
 
 export function DeleteKitOption() {
-    const { kit } = useKitContext();
+    const { kit, isReadOnly } = useKitContext();
     const { deleteKit } = useAppMutations();
-    if (!kit) return null;
+    if (!kit || isReadOnly) return null;
     return (
         <DropdownMenuItem
             onClick={(e) => {

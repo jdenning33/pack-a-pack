@@ -11,6 +11,7 @@ export function useUpsertKit() {
     return useMutation({
         mutationFn: async (kit: Optional<Kit, 'id'>): Promise<string> => {
             const supabaseKit = appToSupabaseKit(kit);
+            console.log('supabaseKit', supabaseKit);
             const { data, error } = await supabase
                 .from('kits')
                 .upsert(supabaseKit)

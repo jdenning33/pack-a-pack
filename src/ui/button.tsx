@@ -38,20 +38,28 @@ export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement>,
         VariantProps<typeof buttonVariants> {
     asChild?: boolean;
+    disabledTitle?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
+    (
+        { className, variant, size, asChild = false, disabledTitle, ...props },
+        ref
+    ) => {
         const Comp = asChild ? Slot : 'button';
         return (
             <Comp
-                className={cn(buttonVariants({ variant, size, className }))}
                 ref={ref}
                 {...props}
+                className={cn(
+                    buttonVariants({ variant, size, className }),
+                    props.disabled && '!pointer-events-auto'
+                )}
                 onClick={(e) => {
                     e.stopPropagation();
                     props.onClick?.(e);
                 }}
+                title={props.disabled ? disabledTitle : props.title}
             />
         );
     }

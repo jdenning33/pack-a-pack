@@ -1,21 +1,21 @@
 import React from 'react';
-import { useGearContext } from '../useGearContext';
 import { cn } from '@/lib/utils';
-import { AddGearButton } from './AddGearButton';
+import { AddGearButton } from '../../gear/components/AddGearButton';
+import { useItemContext } from '../useItem';
 
 // CreateNewGear component
 
 export const NoGearSelectedHolder: React.FC<{ className?: string }> = ({
     className,
 }) => {
-    const { gear, isEditing } = useGearContext();
-    if (gear || isEditing) return null;
+    const { item, isEditingGearDetails, isReadOnly } = useItemContext();
+    if (item?.gear || isEditingGearDetails) return null;
     return (
         <div className={cn('space-y-2', className)}>
             <div className='text-muted-foreground text-sm'>
                 No gear selected.
             </div>
-            <AddGearButton />
+            {!isReadOnly && <AddGearButton />}
         </div>
     );
 };
