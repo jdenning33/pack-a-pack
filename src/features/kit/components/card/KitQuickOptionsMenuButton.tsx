@@ -8,7 +8,7 @@ import {
 } from '@/ui/dropdown-menu';
 import { Button } from '@/ui/button';
 import { Settings } from 'lucide-react';
-import { useKitContext } from '../useKitContext';
+import { useKitContext } from '../../useKitContext';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export function KitQuickOptionsMenuButton({

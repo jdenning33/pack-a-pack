@@ -17,7 +17,7 @@ import {
     KitModalTrigger,
 } from '@/features/kit/components/modal/KitModal';
 import { usePack } from '@/features/pack/usePack';
-import { KitQuickOptionsMenuButton } from '@/features/kit/components/KitQuickOptionsMenuButton';
+import { KitQuickOptionsMenuButton } from '@/features/kit/components/card/KitQuickOptionsMenuButton';
 import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
 import { GearSearchBar } from '@/features/gear-search/components/GearSearchBar';
 import { PackProvider } from '@/features/pack/PackProvider';

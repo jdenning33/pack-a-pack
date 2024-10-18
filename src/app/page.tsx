@@ -1,5 +1,5 @@
 'use client';
-import { AddPackButton } from '@/features/pack/components/AddPackButton';
+import { AddPackButton } from '@/features/pack/components/modal/AddPackButton';
 import { Button } from '@/ui/button';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { ScrollArea } from '@/ui/scroll-area';

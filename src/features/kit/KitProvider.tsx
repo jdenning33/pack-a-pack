@@ -11,7 +11,6 @@ export const KitProvider: React.FC<
         packId: string;
         isReadOnly: boolean;
         afterKitUpdated?: (kit: Kit) => void;
-        onIsEditingChanged?: (isEditing: boolean) => void;
         children: React.ReactNode;
     } & React.HTMLAttributes<HTMLDivElement>
 > = ({

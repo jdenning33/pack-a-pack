@@ -76,7 +76,6 @@ export function supabaseToAppPack(
     supabasePack: SupabasePack,
     kits?: Kit[]
 ): Pack {
-    console.log(supabasePack);
     return {
         id: supabasePack.id,
         userId: supabasePack.user_id,

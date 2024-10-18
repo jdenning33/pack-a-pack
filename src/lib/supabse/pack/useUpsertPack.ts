@@ -14,6 +14,7 @@ export function useUpsertPack() {
             pack: Optional<Pack | PackSummary, 'id'>
         ): Promise<string> => {
             const supabasePack = appToSupabasePack(pack);
+            console.log('supabasePack:', supabasePack);
             const { data, error } = await supabase
                 .from('packs')
                 .upsert(supabasePack)
@@ -43,6 +44,7 @@ export function useUpsertPack() {
             });
         },
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['pack'] });
             queryClient.invalidateQueries({ queryKey: ['packs'] });
             toast.success('Pack saved.');
         },
