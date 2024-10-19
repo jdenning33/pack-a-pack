@@ -1,5 +1,4 @@
 'use client';
-import { AddPackButton } from '@/features/pack/components/AddPackButton';
 import { Button } from '@/ui/button';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { ScrollArea } from '@/ui/scroll-area';
@@ -13,6 +12,7 @@ import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
 import { GearCarousel } from '@/features/gear-search/components/GearCarousel';
 import { PackSearchProvider } from '@/features/pack-search/PackSearchProvider';
 import { PackList } from '@/features/pack-search/components/PackList';
+import { StandardAddPackButton } from '@/features/pack/components/StandardAddPackButton';
 
 export default function Home() {
     return (
@@ -109,7 +109,7 @@ function HomePagePackTabs() {
                         </TabsTrigger>
                     </TabsList>
                     <AuthGuard fallback={<div className='ml-auto' />}>
-                        <AddPackButton
+                        <StandardAddPackButton
                             variant='ghost'
                             size='sm'
                             className='ml-auto'

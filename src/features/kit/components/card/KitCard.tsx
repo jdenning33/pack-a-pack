@@ -134,12 +134,20 @@ function KitItemLineItem({
                     modalContext?.setIsOpen(true);
                     onItemSelected?.(item);
                 }}
-                className='text-sm font-medium leading-none hover:underline hover:cursor-pointer'
+                className='text-sm font-medium leading-none hover:underline hover:cursor-pointer line-clamp-1'
+                title={
+                    item.name + (item.gear ? ' (' + item.gear.name + ')' : '')
+                }
             >
-                {item.name}{' '}
+                {item.name}
                 {item.quantity > 1 && (
                     <span className='text-xs font-semibold text-muted-foreground'>
-                        x{item.quantity}
+                        &nbsp;x{item.quantity}
+                    </span>
+                )}
+                {item.gear && (
+                    <span className='text-xs text-muted-foreground'>
+                        &nbsp;&nbsp;{'(' + item.gear.name + ')'}
                     </span>
                 )}
             </label>

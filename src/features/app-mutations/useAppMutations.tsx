@@ -6,6 +6,7 @@ export interface AppMutationsContextType {
     // Pack mutations
     upsertPack: (pack: Omit<Pack | PackSummary, 'id'>) => Promise<string>;
     deletePack: (pack: Pack | PackSummary) => void;
+    clonePack: (pack: Pack, withGear: boolean) => Promise<string>;
 
     // Kit mutations
     addKit: (kit: Omit<Kit, 'id'>) => Promise<string>;

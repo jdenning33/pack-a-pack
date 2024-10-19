@@ -1,38 +1,23 @@
 import React from 'react';
-import { Button } from '@/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from '@/ui/dropdown-menu';
-import { Minus, Settings } from 'lucide-react';
-import { DropdownMenuItem } from '@/ui/dropdown-menu';
+import { Minus } from 'lucide-react';
 import { Edit, Trash, Maximize } from 'lucide-react';
 import { useGearContext } from '../useGearContext';
 import { Item } from '@/lib/appTypes';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { useAuth } from '@/features/auth/useAuth';
+import {
+    QuickActionMenu,
+    QuickActionMenuOption,
+} from '@/ui/quick-actions-dropdown-menu';
 
 // GearQuickOptions component
-export const GearQuickOptionsMenu: React.FC<{ children: React.ReactNode }> = ({
-    children,
-}) => {
+export const GearQuickOptionsMenu: React.FC<{
+    className?: string;
+    children: React.ReactNode;
+}> = ({ className, children }) => {
     const { gear, isEditing } = useGearContext();
     if (!gear || isEditing) return null;
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    variant='ghost'
-                    size='sm'
-                    className='absolute top-1 right-1 z-10'
-                >
-                    <Settings size={16} />
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>{children}</DropdownMenuContent>
-        </DropdownMenu>
-    );
+    return <QuickActionMenu className={className}>{children}</QuickActionMenu>;
 };
 
 export const GearEditOption: React.FC = () => {
@@ -40,44 +25,38 @@ export const GearEditOption: React.FC = () => {
     const { setIsEditing, setIsModalOpen } = useGearContext();
     if (!user) return null;
     return (
-        <DropdownMenuItem
+        <QuickActionMenuOption
             onClick={() => {
                 setIsEditing(true);
                 setIsModalOpen(true);
             }}
-        >
-            <Edit className='mr-2 h-4 w-4' />
-            Edit
-        </DropdownMenuItem>
+            icon={<Edit size={14} />}
+            name='Edit'
+        />
     );
 };
 
 export const GearRemoveFromItemOption = ({ item }: { item: Item }) => {
     const { user } = useAuth();
     const { updateItem } = useAppMutations();
-
     if (!user) return null;
     return (
-        <DropdownMenuItem
-            onClick={(_) => updateItem({ ...item, gearId: undefined })}
-        >
-            <Minus className='mr-2 h-4 w-4' />
-            Remove from Item
-        </DropdownMenuItem>
+        <QuickActionMenuOption
+            onClick={() => updateItem({ ...item, gearId: undefined })}
+            icon={<Minus size={14} />}
+            name='Remove from Item'
+        />
     );
 };
 
 export const GearOpenModalOption: React.FC = () => {
     const { setIsModalOpen } = useGearContext();
     return (
-        <DropdownMenuItem
-            onClick={(_) => {
-                setIsModalOpen(true);
-            }}
-        >
-            <Maximize className='mr-2 h-4 w-4' />
-            Open in Modal
-        </DropdownMenuItem>
+        <QuickActionMenuOption
+            onClick={() => setIsModalOpen(true)}
+            icon={<Maximize size={14} />}
+            name='Details'
+        />
     );
 };
 
@@ -88,22 +67,10 @@ export const GearDeleteOption: React.FC = () => {
     if (!gear) return null;
     if (!user) return null;
     return (
-        <DropdownMenuItem onClick={() => removeGear(gear)}>
-            <Trash className='mr-2 h-4 w-4' />
-            Delete
-        </DropdownMenuItem>
-    );
-};
-
-export const GearOption: React.FC<{
-    onClick: () => void;
-    icon: React.ReactNode;
-    name: string;
-}> = ({ onClick, icon, name }) => {
-    return (
-        <DropdownMenuItem onClick={onClick}>
-            {icon}
-            {name}
-        </DropdownMenuItem>
+        <QuickActionMenuOption
+            onClick={() => removeGear(gear)}
+            icon={<Trash size={14} />}
+            name='Delete'
+        />
     );
 };

@@ -17,15 +17,15 @@ import {
     KitModalTrigger,
 } from '@/features/kit/components/modal/KitModal';
 import { usePack } from '@/features/pack/usePack';
-import { KitQuickOptionsMenuButton } from '@/features/kit/components/KitQuickOptionsMenuButton';
+import { KitQuickOptionsMenuButton } from '@/features/kit/components/quick-options/KitQuickOptionsMenuButton';
 import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
 import { GearSearchBar } from '@/features/gear-search/components/GearSearchBar';
 import { PackProvider } from '@/features/pack/PackProvider';
-import { EditKitCardOption } from '@/features/kit/components/card/EditKitCardOption';
+import { EditKitCardOption } from '@/features/kit/components/quick-options/EditKitCardOption';
 import {
     KitOpenEditModalOption,
     KitOpenModalOption,
-} from '@/features/kit/components/modal/KitOpenModalOption';
+} from '@/features/kit/components/quick-options/KitOpenModalOption';
 
 export default function PacksPage() {
     return (

@@ -78,11 +78,15 @@ const GearModalContent: React.FC = () => {
                 </div>
             </DialogHeader>
             <DialogDescription className=''>
-                <div>
-                    {gear.isPublic ? 'Public ' : 'Private '}
-                    gear. Contributed by {gear.createdByUserName}
-                </div>
                 {gear.description}
+                <br />
+                {gear.isPublic && (
+                    <span>
+                        <br />
+                        Public gear. <br />
+                        Contributed by {gear.createdByUserName}
+                    </span>
+                )}
             </DialogDescription>
             {user && (
                 <DialogFooter className='mt-4 !justify-start'>
