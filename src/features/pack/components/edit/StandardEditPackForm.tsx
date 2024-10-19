@@ -5,7 +5,6 @@ import {
     PackNameInput,
     PackDescriptionInput,
     PackIsPublicInput,
-    PackIsGearLockerInput,
     PackSaveButton,
     PackCancelButton,
 } from './EditPackForm';

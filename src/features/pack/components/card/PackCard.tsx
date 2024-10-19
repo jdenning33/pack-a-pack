@@ -5,18 +5,18 @@ import {
     CardHeader,
     CardTitle,
 } from '@/ui/card';
-import { PackSummary } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
+import { usePack } from '../../usePack';
 
 export function PackCard({
-    pack,
     className,
     children,
     ...cardProps
 }: {
-    pack: PackSummary;
     className?: string;
 } & React.ComponentProps<typeof Card>) {
+    const { pack } = usePack();
+    if (!pack) return null;
     return (
         <>
             <Card

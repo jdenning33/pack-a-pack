@@ -6,14 +6,16 @@ import { useAuth } from '@/features/auth/useAuth';
 import { Plus } from 'lucide-react';
 import { usePacks } from '@/features/pack-search/usePackSearch';
 
-export function StandardAddPackButton() {
+export function StandardAddPackButton({
+    ...buttonProps
+}: React.ComponentProps<typeof Button>) {
     const { user } = useAuth();
     const { packs } = usePacks();
     const [editPackId, setEditPackId] = useState<string | null>(null);
     const pack = packs.find((pack) => pack.id === editPackId);
 
     return (
-        <div>
+        <>
             {editPackId && (
                 <LoadedPackProvider
                     pack={{ ...pack!, kits: [] }}
@@ -30,11 +32,12 @@ export function StandardAddPackButton() {
                 onClick={() => setEditPackId('new')}
                 variant='outline'
                 size='sm'
+                {...buttonProps}
                 disabled={!user}
                 disabledTitle='You must be logged in to add a pack'
             >
                 <Plus className='mr-2 h-4 w-4' /> Add New Pack
             </Button>
-        </div>
+        </>
     );
 }

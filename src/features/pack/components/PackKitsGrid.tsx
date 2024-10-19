@@ -6,14 +6,12 @@ import {
     KitModal,
     KitModalTrigger,
 } from '@/features/kit/components/modal/KitModal';
-import {
-    DeleteKitOption,
-    KitQuickOptionsMenuButton,
-} from '@/features/kit/components/card/KitQuickOptionsMenuButton';
+import { KitQuickOptionsMenuButton } from '@/features/kit/components/quick-options/KitQuickOptionsMenuButton';
+import { DeleteKitOption } from '@/features/kit/components/quick-options/DeleteKitOption';
 import {
     KitOpenEditModalOption,
     KitOpenModalOption,
-} from '@/features/kit/components/modal/KitOpenModalOption';
+} from '@/features/kit/components/quick-options/KitOpenModalOption';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 

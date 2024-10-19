@@ -13,7 +13,7 @@ export function usePackQueryShallow(packId: string) {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from('packs')
-                .select('*')
+                .select('*,user:profiles!packs_user_id_fkey(id,username)')
                 .eq('id', packId)
                 .order('created_at', { ascending: true })
                 .single();

@@ -10,9 +10,11 @@ import { Button } from '@/ui/button';
 import { Settings } from 'lucide-react';
 
 export function QuickActionMenu({
+    useStaticPosition = false,
     className,
     children,
 }: {
+    useStaticPosition?: boolean;
     className?: string;
     children?: ReactNode;
 }) {
@@ -22,7 +24,10 @@ export function QuickActionMenu({
                 <Button
                     variant='ghost'
                     size='sm'
-                    className={cn('absolute top-1 right-1 z-10', className)}
+                    className={cn(
+                        useStaticPosition ? '' : 'absolute top-1 right-1 z-10',
+                        className
+                    )}
                 >
                     <Settings size={14} />
                 </Button>

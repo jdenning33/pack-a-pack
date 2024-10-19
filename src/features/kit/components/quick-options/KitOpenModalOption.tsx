@@ -1,19 +1,20 @@
 import React from 'react';
-import { DropdownMenuItem } from '@/ui/dropdown-menu';
-import { useKitModalContext } from './KitModal';
+import { useKitModalContext } from '../modal/KitModal';
 import { useKitContext } from '../../useKitContext';
+import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
+import { Edit, Maximize } from 'lucide-react';
 
 export function KitOpenModalOption() {
     const { setIsOpen, setIsEditing } = useKitModalContext();
     return (
-        <DropdownMenuItem
+        <QuickActionMenuOption
             onClick={() => {
                 setIsOpen(true);
                 setIsEditing(false);
             }}
-        >
-            Details
-        </DropdownMenuItem>
+            name='Details'
+            icon={<Maximize size={14} />}
+        />
     );
 }
 
@@ -23,13 +24,13 @@ export function KitOpenEditModalOption() {
 
     if (isReadOnly) return null;
     return (
-        <DropdownMenuItem
+        <QuickActionMenuOption
             onClick={() => {
                 setIsOpen(true);
                 setIsEditing(true);
             }}
-        >
-            Edit
-        </DropdownMenuItem>
+            name='Edit'
+            icon={<Edit size={14} />}
+        />
     );
 }

@@ -83,15 +83,13 @@ export function EditPackForm({
             return;
         }
 
-        console.log('data', data);
-
         const newPack: Optional<PackSummary, 'id'> = {
             ...pack,
             ...data,
             userId: user.id,
             isDeleted: false,
         };
-        console.log('newPack', newPack);
+
         const upsertId = await upsertPack(newPack as PackSummary);
         afterPackUpdated?.({ ...newPack, id: upsertId, kits: [] });
         reset();

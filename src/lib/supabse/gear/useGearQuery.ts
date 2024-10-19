@@ -19,7 +19,8 @@ export function useGearQuery(queryParams: GearQueryParams) {
                         user:profiles!gear_created_by_id_fkey (username)
                     `
                 )
-                .eq('is_deleted', false);
+                .eq('is_deleted', false)
+                .order('name', { ascending: false });
 
             console.log('queryParams', queryParams);
 
