@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
-import { useGearContext } from '../useGearContext';
+import { useGearContext } from '../../useGearContext';
 import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Gear } from '@/lib/appTypes';
@@ -21,7 +21,7 @@ export const GearCard: React.FC<{ className?: string }> = ({ className }) => {
                         alt={gear.name}
                         fill={true}
                         sizes='100% 100%'
-                        className='rounded object-contain'
+                        className='rounded object-contain object-top'
                     />
                 </div>
                 <div className='absolute top-2 right-2 flex flex-col items-end gap-1'>

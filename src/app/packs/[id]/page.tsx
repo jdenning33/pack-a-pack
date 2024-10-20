@@ -1,7 +1,7 @@
 'use client';
 import { PackProvider } from '@/features/pack/PackProvider';
-import { PackContents } from '@/features/pack/components/PackContents';
 import { useParams } from 'next/navigation';
+import { PackContents } from './PackContents';
 
 export default function PackPage() {
     const { id } = useParams();

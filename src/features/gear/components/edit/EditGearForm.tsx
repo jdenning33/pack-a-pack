@@ -111,7 +111,13 @@ export function EditGearForm({
         let id;
         if (newGear.id) id = await updateGear(newGear as Gear);
         else id = await addGear(newGear as Omit<Gear, 'id'>);
-        afterSave?.({ ...newGear, id, createdByUserName: '' });
+        afterSave?.({
+            ...newGear,
+            id,
+            createdByUserName: '',
+            isOwnedByUser: true,
+            isRetiredByUser: false,
+        });
         //reset the form
         reset();
     }
@@ -279,7 +285,7 @@ export function GearSaveButton() {
         <Button
             type='submit'
             disabled={gear?.isPublic}
-            disabledTitle='You cannot edit public gear directly, use "Save As New" instead'
+            disabledTitle='You cannot edit public gear directly, use "Save As New" instead.'
         >
             Save
         </Button>
@@ -293,6 +299,7 @@ export function GearSaveAsNewButton() {
             type='button'
             variant={'outline'}
             onClick={handleSubmit(onSubmitSaveAsNew)}
+            title='This will create a new gear item with these details, leaving the original unchanged.'
         >
             Save As New
         </Button>

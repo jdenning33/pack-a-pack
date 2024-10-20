@@ -6,6 +6,7 @@ export interface AppMutationsContextType {
     // Pack mutations
     upsertPack: (pack: Omit<Pack | PackSummary, 'id'>) => Promise<string>;
     deletePack: (pack: Pack | PackSummary) => void;
+    clonePack: (pack: Pack, withGear: boolean) => Promise<string>;
 
     // Kit mutations
     addKit: (kit: Omit<Kit, 'id'>) => Promise<string>;
@@ -21,6 +22,9 @@ export interface AppMutationsContextType {
     addGear: (gear: Omit<Gear, 'id'>) => Promise<string>;
     updateGear: (gear: Gear) => Promise<string>;
     removeGear: (gear: Gear) => Promise<void>;
+
+    addGearToUser: (gearId: string) => Promise<void>;
+    removeGearFromUser: (gearId: string) => Promise<void>;
 }
 
 export const AppMutationsContext = createContext<

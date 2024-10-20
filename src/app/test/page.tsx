@@ -1,14 +1,12 @@
 'use client';
 import { GearProvider } from '../../features/gear/GearProvider';
 import { GearModal } from '@/features/gear/components/GearModal';
-import {
-    GearDeleteOption,
-    GearEditOption,
-    GearOpenModalOption,
-} from '@/features/gear/components/GearQuickOptionsMenu';
-import { GearQuickOptionsMenu } from '@/features/gear/components/GearQuickOptionsMenu';
+import { GearEditOption } from '@/features/gear/components/quick-options/GearEditOption';
+import { GearDeleteOption } from '@/features/gear/components/quick-options/GearDeleteOption';
+import { GearOpenModalOption } from '@/features/gear/components/quick-options/GearOpenModalOption';
+import { GearQuickOptionsMenu } from '@/features/gear/components/quick-options/GearQuickOptionsMenu';
 import { Gear } from '@/lib/appTypes';
-import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
+import { GearDetailCard } from '@/features/gear/components/card/GearDetailCard';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 import { KitProvider } from '@/features/kit/KitProvider';
 import { KitCard } from '@/features/kit/components/card/KitCard';
@@ -17,15 +15,17 @@ import {
     KitModalTrigger,
 } from '@/features/kit/components/modal/KitModal';
 import { usePack } from '@/features/pack/usePack';
-import { KitQuickOptionsMenuButton } from '@/features/kit/components/KitQuickOptionsMenuButton';
+import { KitQuickOptionsMenuButton } from '@/features/kit/components/quick-options/KitQuickOptionsMenuButton';
 import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
 import { GearSearchBar } from '@/features/gear-search/components/GearSearchBar';
 import { PackProvider } from '@/features/pack/PackProvider';
-import { EditKitCardOption } from '@/features/kit/components/card/EditKitCardOption';
+import { EditKitCardOption } from '@/features/kit/components/quick-options/EditKitCardOption';
 import {
     KitOpenEditModalOption,
     KitOpenModalOption,
-} from '@/features/kit/components/modal/KitOpenModalOption';
+} from '@/features/kit/components/quick-options/KitOpenModalOption';
+import { GearAddToUserGearOption } from '@/features/gear/components/quick-options/GearAddToUserGearOption';
+import { GearRemoveFromUserGearOption } from '@/features/gear/components/quick-options/GearRemoveFromMyGearOption';
 
 export default function PacksPage() {
     return (
@@ -53,6 +53,7 @@ export default function PacksPage() {
 
 function KitDetailsCardList() {
     const { pack, isReadOnly } = usePack();
+    if (!pack) return null;
     return pack.kits.map((kit) => (
         <KitProvider
             key={kit.id}
@@ -90,6 +91,8 @@ function GearDetailsCardList() {
         createdById: '',
         createdByUserName: 'unknown',
         isDeleted: false,
+        isOwnedByUser: false,
+        isRetiredByUser: false,
     };
     return (
         <div className=''>
@@ -98,6 +101,8 @@ function GearDetailsCardList() {
                 <GearQuickOptionsMenu>
                     <GearEditOption />
                     <GearOpenModalOption />
+                    <GearAddToUserGearOption />
+                    <GearRemoveFromUserGearOption />
                     <DropdownMenuSeparator />
                     <GearDeleteOption />
                 </GearQuickOptionsMenu>

@@ -1,5 +1,4 @@
 'use client';
-import { AddPackButton } from '@/features/pack/components/AddPackButton';
 import { Button } from '@/ui/button';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { ScrollArea } from '@/ui/scroll-area';
@@ -13,6 +12,7 @@ import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
 import { GearCarousel } from '@/features/gear-search/components/GearCarousel';
 import { PackSearchProvider } from '@/features/pack-search/PackSearchProvider';
 import { PackList } from '@/features/pack-search/components/PackList';
+import { StandardAddPackButton } from '@/features/pack/components/StandardAddPackButton';
 
 export default function Home() {
     return (
@@ -24,9 +24,13 @@ export default function Home() {
                             <HomePagePackTabs />
                         </div>
                         <div className='relative w-72 hidden sm:flex'>
-                            <Link href='#' className='absolute inset-0'>
+                            <Link
+                                href='https://rei.com'
+                                target='_blank'
+                                className='absolute inset-0'
+                            >
                                 <ImageWithFallback
-                                    src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
+                                    src='https://i.pinimg.com/736x/07/d1/59/07d1599c005aa33987cfba860bafc8de.jpg'
                                     alt={''}
                                     className='rounded-lg object-fill'
                                     priority={true}
@@ -109,7 +113,7 @@ function HomePagePackTabs() {
                         </TabsTrigger>
                     </TabsList>
                     <AuthGuard fallback={<div className='ml-auto' />}>
-                        <AddPackButton
+                        <StandardAddPackButton
                             variant='ghost'
                             size='sm'
                             className='ml-auto'

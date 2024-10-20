@@ -3,8 +3,9 @@ import { Pack } from '@/lib/appTypes';
 import { createContext, useContext } from 'react';
 
 export interface PackContract {
-    pack: Pack;
+    pack?: Pack;
     isReadOnly: boolean;
+    afterPackUpdated?: (kit: Pack) => void;
 }
 
 export const PackContext = createContext<PackContract | undefined>(undefined);
