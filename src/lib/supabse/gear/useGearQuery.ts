@@ -3,8 +3,10 @@ import { supabaseToAppGear } from '../supabaseTypes';
 import { Gear } from '@/lib/appTypes';
 import { supabase } from '../supabaseClient';
 import { GearQueryParams } from '@/features/gear-search/useGearSearch';
+import { useAuth } from '@/features/auth/useAuth';
 
 export function useGearQuery(queryParams: GearQueryParams) {
+    const { user } = useAuth();
     return useQuery<Gear[]>({
         queryKey: ['gear', queryParams],
         queryFn: async () => {
@@ -14,7 +16,7 @@ export function useGearQuery(queryParams: GearQueryParams) {
                     `
                         *,
                         user_gear!inner (
-                            user_id
+                            user_id,is_retired
                         ),
                         user:profiles!gear_created_by_id_fkey (username)
                     `
@@ -22,22 +24,22 @@ export function useGearQuery(queryParams: GearQueryParams) {
                 .eq('is_deleted', false)
                 .order('name', { ascending: false });
 
-            console.log('queryParams', queryParams);
-
             if (queryParams.searchText) {
                 const searchText = queryParams.searchText.replace(/\s/g, '%');
                 query = query.like('name', `%${searchText}%`);
             }
 
             if (queryParams.gearType === 'user') {
-                query = query.eq('user_gear.user_id', queryParams.gearUserId);
+                query = query
+                    .eq('user_gear.user_id', queryParams.gearUserId)
+                    .eq('user_gear.is_retired', false);
             } else {
                 query = query.eq('is_public', true);
             }
 
             const { data, error } = await query;
             if (error) throw error;
-            return data.map(supabaseToAppGear);
+            return data.map((d) => supabaseToAppGear(d, user?.id || ''));
         },
     });
 }

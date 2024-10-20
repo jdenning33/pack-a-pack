@@ -22,6 +22,9 @@ export interface AppMutationsContextType {
     addGear: (gear: Omit<Gear, 'id'>) => Promise<string>;
     updateGear: (gear: Gear) => Promise<string>;
     removeGear: (gear: Gear) => Promise<void>;
+
+    addGearToUser: (gearId: string) => Promise<void>;
+    removeGearFromUser: (gearId: string) => Promise<void>;
 }
 
 export const AppMutationsContext = createContext<

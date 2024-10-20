@@ -1,16 +1,7 @@
 'use client';
-import { StandardAddKitButton } from '@/features/kit/components/StandardAddKitButton';
 import { PackProvider } from '@/features/pack/PackProvider';
-import { PackKitsGrid } from '@/features/pack/components/PackKitsGrid';
-import { ClonePackModal } from '@/features/pack/components/clone-modal/ClonePackModal';
-import { PackModal } from '@/features/pack/components/modal/PackModal';
-import { PackCloneOption } from '@/features/pack/components/quick-options/PackCloneOption';
-import { PackDeleteOption } from '@/features/pack/components/quick-options/PackDeleteOption';
-import { PackEditInModalOption } from '@/features/pack/components/quick-options/PackEditInModalOption';
-import { PackQuickOptionsMenu } from '@/features/pack/components/quick-options/PackQuickOptionsMenuButton';
-import { usePack } from '@/features/pack/usePack';
-import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import { useParams } from 'next/navigation';
+import { PackContents } from './PackContents';
 
 export default function PackPage() {
     const { id } = useParams();
@@ -20,51 +11,5 @@ export default function PackPage() {
                 <PackContents />
             </div>
         </PackProvider>
-    );
-}
-
-export function PackContents() {
-    const { pack } = usePack();
-
-    if (!pack) return <div>Pack not found!</div>;
-    if (pack.isDeleted)
-        return (
-            <div>
-                <h1 className='text-2xl font-bold'>{pack.name}</h1>
-                <div>This pack has been deleted.</div>
-            </div>
-        );
-    return (
-        <div className='flex flex-col gap-4'>
-            <div className='flex justify-between items-end'>
-                <div className='flex items-center gap-3'>
-                    <h1 className='text-2xl font-bold'>{pack.name}</h1>
-                    <PackModal>
-                        <ClonePackModal>
-                            <PackQuickOptionsMenu useStaticPosition>
-                                <PackEditInModalOption />
-                                <PackCloneOption />
-                                <DropdownMenuSeparator />
-                                <PackDeleteOption />
-                            </PackQuickOptionsMenu>
-                        </ClonePackModal>
-                    </PackModal>
-                </div>
-                <StandardAddKitButton />
-            </div>
-            <PackNoKitsMessage />
-            <PackKitsGrid />
-        </div>
-    );
-}
-
-function PackNoKitsMessage({ className }: { className?: string }) {
-    const { pack, isReadOnly } = usePack();
-    if (pack?.kits.length) return null;
-    return (
-        <div className={className}>
-            Looks like this pack is empty.
-            {!isReadOnly && ' Add a kit to get started!'}
-        </div>
     );
 }

@@ -12,6 +12,7 @@ import { usePack } from '../../usePack';
 import { Button } from '@/ui/button';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { useRouter } from 'next/navigation';
+import { Pack } from '@/lib/appTypes';
 
 export const ClonePackModalContext = React.createContext<{
     isOpen: boolean;
@@ -43,7 +44,7 @@ export const ClonePackModal = ({
     const [isWorking, setIsWorking] = useState(false);
     const router = useRouter();
 
-    async function clonePack(pack: any, withGear: boolean) {
+    async function clonePack(pack: Pack, withGear: boolean) {
         setIsWorking(true);
         const newPackId = await clonePack2(pack, withGear);
         router.push(`/packs/${newPackId}`);
@@ -74,9 +75,9 @@ export const ClonePackModal = ({
                         <DialogTitle>Clone Pack</DialogTitle>
                         <DialogDescription>
                             This will create a copy of all the kits and items in
-                            the pack under your account. If you choose to "Clone
-                            With Gear", then all gear in this pack will also be
-                            added to your gear closet.
+                            the pack under your account. If you choose to
+                            &quot;Clone With Gear&quot;, then all gear in this
+                            pack will also be added to your gear closet.
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter className='!justify-start'>

@@ -69,6 +69,7 @@ interface SupabaseGear {
     updated_at: string;
     is_deleted: boolean;
     user?: { username: string };
+    user_gear?: { user_id: string; is_retired: boolean }[];
 }
 
 // Convert Supabase Pack to application Pack
@@ -133,7 +134,10 @@ export function appToSupabaseKit(
 }
 
 // Convert Supabase Item to application Item
-export function supabaseToAppItem(supabaseItem: SupabaseItem): Item {
+export function supabaseToAppItem(
+    supabaseItem: SupabaseItem,
+    userId: string
+): Item {
     return {
         id: supabaseItem.id,
         isDeleted: supabaseItem.is_deleted,
@@ -145,7 +149,7 @@ export function supabaseToAppItem(supabaseItem: SupabaseItem): Item {
         notes: supabaseItem.notes,
         gearId: supabaseItem.user_gear?.gear_id,
         gear: supabaseItem.user_gear?.gear
-            ? supabaseToAppGear(supabaseItem.user_gear.gear)
+            ? supabaseToAppGear(supabaseItem.user_gear.gear, userId)
             : undefined,
     };
 }
@@ -172,10 +176,13 @@ export function appToSupabaseItem(
 export function convertNestedSupabasePack(
     supabasePack: SupabasePack & {
         kits: (SupabaseKit & { items: SupabaseItem[] })[];
-    }
+    },
+    userId: string
 ): Pack {
     const kits = supabasePack.kits.map((supabaseKit) => {
-        const items = supabaseKit.items.map(supabaseToAppItem);
+        const items = supabaseKit.items.map((i) =>
+            supabaseToAppItem(i, userId)
+        );
         return supabaseToAppKit(supabaseKit, items);
     });
     return supabaseToAppPack(supabasePack, kits);
@@ -199,7 +206,10 @@ export function appToSupabaseGear(
     };
 }
 
-export function supabaseToAppGear(supabaseGear: SupabaseGear): Gear {
+export function supabaseToAppGear(
+    supabaseGear: SupabaseGear,
+    userId: string
+): Gear {
     return {
         id: supabaseGear.id,
         name: supabaseGear.name,
@@ -213,5 +223,13 @@ export function supabaseToAppGear(supabaseGear: SupabaseGear): Gear {
         createdById: supabaseGear.created_by_id,
         createdByUserName: supabaseGear.user?.username || 'unknown',
         isDeleted: supabaseGear.is_deleted,
+        isOwnedByUser:
+            supabaseGear.user_gear?.some(
+                (ug) => ug.user_id === userId && !ug.is_retired
+            ) || false,
+        isRetiredByUser:
+            supabaseGear.user_gear?.some(
+                (ug) => ug.user_id === userId && ug.is_retired
+            ) || false,
     };
 }

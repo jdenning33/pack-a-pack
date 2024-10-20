@@ -4,13 +4,11 @@ import {
     GearModal,
     GearModalTrigger,
 } from '@/features/gear/components/GearModal';
-import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
-import {
-    GearQuickOptionsMenu,
-    GearEditOption,
-    GearOpenModalOption,
-    GearDeleteOption,
-} from '@/features/gear/components/GearQuickOptionsMenu';
+import { GearDetailCard } from '@/features/gear/components/card/GearDetailCard';
+import { GearQuickOptionsMenu } from '@/features/gear/components/quick-options/GearQuickOptionsMenu';
+import { GearEditOption } from '@/features/gear/components/quick-options/GearEditOption';
+import { GearDeleteOption } from '@/features/gear/components/quick-options/GearDeleteOption';
+import { GearOpenModalOption } from '@/features/gear/components/quick-options/GearOpenModalOption';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 import { GearSearchBar } from '@/features/gear-search/components/GearSearchBar';
 import {
@@ -19,6 +17,8 @@ import {
 } from '@/features/gear-search/GearSearchProvider';
 import { GearProvider } from '@/features/gear/GearProvider';
 import { useAuth } from '@/features/auth/useAuth';
+import { GearAddToUserGearOption } from '@/features/gear/components/quick-options/GearAddToUserGearOption';
+import { GearRemoveFromUserGearOption } from '@/features/gear/components/quick-options/GearRemoveFromMyGearOption';
 
 export default function GearPage() {
     const { user } = useAuth();
@@ -57,6 +57,8 @@ function GearDetailsCardList() {
                     <GearQuickOptionsMenu>
                         <GearOpenModalOption />
                         <GearEditOption />
+                        <GearAddToUserGearOption />
+                        <GearRemoveFromUserGearOption />
                         <DropdownMenuSeparator />
                         <GearDeleteOption />
                     </GearQuickOptionsMenu>

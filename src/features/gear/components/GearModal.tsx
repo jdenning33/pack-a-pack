@@ -17,6 +17,8 @@ import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
 import { Button } from '@/ui/button';
 import { useAuth } from '@/features/auth/useAuth';
+import { BadgeCheckIcon, EarthIcon } from 'lucide-react';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 // GearModal component
 
@@ -41,12 +43,13 @@ export const GearModal: React.FC = () => {
 const GearModalContent: React.FC = () => {
     const { user } = useAuth();
     const { gear, setIsEditing } = useGearContext();
+    const { addGearToUser, removeGearFromUser } = useAppMutations();
     if (!gear) return null;
 
     return (
         <>
             <DialogHeader>
-                <div className='w-full max-w-md flex items-center gap-4'>
+                <div className='w-full max-w-md flex gap-4'>
                     {/* gear image */}
                     <div className='relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0'>
                         <ImageWithFallback
@@ -55,7 +58,7 @@ const GearModalContent: React.FC = () => {
                             alt={gear.name || 'placeholder'}
                             fill={true}
                             sizes='100% 100%'
-                            className='rounded object-contain'
+                            className='rounded object-contain object-top'
                         />
                     </div>
                     <div>
@@ -63,7 +66,23 @@ const GearModalContent: React.FC = () => {
                             {gear.name}
                         </DialogTitle>
 
-                        <div className='flex flex-wrap gap-2 mb-2'>
+                        <div className='flex flex-wrap gap-2 mb-2 items-center'>
+                            {gear.isPublic && (
+                                <span title='Public Gear'>
+                                    <EarthIcon
+                                        className='h-4 w-4 -translate-y-[1px] opacity-80'
+                                        strokeWidth={1.5}
+                                    />
+                                </span>
+                            )}
+                            {gear.isOwnedByUser && (
+                                <span title='Your Gear'>
+                                    <BadgeCheckIcon
+                                        className='h-4 w-4 scale-105 -translate-y-[1px] opacity-80'
+                                        strokeWidth={1.5}
+                                    />
+                                </span>
+                            )}
                             <Badge variant='outline' className='bg-background'>
                                 {gear.brand}
                             </Badge>
@@ -83,14 +102,42 @@ const GearModalContent: React.FC = () => {
                 {gear.isPublic && (
                     <span>
                         <br />
+                        {gear.isPublic && (
+                            <span
+                                title='Public product'
+                                className='inline-block align-text-bottom mr-1'
+                            >
+                                <EarthIcon
+                                    className='h-4 w-4 -translate-y-[1px] opacity-80'
+                                    strokeWidth={1.5}
+                                />
+                            </span>
+                        )}
                         Public gear. <br />
                         Contributed by {gear.createdByUserName}
                     </span>
                 )}
             </DialogDescription>
-            {user && (
+            {user && !gear.isOwnedByUser && (
                 <DialogFooter className='mt-4 !justify-start'>
                     <Button onClick={() => setIsEditing(true)}>Edit</Button>
+                    <Button
+                        variant='outline'
+                        onClick={() => addGearToUser(gear.id)}
+                    >
+                        Add To My Gear
+                    </Button>
+                </DialogFooter>
+            )}
+            {user && gear.isOwnedByUser && (
+                <DialogFooter className='mt-4 !justify-start'>
+                    <Button onClick={() => setIsEditing(true)}>Edit</Button>
+                    <Button
+                        variant='outline'
+                        onClick={() => removeGearFromUser(gear.id)}
+                    >
+                        Remove From My Gear
+                    </Button>
                 </DialogFooter>
             )}
         </>

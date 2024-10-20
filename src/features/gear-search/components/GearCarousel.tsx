@@ -10,7 +10,10 @@ import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import { GearProvider } from '../../gear/GearProvider';
 import { AddGearButton } from '../../gear/components/AddGearButton';
-import { GearCard, GearSelectBanner } from '../../gear/components/GearCard';
+import {
+    GearCard,
+    GearSelectBanner,
+} from '../../gear/components/card/GearCard';
 import { GearModal, GearModalTrigger } from '../../gear/components/GearModal';
 import { useGearSearch } from '../useGearSearch';
 
