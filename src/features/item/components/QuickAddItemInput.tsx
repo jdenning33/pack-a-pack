@@ -4,6 +4,7 @@ import { Input } from '@/ui/input';
 import React from 'react';
 import { useAppMutations } from '../../app-mutations/useAppMutations';
 import { useItemContext } from '../useItem';
+import { ItemSuggestionMenu } from '../../kit-suggestions/ItemSuggestionsMenu';
 
 export const QuickAddPackItem = () => {
     const { addItem } = useAppMutations();
@@ -35,13 +36,20 @@ export const QuickAddPackItem = () => {
                 disabled={isReadOnly}
                 title='You do not have access to add items to this pack'
             />
-            <Button
-                type='submit'
-                disabled={isReadOnly}
-                disabledTitle='You do not have access to add items to this pack'
-            >
-                <Plus className='h-4 w-4' />
-            </Button>
+            <div className='flex'>
+                <Button
+                    type='submit'
+                    className='rounded-r-none'
+                    disabled={isReadOnly}
+                    disabledTitle='You do not have access to add items to this pack'
+                >
+                    <Plus className='h-4 w-4' />
+                </Button>
+                <ItemSuggestionMenu
+                    variant='outline'
+                    className='rounded-l-none px-1'
+                />
+            </div>
         </form>
     );
 };
