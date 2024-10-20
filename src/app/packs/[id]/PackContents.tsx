@@ -1,4 +1,5 @@
 'use client';
+import { KitSuggestionMenu } from '@/features/kit-suggestions/KitSuggestionMenu';
 import { StandardAddKitButton } from '@/features/kit/components/StandardAddKitButton';
 import { PackKitsGrid } from '@/features/pack/components/PackKitsGrid';
 import { ClonePackModal } from '@/features/pack/components/clone-modal/ClonePackModal';
@@ -38,7 +39,18 @@ export function PackContents() {
                         </ClonePackModal>
                     </PackModal>
                 </div>
-                <StandardAddKitButton />
+                <div className='flex button-group'>
+                    <StandardAddKitButton
+                        variant='outline'
+                        size='sm'
+                        className='rounded-r-none'
+                    />
+                    <KitSuggestionMenu
+                        variant='secondary'
+                        size='sm'
+                        className='rounded-l-none px-2'
+                    />
+                </div>
             </div>
             <PackNoKitsMessage />
             <PackKitsGrid />
