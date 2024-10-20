@@ -8,7 +8,7 @@ export function KitOverviewPanel({ kit }: { kit: Kit }) {
                 {kit.items.length} items in this kit
             </p>
             <hr />
-            <div>Common &quot;{kit.name}&quot; Items</div>
+            {/* <div>Common &quot;{kit.name}&quot; Items</div> */}
         </div>
     );
 }

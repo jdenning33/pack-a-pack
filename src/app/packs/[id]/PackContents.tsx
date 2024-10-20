@@ -39,16 +39,16 @@ export function PackContents() {
                         </ClonePackModal>
                     </PackModal>
                 </div>
-                <div className='flex button-group'>
+                <div className='flex gap-1'>
                     <StandardAddKitButton
-                        variant='outline'
-                        size='sm'
-                        className='rounded-r-none'
-                    />
-                    <KitSuggestionMenu
                         variant='secondary'
                         size='sm'
-                        className='rounded-l-none px-2'
+                        className=''
+                    />
+                    <KitSuggestionMenu
+                        variant='outline'
+                        size='sm'
+                        className='px-2'
                     />
                 </div>
             </div>
