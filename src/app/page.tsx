@@ -32,7 +32,7 @@ export default function Home() {
                                 <ImageWithFallback
                                     src='https://i.pinimg.com/736x/07/d1/59/07d1599c005aa33987cfba860bafc8de.jpg'
                                     alt={''}
-                                    className='rounded-lg object-fill'
+                                    className='object-fill'
                                     priority={true}
                                     fill={true}
                                     sizes='100% 100%'
