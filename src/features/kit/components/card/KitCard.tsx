@@ -117,15 +117,17 @@ function KitItemLineItem({
 
     return (
         <li key={item.id} className='flex items-center space-x-2 w-fit'>
-            <Checkbox
-                id={`item-${item.id}`}
-                checked={item.isPacked}
-                onCheckedChange={(_) => toggleItem(item)}
-                onClick={(e) => {
-                    e.stopPropagation();
-                }}
-                disabled={isReadOnly}
-            />
+            {!isReadOnly && (
+                <Checkbox
+                    id={`item-${item.id}`}
+                    checked={item.isPacked}
+                    onCheckedChange={(_) => toggleItem(item)}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}
+                    disabled={isReadOnly}
+                />
+            )}
             <label
                 htmlFor={`item-${item.id}`}
                 onClick={(e) => {
