@@ -5,14 +5,12 @@ import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { NoGearSelectedHolder } from '@/features/item/components/NoGearSelectedHolder';
-import { GearDetailCard } from '@/features/gear/components/GearDetailCard';
-import {
-    GearDeleteOption,
-    GearEditOption,
-    GearOpenModalOption,
-    GearRemoveFromItemOption,
-} from '@/features/gear/components/GearQuickOptionsMenu';
-import { GearQuickOptionsMenu } from '@/features/gear/components/GearQuickOptionsMenu';
+import { GearDetailCard } from '@/features/gear/components/card/GearDetailCard';
+import { GearEditOption } from '@/features/gear/components/quick-options/GearEditOption';
+import { GearDeleteOption } from '@/features/gear/components/quick-options/GearDeleteOption';
+import { GearOpenModalOption } from '@/features/gear/components/quick-options/GearOpenModalOption';
+import { GearRemoveFromItemOption } from '@/features/gear/components/quick-options/GearRemoveFromItemOption';
+import { GearQuickOptionsMenu } from '@/features/gear/components/quick-options/GearQuickOptionsMenu';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 import { QuickEditItemName } from './QuickEditItemName';
 import { cn } from '@/lib/utils';

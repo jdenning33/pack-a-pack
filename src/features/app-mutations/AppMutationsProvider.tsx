@@ -12,6 +12,7 @@ import { Pack, PackSummary, Kit, Item, Gear } from '@/lib/appTypes';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import { toast } from 'sonner';
 import { Optional } from '@/lib/utils';
+import { useUpsertUserGear } from '@/lib/supabse/user-gear/useUpsertUserGear';
 
 export const AppMutationsProvider: React.FC<{
     children: ReactNode;
@@ -21,6 +22,7 @@ export const AppMutationsProvider: React.FC<{
     const upsertKitMutation = useUpsertKit();
     const upsertItemMutation = useUpsertItem(user?.id);
     const upsertGearMutation = useUpsertGear();
+    const upsertUserGearMutation = useUpsertUserGear(user?.id);
 
     const clonePack = async (pack: Pack, withGear: boolean) => {
         if (!user) {
@@ -139,6 +141,19 @@ export const AppMutationsProvider: React.FC<{
         },
         removeGear: async (gear: Gear) => {
             await upsertGearMutation.mutateAsync({ ...gear, isDeleted: true });
+        },
+
+        addGearToUser: async (gearId: string) => {
+            await upsertUserGearMutation.mutateAsync({
+                gearId,
+                isRetired: false,
+            });
+        },
+        removeGearFromUser: async (gearId: string) => {
+            await upsertUserGearMutation.mutateAsync({
+                gearId,
+                isRetired: true,
+            });
         },
     };
 

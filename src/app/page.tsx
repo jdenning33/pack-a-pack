@@ -24,9 +24,13 @@ export default function Home() {
                             <HomePagePackTabs />
                         </div>
                         <div className='relative w-72 hidden sm:flex'>
-                            <Link href='#' className='absolute inset-0'>
+                            <Link
+                                href='https://rei.com'
+                                target='_blank'
+                                className='absolute inset-0'
+                            >
                                 <ImageWithFallback
-                                    src='https://www.rei.com/dam/19792690_sahara-clothing-sct_web_med.jpeg'
+                                    src='https://i.pinimg.com/736x/07/d1/59/07d1599c005aa33987cfba860bafc8de.jpg'
                                     alt={''}
                                     className='rounded-lg object-fill'
                                     priority={true}
