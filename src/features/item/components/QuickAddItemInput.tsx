@@ -4,7 +4,7 @@ import { Input } from '@/ui/input';
 import React from 'react';
 import { useAppMutations } from '../../app-mutations/useAppMutations';
 import { useItemContext } from '../useItem';
-import { ItemSuggestionMenu } from '../../kit-suggestions/ItemSuggestionsMenu';
+import { ItemSuggestionMenu } from '../../suggestions/ItemSuggestionsMenu';
 
 export const QuickAddPackItem = () => {
     const { addItem } = useAppMutations();

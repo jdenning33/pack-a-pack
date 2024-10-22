@@ -1,5 +1,5 @@
 'use client';
-import { KitSuggestionMenu } from '@/features/kit-suggestions/KitSuggestionMenu';
+import { KitSuggestionMenu } from '@/features/suggestions/KitSuggestionMenu';
 import { StandardAddKitButton } from '@/features/kit/components/StandardAddKitButton';
 import { PackKitsGrid } from '@/features/pack/components/PackKitsGrid';
 import { ClonePackModal } from '@/features/pack/components/clone-modal/ClonePackModal';
