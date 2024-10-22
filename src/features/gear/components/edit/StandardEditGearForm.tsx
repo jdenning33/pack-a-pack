@@ -3,17 +3,20 @@ import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import {
     EditGearForm,
-    GearImage,
-    GearNameInput,
-    GearDescriptionInput,
-    GearBrandInput,
-    GearWeightInput,
-    GearPriceInput,
-    GearImageUrlInput,
     GearSaveButton,
     GearSaveAsNewButton,
     GearCancelButton,
 } from './EditGearForm';
+import { GearImage } from './GearImage';
+import { InteractiveGearImage } from './InteractiveGearImage';
+import { GearBrandInput } from './GearBrandInput';
+import { GearImageUrlInput } from './GearImageUrlInput';
+import { GearDescriptionInput } from './GearDescriptionInput';
+import { GearPriceInput } from './GearPriceInput';
+import { GearWeightInput } from './GearWeightInput';
+import { GearNameInput } from './GearNameInput';
+import { UploadImageInput } from './UploadImageInput';
+import { UploadImageInputWithDownload } from './UploadImageInputWithDownload';
 
 export function StandardEditGearForm(props: {
     gear?: Gear;
@@ -32,7 +35,11 @@ export function StandardEditGearInputs({ className }: { className?: string }) {
     return (
         <div className={cn('space-y-4', className)}>
             <div className='flex gap-4'>
-                <GearImage />
+                {/* <div> */}
+                <InteractiveGearImage />
+                {/* <GearImage /> */}
+                {/* <UploadImageInput /> */}
+                {/* </div> */}
                 <div className='flex flex-col gap-4'>
                     <GearNameInput />
                     <div className='flex gap-4'>
@@ -43,7 +50,8 @@ export function StandardEditGearInputs({ className }: { className?: string }) {
                 </div>
             </div>
             <GearDescriptionInput />
-            <GearImageUrlInput />
+            {/* <GearImageUrlInput /> */}
+            <UploadImageInput />
         </div>
     );
 }
