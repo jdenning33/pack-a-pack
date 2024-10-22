@@ -2,14 +2,16 @@ import React, { useRef, useState } from 'react';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { useEditGearForm } from './EditGearForm';
 import { Controller } from 'react-hook-form';
-import { supabase } from '@/lib/supabse/supabaseClient';
 import { ImagePlusIcon, Loader } from 'lucide-react';
 import { Input } from '@/ui/input';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
+import { toast } from 'sonner';
 
-export function InteractiveGearImage() {
+export function GearInteractiveImage() {
     const { control, gear } = useEditGearForm();
     const [isLoading, setIsLoading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { uploadGearImageFromFile } = useAppMutations();
 
     return (
         <Controller
@@ -52,29 +54,17 @@ export function InteractiveGearImage() {
                             const file = e.target.files?.[0];
                             if (!file) return;
 
-                            setIsLoading(true);
                             try {
-                                const { data, error } = await supabase.storage
-                                    .from('gear-images')
-                                    .upload(
-                                        `${addRandom4CharStringToFileName(
-                                            file.name
-                                        )}`,
-                                        file
-                                    );
-
-                                if (error) {
-                                    console.log(error);
-                                } else {
-                                    const { data: publicUrlData } =
-                                        supabase.storage
-                                            .from('gear-images')
-                                            .getPublicUrl(data.path);
-
-                                    onChange(publicUrlData.publicUrl);
-                                }
+                                setIsLoading(true);
+                                const publicUrl = await uploadGearImageFromFile(
+                                    file
+                                );
+                                onChange(publicUrl);
+                            } catch (err) {
+                                console.error(err);
+                                toast.error('Failed to upload image');
                             } finally {
-                                setTimeout(() => setIsLoading(false), 500);
+                                setTimeout(() => setIsLoading(false), 1000);
                             }
                         }}
                     />
@@ -82,14 +72,4 @@ export function InteractiveGearImage() {
             )}
         />
     );
-}
-
-function generateRandom4CharString() {
-    return Math.random().toString(36).substring(2, 6);
-}
-
-export function addRandom4CharStringToFileName(fileName: string) {
-    const fileParts = fileName.split('.');
-    const fileExtension = fileParts.pop();
-    return [...fileParts, generateRandom4CharString(), fileExtension].join('.');
 }

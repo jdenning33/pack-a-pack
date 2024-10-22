@@ -2,77 +2,44 @@ import React, { useState } from 'react';
 import { Input } from '@/ui/input';
 import { cn } from '@/lib/utils';
 import { useEditGearForm } from './EditGearForm';
-import { supabase } from '@/lib/supabse/supabaseClient';
 import { Controller } from 'react-hook-form';
 import { Button } from '@/ui/button';
 import { Loader } from 'lucide-react';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
-function generateRandom4CharString() {
-    return Math.random().toString(36).substring(2, 6);
-}
-
-function addRandom4CharStringToFileName(fileName: string) {
-    const fileParts = fileName.split('.');
-    const fileExtension = fileParts.pop();
-    return [...fileParts, generateRandom4CharString(), fileExtension].join('.');
-}
-
-async function uploadImageFromUrl(
-    imageUrl: string,
-    bucketName: string = 'gear-images'
-) {
-    try {
-        // Use a CORS proxy
-        const corsProxyUrl =
-            'https://corsproxy.io/?' + encodeURIComponent(imageUrl);
-
-        // Fetch the image through the proxy
-        const response = await fetch(corsProxyUrl);
-        if (!response.ok) throw new Error('Failed to fetch image');
-
-        // Get the image blob
-        const imageBlob = await response.blob();
-
-        // Generate a unique filename
-        const fileExtension = imageUrl.split('.').pop()?.split('?')[0] || 'jpg';
-        const randomString = Math.random().toString(36).substring(2, 6);
-        const fileName = `${randomString}.${fileExtension}`;
-
-        // Upload to Supabase
-        const { data, error } = await supabase.storage
-            .from(bucketName)
-            .upload(fileName, imageBlob, {
-                contentType: imageBlob.type,
-            });
-
-        if (error) throw error;
-
-        // Get the public URL
-        const { data: publicUrlData } = supabase.storage
-            .from(bucketName)
-            .getPublicUrl(data.path);
-
-        return publicUrlData.publicUrl;
-    } catch (error) {
-        console.error('Error uploading image:', error);
-        throw error;
-    }
-}
-
-export function UploadImageInput({ className }: { className?: string }) {
+export function GearUploadImageFromUrlInput({
+    className,
+}: {
+    className?: string;
+}) {
     const { control } = useEditGearForm();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const { uploadGearImageFromUrl } = useAppMutations();
+    const [uploadFromUrl, setUploadFromUrl] = useState(false);
+
+    if (!uploadFromUrl) {
+        return (
+            <Button
+                variant='link'
+                className='p-0'
+                onClick={() => setUploadFromUrl(true)}
+            >
+                Upload Gear Image from Web URL
+            </Button>
+        );
+    }
 
     return (
-        <div className={cn('min-w-20 space-y-2', className)}>
+        <div className={cn('min-w-20 max-w-sm space-y-1', className)}>
             <Controller
                 name='image'
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <div className='space-y-2'>
+                render={({ field: { onChange } }) => (
+                    <div className='flex items-center'>
                         <Input
+                            className='rounded-r-none'
                             placeholder='Image URL (optional)'
                             type='text'
                             onChange={(e) => {
@@ -82,15 +49,18 @@ export function UploadImageInput({ className }: { className?: string }) {
                         />
                         <Button
                             type='button'
+                            variant='outline'
                             onClick={async () => {
                                 if (!imageUrl) return;
                                 setIsLoading(true);
                                 setError(null);
                                 try {
-                                    const newUrl = await uploadImageFromUrl(
+                                    const newUrl = await uploadGearImageFromUrl(
                                         imageUrl
                                     );
                                     onChange(newUrl);
+                                    setImageUrl(null);
+                                    setUploadFromUrl(false);
                                 } catch (err) {
                                     setError(
                                         'Failed to upload image. Please try a different URL.'
@@ -101,7 +71,7 @@ export function UploadImageInput({ className }: { className?: string }) {
                                 }
                             }}
                             disabled={isLoading || !imageUrl}
-                            className='w-full'
+                            className='rounded-l-none'
                         >
                             {isLoading ? (
                                 <>
@@ -109,15 +79,13 @@ export function UploadImageInput({ className }: { className?: string }) {
                                     Uploading...
                                 </>
                             ) : (
-                                'Upload Image'
+                                'Upload'
                             )}
                         </Button>
-                        {error && (
-                            <p className='text-sm text-red-500'>{error}</p>
-                        )}
                     </div>
                 )}
             />
+            {error && <p className='text-sm text-red-500'>{error}</p>}
         </div>
     );
 }

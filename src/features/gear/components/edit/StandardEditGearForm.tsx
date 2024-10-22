@@ -7,16 +7,13 @@ import {
     GearSaveAsNewButton,
     GearCancelButton,
 } from './EditGearForm';
-import { GearImage } from './GearImage';
-import { InteractiveGearImage } from './InteractiveGearImage';
+import { GearInteractiveImage } from './GearInteractiveImage';
 import { GearBrandInput } from './GearBrandInput';
-import { GearImageUrlInput } from './GearImageUrlInput';
 import { GearDescriptionInput } from './GearDescriptionInput';
 import { GearPriceInput } from './GearPriceInput';
 import { GearWeightInput } from './GearWeightInput';
 import { GearNameInput } from './GearNameInput';
-import { UploadImageInput } from './UploadImageInput';
-import { UploadImageInputWithDownload } from './UploadImageInputWithDownload';
+import { GearUploadImageFromUrlInput } from './GearUploadImageFromUrlInput';
 
 export function StandardEditGearForm(props: {
     gear?: Gear;
@@ -36,7 +33,7 @@ export function StandardEditGearInputs({ className }: { className?: string }) {
         <div className={cn('space-y-4', className)}>
             <div className='flex gap-4'>
                 {/* <div> */}
-                <InteractiveGearImage />
+                <GearInteractiveImage />
                 {/* <GearImage /> */}
                 {/* <UploadImageInput /> */}
                 {/* </div> */}
@@ -51,7 +48,7 @@ export function StandardEditGearInputs({ className }: { className?: string }) {
             </div>
             <GearDescriptionInput />
             {/* <GearImageUrlInput /> */}
-            <UploadImageInput />
+            <GearUploadImageFromUrlInput />
         </div>
     );
 }

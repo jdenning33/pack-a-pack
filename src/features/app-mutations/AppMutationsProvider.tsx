@@ -13,6 +13,8 @@ import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import { toast } from 'sonner';
 import { Optional } from '@/lib/utils';
 import { useUpsertUserGear } from '@/lib/supabse/user-gear/useUpsertUserGear';
+import { uploadGearImageFromFile } from '@/lib/supabse/gear-images/uploadGearImageFromFile';
+import { uploadGearImageFromUrl } from '@/lib/supabse/gear-images/uploadGearImageFromUrl';
 
 export const AppMutationsProvider: React.FC<{
     children: ReactNode;
@@ -154,6 +156,13 @@ export const AppMutationsProvider: React.FC<{
                 gearId,
                 isRetired: true,
             });
+        },
+
+        uploadGearImageFromFile: async (file: File) => {
+            return uploadGearImageFromFile(file);
+        },
+        uploadGearImageFromUrl: async (url) => {
+            return uploadGearImageFromUrl(url);
         },
     };
 

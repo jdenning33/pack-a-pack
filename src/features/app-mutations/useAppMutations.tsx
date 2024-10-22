@@ -25,6 +25,9 @@ export interface AppMutationsContextType {
 
     addGearToUser: (gearId: string) => Promise<void>;
     removeGearFromUser: (gearId: string) => Promise<void>;
+
+    uploadGearImageFromFile: (file: File) => Promise<string>;
+    uploadGearImageFromUrl: (url: string) => Promise<string>;
 }
 
 export const AppMutationsContext = createContext<
