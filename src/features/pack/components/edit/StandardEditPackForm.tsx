@@ -1,13 +1,9 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import {
-    EditPackForm,
-    PackNameInput,
-    PackDescriptionInput,
-    PackIsPublicInput,
-    PackSaveButton,
-    PackCancelButton,
-} from './EditPackForm';
+import { EditPackForm, PackSaveButton, PackCancelButton } from './EditPackForm';
+import { PackNameInput } from './PackNameInput';
+import { PackIsPublicInput } from './PackIsPublicInput';
+import { PackDescriptionInput } from './PackDescriptionInput';
 
 export function StandardEditPackForm(
     props: Omit<React.ComponentProps<typeof EditPackForm>, 'children'>
@@ -23,10 +19,12 @@ export function StandardEditPackForm(
 
 export function StandardEditPackInputs({ className }: { className?: string }) {
     return (
-        <div className={cn('space-y-4', className)}>
-            <PackNameInput />
-            <PackDescriptionInput />
-            <PackIsPublicInput />
+        <div className={cn('flex gap-4', className)}>
+            <div className='space-y-4 flex-1'>
+                <PackNameInput />
+                <PackDescriptionInput />
+                <PackIsPublicInput />
+            </div>
         </div>
     );
 }

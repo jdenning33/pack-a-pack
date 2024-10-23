@@ -4,19 +4,14 @@ import {
     Control,
     UseFormRegister,
     FieldErrors,
-    Controller,
 } from 'react-hook-form';
 import { Button } from '@/ui/button';
-import { Input } from '@/ui/input';
-import { Textarea } from '@/ui/textarea';
 import { PackSummary } from '@/lib/appTypes';
-import { Optional, cn } from '@/lib/utils';
+import { Optional } from '@/lib/utils';
 import { useAuth } from '@/features/auth/useAuth';
 import { toast } from 'sonner';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { usePack } from '../../usePack';
-import { Checkbox } from '@/ui/checkbox';
-import { Label } from '@/ui/label';
 
 export interface PackFormValues {
     name: string;
@@ -39,7 +34,7 @@ type PackFormContract = {
 
 const EditPackContext = React.createContext<PackFormContract | null>(null);
 
-function useEditPackForm() {
+export function useEditPackForm() {
     const context = React.useContext(EditPackContext);
     if (!context) {
         throw new Error(
@@ -116,86 +111,6 @@ export function EditPackForm({
                 {children}
             </form>
         </EditPackContext.Provider>
-    );
-}
-
-export function PackNameInput({ className }: { className?: string }) {
-    const { register, errors } = useEditPackForm();
-    return (
-        <div className={cn(className)}>
-            <Input
-                id='name'
-                placeholder='Pack Name'
-                {...register('name', {
-                    required: 'Pack name is required',
-                })}
-                aria-invalid={!!errors.name}
-            />
-            {errors.name && (
-                <p className='text-sm text-red-600'>{errors.name.message}</p>
-            )}
-        </div>
-    );
-}
-
-export function PackDescriptionInput({ className }: { className?: string }) {
-    const { register, errors } = useEditPackForm();
-    return (
-        <div className={className}>
-            <Textarea
-                id='description'
-                placeholder='Description'
-                {...register('description')}
-                aria-invalid={!!errors.description}
-            />
-            {errors.description && (
-                <p className='text-sm text-red-600'>
-                    {errors.description.message}
-                </p>
-            )}
-        </div>
-    );
-}
-
-export function PackIsPublicInput({ className }: { className?: string }) {
-    const { control } = useEditPackForm();
-    return (
-        <div className={cn('flex items-center space-x-2', className)}>
-            <Controller
-                control={control}
-                name='isPublic'
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <Checkbox
-                        id='isPublic'
-                        onCheckedChange={onChange}
-                        onBlur={onBlur}
-                        checked={value}
-                    />
-                )}
-            />
-            <Label htmlFor='isPublic'>Make this pack public</Label>
-        </div>
-    );
-}
-
-export function PackIsGearLockerInput({ className }: { className?: string }) {
-    const { control } = useEditPackForm();
-    return (
-        <div className={cn('flex items-center space-x-2', className)}>
-            <Controller
-                control={control}
-                name='isGearLocker'
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <Checkbox
-                        id='isGearLocker'
-                        onCheckedChange={onChange}
-                        onBlur={onBlur}
-                        checked={value}
-                    />
-                )}
-            />
-            <Label htmlFor='isGearLocker'>Use as gear locker</Label>
-        </div>
     );
 }
 
