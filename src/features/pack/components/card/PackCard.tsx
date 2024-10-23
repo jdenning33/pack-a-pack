@@ -26,7 +26,7 @@ export function PackCard({
                 {...cardProps}
             >
                 {children}
-                <CardHeader>
+                <CardHeader className='pb-3'>
                     <CardTitle className=''>{pack.name}</CardTitle>
                     <CardDescription>
                         {pack.isPublic && (
@@ -37,8 +37,15 @@ export function PackCard({
                         {pack.userName}
                     </CardDescription>
                 </CardHeader>
-                <CardContent className=''>
-                    <p className='text-sm'>{pack.description}</p>
+                <CardContent className='pt-0'>
+                    <p className='text-sm'>
+                        {pack.description}
+                        {!pack.description && (
+                            <span className='text-muted-foreground'>
+                                No description
+                            </span>
+                        )}
+                    </p>
                 </CardContent>
             </Card>
         </>

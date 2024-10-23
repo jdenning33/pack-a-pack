@@ -201,7 +201,7 @@ export function PackIsGearLockerInput({ className }: { className?: string }) {
 
 export function PackSaveButton() {
     const { pack } = useEditPackForm();
-    return <Button type='submit'>{pack ? 'Update' : 'Create'} Pack</Button>;
+    return <Button type='submit'>{pack?.id ? 'Save' : 'Create'} Pack</Button>;
 }
 
 export function PackCancelButton() {

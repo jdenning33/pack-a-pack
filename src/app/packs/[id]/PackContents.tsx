@@ -10,6 +10,8 @@ import { PackEditInModalOption } from '@/features/pack/components/quick-options/
 import { PackQuickOptionsMenu } from '@/features/pack/components/quick-options/PackQuickOptionsMenuButton';
 import { usePack } from '@/features/pack/usePack';
 import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
+import { EarthIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 // For some reason next did not like this being in the same file as the PackPage...
 export function PackContents() {
@@ -26,18 +28,28 @@ export function PackContents() {
     return (
         <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-end'>
-                <div className='flex items-center gap-3'>
-                    <h1 className='text-2xl font-bold'>{pack.name}</h1>
-                    <PackModal>
-                        <ClonePackModal>
-                            <PackQuickOptionsMenu useStaticPosition={true}>
-                                <PackEditInModalOption />
-                                <PackCloneOption />
-                                <DropdownMenuSeparator />
-                                <PackDeleteOption />
-                            </PackQuickOptionsMenu>
-                        </ClonePackModal>
-                    </PackModal>
+                <div className=''>
+                    <div className='flex items-center gap-3'>
+                        <h1 className='text-2xl font-bold'>{pack.name}</h1>
+                        <PackModal>
+                            <ClonePackModal>
+                                <PackQuickOptionsMenu useStaticPosition={true}>
+                                    <PackEditInModalOption />
+                                    <PackCloneOption />
+                                    <DropdownMenuSeparator />
+                                    <PackDeleteOption />
+                                </PackQuickOptionsMenu>
+                            </ClonePackModal>
+                        </PackModal>
+                    </div>
+                    <div className='text-muted-foreground'>
+                        {pack.isPublic && (
+                            <span title='This is a publicly shared pack'>
+                                <EarthIcon className='h-3 w-3 mr-1 inline-block align-center -translate-y-[1px]' />
+                            </span>
+                        )}
+                        by {pack.userName || 'unknown'}
+                    </div>
                 </div>
                 <div className='flex gap-1'>
                     <StandardAddKitButton
@@ -52,8 +64,10 @@ export function PackContents() {
                     />
                 </div>
             </div>
-            <PackNoKitsMessage />
-            <PackKitsGrid />
+            <div className='p-2 mt-2 bg-muted rounded border min-h-[50svh]'>
+                <PackNoKitsMessage />
+                <PackKitsGrid />
+            </div>
         </div>
     );
 }
@@ -61,7 +75,7 @@ export function PackNoKitsMessage({ className }: { className?: string }) {
     const { pack, isReadOnly } = usePack();
     if (pack?.kits.length) return null;
     return (
-        <div className={className}>
+        <div className={cn('text-muted-foreground', className)}>
             Looks like this pack is empty.
             {!isReadOnly && ' Add a kit to get started!'}
         </div>

@@ -121,8 +121,8 @@ function HomePagePackTabs() {
                     </AuthGuard>
                 </div>
                 <div className='border bg-muted rounded-lg p-2 mt-2 flex-1'>
-                    <TabsContent value='user' className='mt-0 flex flex-col'>
-                        <ScrollArea className='overflow-auto h-[20rem]'>
+                    <ScrollArea className='overflow-auto h-[20rem]'>
+                        <TabsContent value='user' className='mt-0'>
                             <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
                                 <AuthGuard
                                     fallback={
@@ -138,34 +138,31 @@ function HomePagePackTabs() {
                                             packUserId: user?.id || '',
                                         }}
                                     >
-                                        <PackList />
+                                        <PackList packClassName='h-full' />
                                     </PackSearchProvider>
                                 </AuthGuard>
                             </div>
-                        </ScrollArea>
-                        <Button className='-mb-2 p-0 mx-auto' variant='link'>
-                            View All Packs
-                        </Button>
-                    </TabsContent>
-                    <TabsContent
-                        value='community'
-                        className='mt-0 flex flex-col'
-                    >
-                        <ScrollArea className='overflow-auto h-[20rem]'>
+                        </TabsContent>
+                        <TabsContent
+                            value='community'
+                            className='mt-0 flex flex-col'
+                        >
                             <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
                                 <PackSearchProvider
                                     searchDefaults={{
                                         excludePrivatePacks: true,
                                     }}
                                 >
-                                    <PackList />
+                                    <PackList packClassName='h-full' />
                                 </PackSearchProvider>
                             </div>
-                        </ScrollArea>
+                        </TabsContent>
+                    </ScrollArea>
+                    <div className='w-full flex justify-center'>
                         <Button className='-mb-2 p-0 mx-auto' variant='link'>
                             View All Packs
                         </Button>
-                    </TabsContent>
+                    </div>
                 </div>
             </div>
         </Tabs>
