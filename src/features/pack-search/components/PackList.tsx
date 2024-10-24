@@ -21,7 +21,7 @@ export const PackList = ({
     return (
         <>
             {packs.map((pack) => (
-                <LoadedPackProvider pack={{ ...pack, kits: [] }}>
+                <LoadedPackProvider key={pack.id} pack={{ ...pack, kits: [] }}>
                     <PackModal>
                         <PackModalTrigger>
                             <PackCard className={packClassName}>

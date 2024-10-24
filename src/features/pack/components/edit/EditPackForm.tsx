@@ -18,6 +18,7 @@ export interface PackFormValues {
     description: string;
     isPublic: boolean;
     isGearLocker: boolean;
+    attributes: Record<string, string | number>;
 }
 
 type PackFormContract = {
@@ -69,6 +70,7 @@ export function EditPackForm({
             description: pack?.description || '',
             isPublic: pack?.isPublic || false,
             isGearLocker: pack?.isGearLocker || false,
+            attributes: pack?.attributes || {},
         },
     });
 
@@ -77,6 +79,8 @@ export function EditPackForm({
             toast.error('Uh oh! You must be logged in to save a pack');
             return;
         }
+
+        console.log('onSubmit pack data', data);
 
         const newPack: Optional<PackSummary, 'id'> = {
             ...pack,
