@@ -22,7 +22,10 @@ export function AttributeBadge({
             )}
             <Badge
                 variant='outline'
-                className={includeType ? 'rounded-l-none' : ''}
+                className={cn(
+                    'whitespace-nowrap',
+                    includeType ? 'rounded-l-none' : ''
+                )}
             >
                 <span>{attribute.value}</span>
             </Badge>

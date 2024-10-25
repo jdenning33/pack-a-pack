@@ -64,7 +64,8 @@ export function EditAttributePopover({
             >
                 <PopoverArrow className='fill-muted-foreground' />
                 <Combobox
-                    triggerClassName='w-24 rounded-r-none focus:z-10 bg-background'
+                    triggerClassName='w-24 rounded-r-none focus:z-10 bg-background truncate'
+                    title={editType || 'Attribute Type'}
                     searchTextPlaceholder='Attribute Type...'
                     allowCustom={true}
                     value={editType}

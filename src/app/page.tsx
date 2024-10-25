@@ -23,7 +23,7 @@ export default function Home() {
                         <div className=' flex-auto'>
                             <HomePagePackTabs />
                         </div>
-                        <div className='relative w-72 hidden sm:flex'>
+                        <div className='relative w-72 shrink-0 hidden sm:flex'>
                             <Link
                                 href='https://rei.com'
                                 target='_blank'
@@ -123,7 +123,7 @@ function HomePagePackTabs() {
                 <div className='border bg-muted rounded-lg p-2 mt-2 flex-1'>
                     <ScrollArea className='overflow-auto h-[20rem]'>
                         <TabsContent value='user' className='mt-0'>
-                            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
+                            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(230px,1fr))]'>
                                 <AuthGuard
                                     fallback={
                                         <div>
@@ -158,11 +158,28 @@ function HomePagePackTabs() {
                             </div>
                         </TabsContent>
                     </ScrollArea>
-                    <div className='w-full flex justify-center'>
-                        <Button className='-mb-2 p-0 mx-auto' variant='link'>
-                            View All Packs
+                    <TabsContent
+                        value='user'
+                        className='mt-0 w-full flex justify-center'
+                    >
+                        <Button
+                            className='-mb-2 mt-1 p-0 mx-auto'
+                            variant='link'
+                        >
+                            My Packs
                         </Button>
-                    </div>
+                    </TabsContent>
+                    <TabsContent
+                        value='community'
+                        className='mt-0 w-full flex justify-center'
+                    >
+                        <Button
+                            className='-mb-2 mt-1 p-0 mx-auto'
+                            variant='link'
+                        >
+                            Explore Packs
+                        </Button>
+                    </TabsContent>
                 </div>
             </div>
         </Tabs>

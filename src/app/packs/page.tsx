@@ -3,6 +3,7 @@ import { PackSearchBar } from '@/features/pack-search/components/PacksSearchBar'
 import { PackSearchProvider } from '@/features/pack-search/PackSearchProvider';
 import { PackList } from '@/features/pack-search/components/PackList';
 import { StandardAddPackButton } from '@/features/pack/components/StandardAddPackButton';
+import { cn } from '@/lib/utils';
 
 export default function PacksPage() {
     return (
@@ -14,8 +15,12 @@ export default function PacksPage() {
                         <StandardAddPackButton />
                     </div>
                     <PackSearchBar className='mb-6' />
-                    <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(15rem,1fr))]'>
-                        <PackList packClassName='break-inside-avoid' />
+                    <div
+                        className={cn(
+                            'grid gap-4 grid-cols-[repeat(auto-fill,minmax(15rem,1fr))]'
+                        )}
+                    >
+                        <PackList packClassName='h-full overflow-hidden break-inside-avoid' />
                     </div>
                 </div>
             </PackSearchProvider>

@@ -10,7 +10,7 @@ export function PackGoToDetailsPageOption() {
     return (
         <Link key={pack.id} href={`/packs/${pack.id}`}>
             <QuickActionMenuOption
-                name='Go to Pack Page'
+                name='Open Pack'
                 icon={<ExternalLink size={14} />}
             />
         </Link>

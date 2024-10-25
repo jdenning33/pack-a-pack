@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { EditAttributePopover } from './EditAttributePopover';
 
 export type AttributeValue = string | number;
@@ -21,6 +21,11 @@ export function EditAttributesList({
 }) {
     const [attributes, setAttributes] = useState<Attributes>(
         initialAttributes || {}
+    );
+
+    const remainingAttributes = useMemo(
+        () => availableAttributes.filter((attr) => !attributes[attr]),
+        [availableAttributes, attributes]
     );
 
     const handleAttributeUpdate = (
@@ -50,7 +55,7 @@ export function EditAttributesList({
                 <EditAttributePopover
                     key={type}
                     attribute={{ type, value }}
-                    availableAttributes={availableAttributes}
+                    availableAttributes={remainingAttributes}
                     onUpdate={(attr) =>
                         handleAttributeUpdate(type, attr.type, attr.value)
                     }
@@ -58,7 +63,7 @@ export function EditAttributesList({
                 />
             ))}
             <EditAttributePopover
-                availableAttributes={availableAttributes}
+                availableAttributes={remainingAttributes}
                 onUpdate={(value) => {
                     handleAttributeUpdate('', value.type, value.value);
                 }}

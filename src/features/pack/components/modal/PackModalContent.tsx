@@ -21,8 +21,8 @@ export const PackModalContent: React.FC = () => {
     return (
         <>
             <DialogHeader className=''>
-                <div className='flex gap-4 items-baseline'>
-                    <DialogTitle className='text-2xl font-bold'>
+                <div className='gap-4 items-baseline'>
+                    <DialogTitle className='text-2xl font-bold text-left'>
                         {pack.name}
                     </DialogTitle>
                     <DialogDescription className='flex '>
@@ -31,10 +31,10 @@ export const PackModalContent: React.FC = () => {
                                 <EarthIcon className='h-3 w-3 mr-1 inline-block align-center -translate-y-[2px]' />
                             </span>
                         )}
-                        by @{pack.userName || 'unkown'}
+                        by {pack.userName || 'unkown'}
                     </DialogDescription>
                 </div>
-                <div className='flex flex-wrap gap-1'>
+                <div className='flex flex-wrap gap-1 -mx-1'>
                     {Object.entries(pack.attributes).map((attr) => (
                         <AttributeBadge
                             key={attr[0]}
@@ -54,9 +54,9 @@ export const PackModalContent: React.FC = () => {
                     </span>
                 )}
             </div>
-            <DialogFooter className='flex !justify-start mt-4'>
+            <DialogFooter className='flex flex-row gap-2 !justify-start mt-4'>
                 <Link href={`/packs/${pack.id}`}>
-                    <Button>View Pack</Button>
+                    <Button>Open Pack</Button>
                 </Link>
                 {!isReadOnly && (
                     <Button

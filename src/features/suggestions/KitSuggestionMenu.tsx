@@ -22,7 +22,7 @@ import { suggestedKits } from './suggestedKits';
 export function KitSuggestionMenu({
     ...buttonProps
 }: React.ComponentProps<typeof Button>) {
-    const { pack } = usePack();
+    const { pack, isReadOnly } = usePack();
     const { addKit } = useAppMutations();
 
     if (!pack) return null;
@@ -47,6 +47,7 @@ export function KitSuggestionMenu({
 
     const useCompact = true;
 
+    if (isReadOnly) return null;
     return (
         <Popover>
             <PopoverTrigger asChild>
