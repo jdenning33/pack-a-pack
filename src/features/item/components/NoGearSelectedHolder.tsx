@@ -5,11 +5,13 @@ import { useItemContext } from '../useItem';
 
 // CreateNewGear component
 
-export const NoGearSelectedHolder: React.FC<{ className?: string }> = ({
-    className,
-}) => {
+export const NoGearSelectedHolder: React.FC<{
+    className?: string;
+    children?: React.ReactNode;
+}> = ({ className, children }) => {
     const { item, isEditingGearDetails, isReadOnly } = useItemContext();
     if (item?.gear || isEditingGearDetails) return null;
+    if (children) return <div className={className}>{children}</div>;
     return (
         <div className={cn('space-y-2', className)}>
             <div className='text-muted-foreground text-sm'>

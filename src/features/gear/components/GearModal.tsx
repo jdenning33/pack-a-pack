@@ -19,6 +19,7 @@ import { Button } from '@/ui/button';
 import { useAuth } from '@/features/auth/useAuth';
 import { BadgeCheckIcon, EarthIcon } from 'lucide-react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
+import { cn } from '@/lib/utils';
 
 // GearModal component
 
@@ -173,13 +174,17 @@ const EditGearModalContent: React.FC = () => {
 };
 
 export const GearModalTrigger: React.FC<{
+    className?: string;
     children: React.ReactNode;
-}> = ({ children }) => {
+}> = ({ className, children }) => {
     const { setIsModalOpen } = useGearContext();
     return (
         <div
             onClick={() => setIsModalOpen(true)}
-            className='cursor-pointer hover:scale-[99%] transition-all'
+            className={cn(
+                'cursor-pointer hover:scale-[99%] transition-all',
+                className
+            )}
         >
             {children}
         </div>

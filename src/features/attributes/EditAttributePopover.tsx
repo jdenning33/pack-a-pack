@@ -1,5 +1,5 @@
 import { Button } from '@/ui/button';
-import { Combobox } from '@/ui/combobox';
+import { OpinonatedCombobox } from '@/ui/combobox';
 import { Input } from '@/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
 import { PopoverArrow } from '@radix-ui/react-popover';
@@ -63,7 +63,7 @@ export function EditAttributePopover({
                 className='p-2 bg-muted flex w-fit '
             >
                 <PopoverArrow className='fill-muted-foreground' />
-                <Combobox
+                <OpinonatedCombobox
                     triggerClassName='w-24 rounded-r-none focus:z-10 bg-background truncate'
                     title={editType || 'Attribute Type'}
                     searchTextPlaceholder='Attribute Type...'
