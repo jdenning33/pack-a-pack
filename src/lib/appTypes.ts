@@ -10,6 +10,7 @@ export interface Pack {
     kits: Kit[];
     attributes: Record<string, string | number>;
     isDeleted: boolean;
+    isTripCompleted: boolean;
 }
 export type PackSummary = Omit<Pack, 'kits'>; // This represents a gear that can be purchased to satisfy the Item it is attributed to
 

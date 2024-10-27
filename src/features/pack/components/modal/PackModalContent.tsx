@@ -11,10 +11,12 @@ import { usePackModalContext } from './PackModal';
 import Link from 'next/link';
 import { EarthIcon } from 'lucide-react';
 import { AttributeBadge } from '@/features/attributes/AttributeBadge';
+import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 
 export const PackModalContent: React.FC = () => {
     const { pack, isReadOnly } = usePack();
     const { setIsEditing } = usePackModalContext();
+    const { upsertPack } = useAppMutations();
 
     if (!pack) return null;
 
@@ -59,12 +61,22 @@ export const PackModalContent: React.FC = () => {
                     <Button>Open Pack</Button>
                 </Link>
                 {!isReadOnly && (
-                    <Button
-                        variant='outline'
-                        onClick={() => setIsEditing(true)}
-                    >
-                        Edit Details
-                    </Button>
+                    <>
+                        <Button
+                            variant='outline'
+                            onClick={() => setIsEditing(true)}
+                        >
+                            Edit Details
+                        </Button>
+                        <Button
+                            variant='outline'
+                            onClick={() =>
+                                upsertPack({ ...pack, isTripCompleted: true })
+                            }
+                        >
+                            Mark Trip as Complete
+                        </Button>
+                    </>
                 )}
             </DialogFooter>
         </>

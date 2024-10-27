@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { AuthProvider } from '@/features/auth/components/AuthProvider';
 import { Toaster } from '@/ui/sonner';
 import { AppMutationsProvider } from '@/features/app-mutations/AppMutationsProvider';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/ui/hover-card';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -76,25 +77,67 @@ function AppHeader() {
                     </Link>
                 </div>
                 <nav className='ml-auto hidden sm:flex items-center gap-4 sm:gap-6'>
-                    <Link
-                        className='text-sm font-medium hover:underline underline-offset-4'
-                        href='/packs'
-                    >
-                        Packs
-                    </Link>
-                    <Link
-                        className='text-sm font-medium hover:underline underline-offset-4'
-                        href='/gear'
-                    >
-                        Gear
-                    </Link>
+                    <HoverCard openDelay={50} closeDelay={50}>
+                        <HoverCardTrigger asChild>
+                            <Link
+                                className='text-sm font-medium hover:underline underline-offset-4'
+                                href='/gear'
+                            >
+                                Gear
+                            </Link>
+                        </HoverCardTrigger>
+                        <HoverCardContent
+                            align='start'
+                            className='flex flex-col gap-2 !w-36 !p-2'
+                        >
+                            <Link
+                                className='text-sm font-medium hover:underline underline-offset-4'
+                                href='/gear'
+                            >
+                                My Gear
+                            </Link>
+                            <Link
+                                className='text-sm font-medium hover:underline underline-offset-4'
+                                href='/community/gear'
+                            >
+                                Find Gear
+                            </Link>
+                        </HoverCardContent>
+                    </HoverCard>
+                    <HoverCard openDelay={50} closeDelay={50}>
+                        <HoverCardTrigger asChild>
+                            <Link
+                                className='text-sm font-medium hover:underline underline-offset-4'
+                                href='/packs'
+                            >
+                                Packs
+                            </Link>
+                        </HoverCardTrigger>
+                        <HoverCardContent
+                            align='start'
+                            className='flex flex-col gap-2 !w-36 !p-2'
+                        >
+                            <Link
+                                className='text-sm font-medium hover:underline underline-offset-4'
+                                href='/packs'
+                            >
+                                My Packs
+                            </Link>
+                            <Link
+                                className='text-sm font-medium hover:underline underline-offset-4'
+                                href='/community/packs'
+                            >
+                                Community Packs
+                            </Link>
+                        </HoverCardContent>
+                    </HoverCard>
                     <Link
                         className='text-sm font-medium hover:underline underline-offset-4'
                         href='/community'
                     >
                         Community
                     </Link>
-                </nav>{' '}
+                </nav>
                 <AuthGuard fallback={<AuthSignInButton />}>
                     <UserProfileDropdown />
                 </AuthGuard>
