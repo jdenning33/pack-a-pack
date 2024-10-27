@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { usePacks } from '../usePackSearch';
 import { PackCard } from '../../pack/components/card/PackCard';
 import { ReactElement } from 'react';
@@ -8,8 +7,8 @@ import { PackDeleteOption } from '@/features/pack/components/quick-options/PackD
 import { PackEditInModalOption } from '@/features/pack/components/quick-options/PackEditInModalOption';
 import { PackGoToDetailsPageOption } from '@/features/pack/components/quick-options/PackGoToDetailsPageOption';
 import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
-import { ClonePackModal } from '@/features/pack/components/clone-modal/ClonePackModal';
 import { LoadedPackProvider } from '@/features/pack/LoadedPackProvider';
+import { PackModalTrigger } from '@/features/pack/components/modal/PackModalTrigger';
 
 // PackList Component
 export const PackList = ({
@@ -22,26 +21,20 @@ export const PackList = ({
     return (
         <>
             {packs.map((pack) => (
-                <Link
-                    key={pack.id}
-                    href={`/packs/${pack.id}`}
-                    className='hover:scale-[102%] transition-all'
-                >
-                    <LoadedPackProvider pack={{ ...pack, kits: [] }}>
-                        <PackModal>
-                            <ClonePackModal>
-                                <PackCard className={packClassName}>
-                                    <PackQuickOptionsMenu>
-                                        <PackGoToDetailsPageOption />
-                                        <PackEditInModalOption />
-                                        <DropdownMenuSeparator />
-                                        <PackDeleteOption />
-                                    </PackQuickOptionsMenu>
-                                </PackCard>
-                            </ClonePackModal>
-                        </PackModal>
-                    </LoadedPackProvider>
-                </Link>
+                <LoadedPackProvider key={pack.id} pack={{ ...pack, kits: [] }}>
+                    <PackModal>
+                        <PackModalTrigger>
+                            <PackCard className={packClassName}>
+                                <PackQuickOptionsMenu>
+                                    <PackGoToDetailsPageOption />
+                                    <PackEditInModalOption />
+                                    <DropdownMenuSeparator />
+                                    <PackDeleteOption />
+                                </PackQuickOptionsMenu>
+                            </PackCard>
+                        </PackModalTrigger>
+                    </PackModal>
+                </LoadedPackProvider>
             ))}
         </>
     );

@@ -10,12 +10,7 @@ interface AuthGuardProps {
 }
 
 export const AuthGuard: React.FC<AuthGuardProps> = ({ children, fallback }) => {
-    const { user, isLoading } = useAuth();
-
-    if (isLoading) {
-        // You might want to replace this with a loading spinner or skeleton
-        return <div>Loading...</div>;
-    }
+    const { user } = useAuth();
 
     if (!user) {
         return fallback ? (

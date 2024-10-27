@@ -18,6 +18,8 @@ export interface SupabasePack {
     created_at: string;
     updated_at: string;
     is_deleted: boolean;
+    is_trip_completed: boolean;
+    attributes: Record<string, string | number>;
 }
 
 interface SupabaseKit {
@@ -87,6 +89,8 @@ export function supabaseToAppPack(
         isGearLocker: supabasePack.is_gear_locker,
         kits: kits || [],
         isDeleted: supabasePack.is_deleted,
+        isTripCompleted: supabasePack.is_trip_completed,
+        attributes: supabasePack.attributes || {},
     };
 }
 
@@ -102,6 +106,8 @@ export function appToSupabasePack(
         is_public: appPack.isPublic,
         is_gear_locker: appPack.isGearLocker,
         is_deleted: appPack.isDeleted,
+        attributes: appPack.attributes,
+        is_trip_completed: appPack.isTripCompleted,
     };
 }
 

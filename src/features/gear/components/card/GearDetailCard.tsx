@@ -5,15 +5,16 @@ import { Badge } from '@/ui/badge';
 import { useGearContext } from '../../useGearContext';
 import { StandardEditGearForm } from '../edit/StandardEditGearForm';
 import { BadgeCheckIcon, EarthIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 // GearDetailCard component
 
-export const GearDetailCard: React.FC = () => {
+export const GearDetailCard = ({ className }: { className?: string }) => {
     const { isEditing, gear, isModalOpen } = useGearContext();
     const isEditingCard = isEditing && !isModalOpen;
     if (!gear && !isEditingCard) return null;
     return (
-        <Card className='p-4 relative'>
+        <Card className={cn('p-4 relative', className)}>
             {isEditingCard ? <EditDetailPanel /> : <GearDetailCardContent />}
         </Card>
     );
@@ -65,7 +66,7 @@ export const GearDetailCardContent: React.FC = () => {
                         $ {gear.price?.toFixed(0) || '_'}
                     </Badge>
                 </div>
-                <p className='text-sm text-muted-foreground line-clamp-4'>
+                <p className='text-sm text-muted-foreground line-clamp-2'>
                     {gear.description}
                 </p>
             </div>

@@ -67,7 +67,7 @@ export function QuickEditItemName({ className }: { className?: string }) {
                     }
                 >
                     <h2 className='text-2xl font-bold mr-1'>{item.name}</h2>
-                    {isReadOnly && (
+                    {!isReadOnly && (
                         <Button
                             size='icon'
                             variant='ghost'

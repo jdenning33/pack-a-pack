@@ -49,7 +49,8 @@ export function KitModalContent({
                 <div
                     className={cn(
                         'flex flex-col gap-4 overflow-hidden',
-                        'py-4 w-2/5'
+                        'py-4 w-2/5 flex-1',
+                        selectedItem && 'hidden md:flex'
                     )}
                 >
                     {!isReadOnly && (
@@ -83,12 +84,17 @@ export function KitModalContent({
                         </ul>
                     </ScrollArea>
                 </div>
-                <div className='w-3/5 border-l bg-secondary flex flex-col'>
+                <div
+                    className={cn(
+                        'flex-[2] w-3/5 shrink-0 border-l bg-secondary flex flex-col',
+                        !selectedItem && 'hidden sm:flex'
+                    )}
+                >
                     <div className='px-4 pt-2'>
                         <KitModalBreadCrumbs />
                     </div>
 
-                    <div className='p-4 flex-1'>
+                    <div className='p-4 flex-1 overflow-hidden'>
                         {selectedItem ? (
                             <ItemProvider
                                 item={selectedItem}

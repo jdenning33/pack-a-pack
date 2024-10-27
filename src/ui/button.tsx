@@ -38,12 +38,21 @@ export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement>,
         VariantProps<typeof buttonVariants> {
     asChild?: boolean;
+    allowPropagation?: boolean;
     disabledTitle?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     (
-        { className, variant, size, asChild = false, disabledTitle, ...props },
+        {
+            className,
+            variant,
+            size,
+            asChild = false,
+            allowPropagation = false,
+            disabledTitle,
+            ...props
+        },
         ref
     ) => {
         const Comp = asChild ? Slot : 'button';
@@ -56,7 +65,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                     props.disabled && '!pointer-events-auto'
                 )}
                 onClick={(e) => {
-                    e.stopPropagation();
+                    if (!allowPropagation) e.stopPropagation();
                     props.onClick?.(e);
                 }}
                 title={props.disabled ? disabledTitle : props.title}

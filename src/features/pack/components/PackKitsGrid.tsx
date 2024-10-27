@@ -34,7 +34,9 @@ export function PackKitsGrid({ className }: { className?: string }) {
                     kit={kit}
                     className='h-full'
                     style={{
-                        gridRow: `span ${kit.items.length + 3}`,
+                        gridRow: `span ${
+                            kit.items.length + (kit.description.length ? 6 : 4)
+                        }`,
                     }}
                 >
                     <KitModal>
