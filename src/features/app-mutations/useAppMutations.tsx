@@ -1,6 +1,13 @@
 'use client';
 import { createContext, useContext } from 'react';
-import { Pack, PackSummary, Kit, Item, Gear } from '@/lib/appTypes';
+import {
+    Pack,
+    PackSummary,
+    Kit,
+    Item,
+    Gear,
+    UserGearBin,
+} from '@/lib/appTypes';
 
 export interface AppMutationsContextType {
     // Pack mutations
@@ -22,6 +29,9 @@ export interface AppMutationsContextType {
     addGear: (gear: Omit<Gear, 'id'>) => Promise<string>;
     updateGear: (gear: Gear) => Promise<string>;
     removeGear: (gear: Gear) => Promise<void>;
+
+    upsertUserGearBin: (bin: Omit<UserGearBin, 'id'>) => Promise<string>;
+    deleteUserGearBin: (bin: UserGearBin) => Promise<string>;
 
     addGearToUser: (gearId: string) => Promise<void>;
     removeGearFromUser: (gearId: string) => Promise<void>;

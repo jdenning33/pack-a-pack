@@ -8,13 +8,21 @@ import { useUpsertPack } from '@/lib/supabse/pack/useUpsertPack';
 import { useUpsertKit } from '@/lib/supabse/kit/useUpsertKit';
 import { useUpsertItem } from '@/lib/supabse/item/useUpsertItem';
 import { useUpsertGear } from '@/lib/supabse/gear/useUpsertGear';
-import { Pack, PackSummary, Kit, Item, Gear } from '@/lib/appTypes';
+import {
+    Pack,
+    PackSummary,
+    Kit,
+    Item,
+    Gear,
+    UserGearBin,
+} from '@/lib/appTypes';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import { toast } from 'sonner';
 import { Optional } from '@/lib/utils';
 import { useUpsertUserGear } from '@/lib/supabse/user-gear/useUpsertUserGear';
 import { uploadGearImageFromFile } from '@/lib/supabse/gear-images/uploadGearImageFromFile';
 import { uploadGearImageFromUrl } from '@/lib/supabse/gear-images/uploadGearImageFromUrl';
+import { useUpsertUserGearBin } from '@/lib/supabse/gear-bin/useUpsertGearBin';
 
 export const AppMutationsProvider: React.FC<{
     children: ReactNode;
@@ -25,6 +33,7 @@ export const AppMutationsProvider: React.FC<{
     const upsertItemMutation = useUpsertItem(user?.id);
     const upsertGearMutation = useUpsertGear();
     const upsertUserGearMutation = useUpsertUserGear(user?.id);
+    const upsertUserGearBinMutation = useUpsertUserGearBin();
 
     const clonePack = async (pack: Pack, withGear: boolean) => {
         if (!user) {
@@ -156,6 +165,18 @@ export const AppMutationsProvider: React.FC<{
                 gearId,
                 isRetired: true,
             });
+        },
+
+        upsertUserGearBin: async (bin: Omit<UserGearBin, 'id'>) => {
+            const result = await upsertUserGearBinMutation.mutateAsync(bin);
+            return result;
+        },
+        deleteUserGearBin: async (bin: UserGearBin) => {
+            const result = await upsertUserGearBinMutation.mutateAsync({
+                ...bin,
+                isDeleted: true,
+            });
+            return result;
         },
 
         uploadGearImageFromFile: async (file: File) => {

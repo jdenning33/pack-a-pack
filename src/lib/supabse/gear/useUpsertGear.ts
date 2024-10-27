@@ -25,6 +25,7 @@ export function useUpsertGear() {
                 .upsert({
                     gear_id: data.id,
                     user_id: gear.createdById,
+                    user_gear_bin_id: gear.userGearBinId,
                 });
             if (userGearError) throw userGearError;
 

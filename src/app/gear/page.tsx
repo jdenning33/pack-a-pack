@@ -16,6 +16,9 @@ import {
 } from '@/ui/dropdown-menu';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Button } from '@/ui/button';
+import { AddGearBinButton } from '@/features/gear-bin/components/AddGearBinButton';
+import { UserGearBinSearchProvider } from '@/features/gear-bin-search/GearBinSearchProvider';
+import { useUserGearBins } from '@/features/gear-bin-search/useGearBinSearch';
 
 // Mock data for kits and gear items
 const kits = [
@@ -169,6 +172,15 @@ export default function GearPage() {
                 </div>
             </div>
 
+            <AddGearBinButton />
+
+            <UserGearBinSearchProvider>
+                <div className='flex justify-between items-center border shadow rounded-md p-4 -mx-4'>
+                    <h1 className='text-2xl font-bold'>Gear Bins</h1>
+                    <GearBinList />
+                </div>
+            </UserGearBinSearchProvider>
+
             <Accordion
                 type='multiple'
                 defaultValue={kits.map((_, index) => `item-${index}`)}
@@ -285,5 +297,24 @@ export default function GearPage() {
                 })}
             </Accordion>
         </main>
+    );
+}
+
+function GearBinList() {
+    const { userGearBins } = useUserGearBins();
+
+    return (
+        <div className='flex flex-col gap-4'>
+            {userGearBins.map((bin) => (
+                <Card key={bin.id}>
+                    <CardContent>
+                        <h3 className='font-semibold text-lg'>{bin.name}</h3>
+                        <p className='text-sm text-muted-foreground'>
+                            {bin.description}
+                        </p>
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
     );
 }
