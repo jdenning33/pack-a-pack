@@ -7,20 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Gear } from '@/lib/appTypes';
 
-// GearDetailPanel component
 export const GearCard: React.FC<{ className?: string }> = ({ className }) => {
-    return (
-        <Card className={className}>
-            <CardContent className='p-4 relative'>
-                <GearCardContent />
-            </CardContent>
-        </Card>
-    );
-};
-
-export const GearCardContent: React.FC<{ className?: string }> = ({
-    className,
-}) => {
     const { gear } = useGearContext();
     if (!gear) return null;
     return (

@@ -87,6 +87,7 @@ export function EditPackForm({
             ...data,
             userId: user.id,
             isDeleted: false,
+            isTripCompleted: false,
         };
 
         const upsertId = await upsertPack(newPack as PackSummary);

@@ -123,7 +123,7 @@ function HomePagePackTabs() {
                 <div className='border bg-muted rounded-lg p-2 mt-2 flex-1'>
                     <ScrollArea className='overflow-auto h-[20rem]'>
                         <TabsContent value='user' className='mt-0'>
-                            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(230px,1fr))]'>
+                            <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]'>
                                 <AuthGuard
                                     fallback={
                                         <div>
