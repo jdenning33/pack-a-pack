@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Dialog, DialogContent } from '@/ui/dialog';
-import { cn } from '@/lib/utils';
 import { GearBinModalContent } from './GearBinModalContent';
 import { EditGearBinModalContent } from './EditGearBinModalContent';
 

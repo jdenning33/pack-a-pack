@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext } from 'react';
-import { UserGearBin } from '@/lib/appTypes';
+import { Gear, UserGearBin } from '@/lib/appTypes';
 
 export type UserGearBinSearchOptions = Partial<{
     searchText: string;
@@ -12,7 +12,8 @@ export type UserGearBinSearchOptions = Partial<{
 }>;
 
 export interface UserGearBinsContextType {
-    userGearBins: UserGearBin[];
+    gearBins: UserGearBin[];
+    binlessGear: Gear[];
     searchParams: UserGearBinSearchOptions;
     setSearchParams: (
         setter: (prev: UserGearBinSearchOptions) => UserGearBinSearchOptions
@@ -25,6 +26,7 @@ export const UserGearBinsContext = createContext<
 
 export const useUserGearBins = (): UserGearBinsContextType => {
     const context = useContext(UserGearBinsContext);
+
     if (context === undefined) {
         throw new Error(
             'useUserGearBins must be used within a UserGearBinsProvider'

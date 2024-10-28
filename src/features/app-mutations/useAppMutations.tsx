@@ -33,7 +33,7 @@ export interface AppMutationsContextType {
     upsertUserGearBin: (bin: Omit<UserGearBin, 'id'>) => Promise<string>;
     deleteUserGearBin: (bin: UserGearBin) => Promise<string>;
 
-    addGearToUser: (gearId: string) => Promise<void>;
+    addGearToUser: (gearId: string, gearBinId?: string) => Promise<void>;
     removeGearFromUser: (gearId: string) => Promise<void>;
 
     uploadGearImageFromFile: (file: File) => Promise<string>;

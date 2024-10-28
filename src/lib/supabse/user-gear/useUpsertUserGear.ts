@@ -8,9 +8,11 @@ export function useUpsertUserGear(userId: string | undefined) {
         mutationFn: async ({
             gearId,
             isRetired = false,
+            userGearBinId = undefined,
         }: {
             gearId: string;
             isRetired: boolean;
+            userGearBinId: string | undefined;
         }): Promise<string> => {
             if (!userId) {
                 throw new Error('You must be signed in to save items.');
@@ -22,6 +24,7 @@ export function useUpsertUserGear(userId: string | undefined) {
                     gear_id: gearId,
                     user_id: userId,
                     is_retired: isRetired,
+                    user_gear_bin_id: userGearBinId,
                 })
                 .select()
                 .single();

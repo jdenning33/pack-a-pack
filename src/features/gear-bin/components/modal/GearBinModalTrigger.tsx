@@ -49,3 +49,4 @@ export const GearBinModalTrigger = React.forwardRef<
         );
     }
 );
+GearBinModalTrigger.displayName = 'GearBinModalTrigger';
