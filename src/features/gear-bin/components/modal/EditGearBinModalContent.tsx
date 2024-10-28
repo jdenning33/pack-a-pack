@@ -30,9 +30,11 @@ export const EditGearBinModalContent: React.FC = () => {
                 </DialogDescription>
             </DialogHeader>
             <EditGearBinForm onFinished={() => setIsEditing(false)}>
-                <GearBinNameInput />
-                <GearBinDescriptionInput />
-                <DialogFooter className='!justify-start mt-10'>
+                <div className='flex flex-col gap-4'>
+                    <GearBinNameInput />
+                    <GearBinDescriptionInput />
+                </div>
+                <DialogFooter className='!justify-start mt-6'>
                     <GearBinSaveButton />
                     <GearBinCancelButton />
                 </DialogFooter>

@@ -1,4 +1,3 @@
-'use client';
 import React, { useMemo } from 'react';
 import {
     AccordionContent,
@@ -7,10 +6,16 @@ import {
 } from '@/ui/accordion';
 import { useGearBin } from '@/features/gear-bin/useGearBin';
 import { GearBinQuickOptions } from './GearBinQuickOptions';
-import { GearBinGearList } from './GearBinGearList';
 import { Gear } from '@/lib/appTypes';
+import { cn } from '@/lib/utils';
 
-export function GearBinAccordionItem() {
+export function GearBinAccordionItem({
+    className,
+    children,
+}: {
+    className?: string;
+    children: React.ReactNode;
+}) {
     const { gearBin } = useGearBin();
 
     const stats = useMemo(
@@ -23,7 +28,10 @@ export function GearBinAccordionItem() {
         <AccordionItem
             value={gearBin.id}
             key={gearBin.id}
-            className='rounded-lg [&[data-state=closed]>div]:rounded-b-md group'
+            className={cn(
+                'rounded-lg [&[data-state=closed]>div]:rounded-b-md group',
+                className
+            )}
         >
             <div className='flex items-center rounded-t-md '>
                 <AccordionTrigger className='px-4 py-2 hover:underline rounded-t-lg w-48'>
@@ -40,7 +48,7 @@ export function GearBinAccordionItem() {
                 <GearBinQuickOptions />
             </div>
             <AccordionContent className='bg-muted text-primary-foreground border rounded-md p-2 min-h-48'>
-                <GearBinGearList />
+                {children}
             </AccordionContent>
         </AccordionItem>
     );

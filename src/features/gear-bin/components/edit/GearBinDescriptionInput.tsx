@@ -10,9 +10,7 @@ export function GearBinDescriptionInput({ className }: { className?: string }) {
             <Input
                 id='description'
                 placeholder='Description'
-                {...register('description', {
-                    required: 'Bin description is required',
-                })}
+                {...register('description')}
                 aria-invalid={!!errors.description}
             />
             {errors.description && (

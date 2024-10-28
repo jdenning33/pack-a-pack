@@ -7,16 +7,25 @@ import {
 } from '@/ui/accordion';
 import { useUserGearBins } from '@/features/gear-bin-search/useGearBinSearch';
 import { UserGearBinProvider } from '@/features/gear-bin/GearBinProvider';
-import { GearBinGearList } from './GearBinGearList';
+import { cn } from '@/lib/utils';
 
-export function BinlessGearAccordionItem() {
+export function BinlessGearAccordionItem({
+    className,
+    children,
+}: {
+    className?: string;
+    children: React.ReactNode;
+}) {
     const { binlessGear } = useUserGearBins();
 
     return (
         <AccordionItem
             disabled={true}
             value='binless'
-            className='rounded-lg [&[data-state=closed]>div]:rounded-b-md group data-[state=open]:!border-b-0'
+            className={cn(
+                'rounded-lg [&[data-state=closed]>div]:rounded-b-md group data-[state=open]:!border-b-0',
+                className
+            )}
         >
             <AccordionTrigger className='px-4 py-2 hover:underline rounded-t-lg w-48 flex-none [&>svg]:opacity-20'>
                 <div className='flex items-center justify-between w-full'>
@@ -37,7 +46,7 @@ export function BinlessGearAccordionItem() {
                         gear: binlessGear,
                     }}
                 >
-                    <GearBinGearList />
+                    {children}
                 </UserGearBinProvider>
             </AccordionContent>
         </AccordionItem>

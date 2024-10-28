@@ -6,6 +6,18 @@ import { AddGearBinButton } from '@/features/gear-bin/components/AddGearBinButto
 import { UserGearBinSearchProvider } from '@/features/gear-bin-search/GearBinSearchProvider';
 import { useAuth } from '@/features/auth/useAuth';
 import { GearBinList } from '@/features/gear-bin/components/page/GearBinList';
+import { Accordion } from '@/ui/accordion';
+import { UserGearBinProvider } from '@/features/gear-bin/GearBinProvider';
+import { BinlessGearAccordionItem } from '@/features/gear-bin/components/page/BinlessGearAccordionItem';
+import { GearBinAccordionItem } from '@/features/gear-bin/components/page/GearBinAccordionItem';
+import { GearBinGearList } from '@/features/gear-bin/components/page/GearBinGearList';
+import { GearProvider } from '@/features/gear/GearProvider';
+import {
+    GearModal,
+    GearModalTrigger,
+} from '@/features/gear/components/GearModal';
+import { AlternateGearCard } from '@/features/gear/components/card/AlternateGearCard';
+import { Gear } from '@/lib/appTypes';
 
 export default function UserGearPage() {
     const { user } = useAuth();
@@ -51,8 +63,46 @@ export default function UserGearPage() {
             </div>
 
             <UserGearBinSearchProvider>
-                <GearBinList />
+                <Accordion
+                    type='multiple'
+                    className='w-full space-y-6'
+                    defaultValue={['binless']}
+                >
+                    <BinlessGearAccordionItem>
+                        <PageGearList />
+                    </BinlessGearAccordionItem>
+                    <GearBinList
+                        className='flex flex-col gap-4'
+                        binRenderer={(bin) => (
+                            <UserGearBinProvider key={bin.id} gearBin={bin}>
+                                <GearBinAccordionItem>
+                                    <PageGearList />
+                                </GearBinAccordionItem>
+                            </UserGearBinProvider>
+                        )}
+                    />
+                </Accordion>
             </UserGearBinSearchProvider>
         </main>
+    );
+}
+
+function PageGearList() {
+    return (
+        <GearBinGearList
+            className='gap-2 grid grid-cols-[repeat(auto-fill,minmax(9rem,1fr))]'
+            gearRenderer={(gear) => <PageGearCard key={gear.id} gear={gear} />}
+        ></GearBinGearList>
+    );
+}
+
+function PageGearCard({ gear }: { gear: Gear }) {
+    return (
+        <GearProvider gear={gear}>
+            <GearModal />
+            <GearModalTrigger className='h-full'>
+                <AlternateGearCard gear={gear} />
+            </GearModalTrigger>
+        </GearProvider>
     );
 }

@@ -1,14 +1,14 @@
-'use client';
 import React from 'react';
 import { useGearBin } from '@/features/gear-bin/useGearBin';
-import { GearProvider } from '@/features/gear/GearProvider';
-import {
-    GearModal,
-    GearModalTrigger,
-} from '@/features/gear/components/GearModal';
-import { AlternateGearCard } from '@/features/gear/components/card/AlternateGearCard';
+import { Gear } from '@/lib/appTypes';
 
-export function GearBinGearList() {
+export function GearBinGearList({
+    className,
+    gearRenderer,
+}: {
+    className?: string;
+    gearRenderer: (gear: Gear) => React.ReactNode;
+}) {
     const { gearBin } = useGearBin();
     const gear = gearBin?.gear || [];
 
@@ -19,15 +19,8 @@ export function GearBinGearList() {
             </div>
         );
     return (
-        <div className='gap-2 grid grid-cols-[repeat(auto-fill,minmax(9rem,1fr))]'>
-            {gear.map((gear) => (
-                <GearProvider key={gear.id} gear={gear}>
-                    <GearModal />
-                    <GearModalTrigger className='h-full'>
-                        <AlternateGearCard gear={gear} />
-                    </GearModalTrigger>
-                </GearProvider>
-            ))}
+        <div className={className}>
+            {gear.map((gear) => gearRenderer(gear))}
         </div>
     );
 }
