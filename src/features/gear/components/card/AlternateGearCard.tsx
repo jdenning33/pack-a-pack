@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Card, CardContent } from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Button } from '@/ui/button';
@@ -7,17 +7,24 @@ import { Gear } from '@/lib/appTypes';
 import { Badge } from '@/ui/badge';
 import { formatWeight } from '@/features/gear-bin/components/page/GearBinAccordionItem';
 
-export const AlternateGearCard = ({
-    gear,
-    onSelected,
-}: {
+interface AlternateGearCardProps {
     gear: Gear;
     onSelected?: () => void;
-}) => {
+    className?: string;
+}
+
+export const AlternateGearCard = forwardRef<
+    HTMLDivElement,
+    AlternateGearCardProps
+>(({ gear, onSelected, className = '' }, ref) => {
     return (
-        <Card key={gear.id} className='max-w-48 h-full relative'>
+        <Card
+            ref={ref}
+            key={gear.id}
+            className={`max-w-48 h-full rounded group relative ${className}`}
+        >
             {onSelected && (
-                <div className='rounded z-10 opacity-0 group-hover:opacity-100 transition-all flex absolute inset-0 bg-muted/50 items-center justify-center cursor-pointer'>
+                <div className='rounded z-20 opacity-0 group-hover:opacity-100 transition-all flex absolute inset-0 bg-muted/50 items-center justify-center cursor-pointer'>
                     <Button onClick={onSelected}>Add To My Gear</Button>
                 </div>
             )}
@@ -32,7 +39,10 @@ export const AlternateGearCard = ({
                     />
                 </div>
                 <div className='flex flex-col absolute top-0 right-0 items-end [&>div:not(:first-child)]:rounded-r-none'>
-                    <Badge variant='default' className='rounded-br-none'>
+                    <Badge
+                        variant='default'
+                        className='rounded-br-none rounded-tr'
+                    >
                         {gear.brand}
                     </Badge>
                     <Badge variant='outline' className='bg-background/95'>
@@ -51,4 +61,7 @@ export const AlternateGearCard = ({
             </CardContent>
         </Card>
     );
-};
+});
+
+// Add display name for better debugging
+AlternateGearCard.displayName = 'AlternateGearCard';

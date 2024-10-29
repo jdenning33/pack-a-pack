@@ -66,6 +66,7 @@ export const GearSearchModal = ({
 export function ScrollableGearList() {
     const { gear } = useGearSearch();
     const { onGearSelected } = useGearSearchModalContext();
+    const { setIsOpen } = useGearSearchModalContext();
     return (
         <ScrollArea className='overflow-auto h-[75svh] border rounded-md p-2 bg-muted pr-3'>
             <div className='grid gap-2 grid-cols-[repeat(auto-fill,minmax(9rem,1fr))]'>
@@ -74,7 +75,11 @@ export function ScrollableGearList() {
                         key={gear.id}
                         gear={gear}
                         onSelected={
-                            onGearSelected && (() => onGearSelected(gear))
+                            onGearSelected &&
+                            (() => {
+                                onGearSelected(gear);
+                                setIsOpen(false);
+                            })
                         }
                     />
                 ))}

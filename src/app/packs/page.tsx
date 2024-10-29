@@ -13,6 +13,8 @@ import { PackEditInModalOption } from '@/features/pack/components/quick-options/
 import { PackGoToDetailsPageOption } from '@/features/pack/components/quick-options/PackGoToDetailsPageOption';
 import { PackQuickOptionsMenu } from '@/features/pack/components/quick-options/PackQuickOptionsMenuButton';
 import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
+import { Accordion, AccordionItem, AccordionTrigger } from '@/ui/accordion';
+import { AccordionContent } from '@radix-ui/react-accordion';
 
 export default function PacksPage() {
     const { user } = useAuth();
@@ -25,22 +27,32 @@ export default function PacksPage() {
                 }}
             >
                 <div className='mx-auto p-4 w-full flex flex-col'>
-                    <div className='flex justify-between items-center mb-6'>
+                    <div className='flex justify-between items-center border rounded-md p-4 shadow mb-6 -mx-2'>
                         <h1 className='text-2xl font-bold'>My Packs</h1>
+                        <StandardAddPackButton variant='default' />
                     </div>
                     <div className='flex justify-between items-center mb-6'>
                         <PackSearchBar className='flex-1' />
-                        <StandardAddPackButton size='default' />
                     </div>
-                    <FilteredPackList past={false} />
-                    <div className='flex items-center my-8'>
-                        <hr className='flex-1' />
-                        <h2 className='font-medium text-sm text-muted-foreground mx-4'>
-                            Past Packs
-                        </h2>
-                        <hr className='flex-1' />
+
+                    <div className='p-2 border border-background'>
+                        <FilteredPackList past={false} />
                     </div>
-                    <FilteredPackList past={true} />
+
+                    <Accordion type='multiple'>
+                        <AccordionItem value='past'>
+                            <AccordionTrigger className='justify-start'>
+                                <h2 className='text-lg font-bold'>
+                                    Past Packs
+                                </h2>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div className='bg-muted rounded-md border p-2'>
+                                    <FilteredPackList past={true} />
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
                 </div>
             </PackSearchProvider>
         </main>
@@ -50,7 +62,7 @@ export default function PacksPage() {
 const FilteredPackList = ({ past }: { past?: boolean }) => {
     const { packs } = usePacks();
     return (
-        <div className='grid gap-4 grid-cols-[repeat(auto-fill,minmax(15rem,1fr))]'>
+        <div className='grid gap-2 grid-cols-[repeat(auto-fill,minmax(12rem,1fr))]'>
             {packs
                 .filter((pack) => past === pack.isTripCompleted)
                 .map((pack) => (
@@ -60,7 +72,7 @@ const FilteredPackList = ({ past }: { past?: boolean }) => {
                     >
                         <PackModal>
                             <PackModalTrigger>
-                                <PackCard className='h-full'>
+                                <PackCard className='h-full rounded'>
                                     <PackQuickOptionsMenu>
                                         <PackGoToDetailsPageOption />
                                         <PackEditInModalOption />

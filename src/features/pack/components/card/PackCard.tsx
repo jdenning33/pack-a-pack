@@ -23,7 +23,7 @@ export function PackCard({
         <>
             <Card
                 key={pack.id}
-                className={cn('relative max-h-40 overflow-hidden', className)}
+                className={cn('relative xmax-h-40 overflow-hidden', className)}
                 {...cardProps}
             >
                 {children}

@@ -40,8 +40,6 @@ export const UserGearBinSearchProvider: React.FC<{
         [userGearBins, userGear]
     );
 
-    console.log('userGear', userGear);
-
     const binlessGear = useMemo(
         () =>
             userGear.filter(

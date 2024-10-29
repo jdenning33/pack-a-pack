@@ -18,6 +18,7 @@ export function BinlessGearAccordionItem({
 }) {
     const { binlessGear } = useUserGearBins();
 
+    if (!binlessGear.length) return null;
     return (
         <AccordionItem
             disabled={true}
