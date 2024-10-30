@@ -44,7 +44,7 @@ export function StandardAddPackButton({
                 disabled={!user}
                 disabledTitle='You must be logged in to add a pack'
             >
-                <Plus className='mr-2 h-4 w-4' /> Add New Pack
+                <Plus className='mr-2 h-4 w-4' /> New Pack
             </Button>
         </>
     );

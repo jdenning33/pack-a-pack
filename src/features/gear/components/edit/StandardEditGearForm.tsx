@@ -14,6 +14,7 @@ import { GearPriceInput } from './GearPriceInput';
 import { GearWeightInput } from './GearWeightInput';
 import { GearNameInput } from './GearNameInput';
 import { GearUploadImageFromUrlInput } from './GearUploadImageFromUrlInput';
+import { GearTypeInput } from './GearTypeInput';
 
 export function StandardEditGearForm(props: {
     gear?: Gear;
@@ -38,7 +39,10 @@ export function StandardEditGearInputs({ className }: { className?: string }) {
                 {/* <UploadImageInput /> */}
                 {/* </div> */}
                 <div className='flex flex-col gap-4'>
-                    <GearNameInput />
+                    <div className='flex gap-4'>
+                        <GearNameInput />
+                        <GearTypeInput />
+                    </div>
                     <div className='flex gap-4'>
                         <GearBrandInput />
                         <GearWeightInput />

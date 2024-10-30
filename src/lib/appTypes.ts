@@ -51,6 +51,7 @@ export interface Gear {
     createdById: string;
     createdByUserName: string;
     isDeleted: boolean;
+    type: string;
     isOwnedByUser: boolean;
     isRetiredByUser: boolean;
     userGearBinId?: string;

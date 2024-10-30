@@ -102,3 +102,18 @@ export const ClonePackModal = ({
         </ClonePackModalContext.Provider>
     );
 };
+
+import { Slot } from '@radix-ui/react-slot';
+
+export const ClonePackModalTrigger = ({
+    children,
+    asChild = false,
+}: {
+    children: ReactNode;
+    asChild?: boolean;
+}) => {
+    const { setIsOpen } = useClonePackModalContext();
+    const Comp = asChild ? Slot : 'div';
+
+    return <Comp onClick={() => setIsOpen(true)}>{children}</Comp>;
+};

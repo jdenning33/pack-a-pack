@@ -32,6 +32,7 @@ import {
 import { useState } from 'react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { cn } from '@/lib/utils';
+import { Input } from '@/ui/input';
 
 export default function UserGearPage() {
     const { user } = useAuth();
@@ -76,25 +77,15 @@ export default function UserGearPage() {
     };
 
     return (
-        <main className='container flex flex-col gap-8 sm:p-4 m-auto'>
+        <main className='container flex flex-col gap-4 sm:p-4 m-auto'>
             <DndContext
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 sensors={sensors}
             >
-                <div className='flex justify-between items-center border rounded-md p-4 shadow -mx-2'>
+                <div className='flex justify-between items-center border rounded-md p-4 shadow -mx-2 mb-4'>
                     <h1 className='text-2xl font-bold'>My Gear</h1>
                     <div className='flex'>
-                        <AddGearBinButton>
-                            <Button
-                                variant='default'
-                                size='sm'
-                                className='flex items-center gap-2 mr-2'
-                            >
-                                <Plus size={14} />
-                                Add Gear Bin
-                            </Button>
-                        </AddGearBinButton>
                         {/* <Button
                             size='sm'
                             variant='outline'
@@ -113,6 +104,22 @@ export default function UserGearPage() {
                 </div>
 
                 <UserGearBinSearchProvider>
+                    <div className='flex justify-between'>
+                        <Input
+                            className='flex-1 max-w-[20rem]'
+                            placeholder='Search gear...'
+                        />
+                        <AddGearBinButton>
+                            <Button
+                                variant='outline'
+                                size='sm'
+                                className='flex items-center gap-2 mr-2'
+                            >
+                                <Plus size={14} />
+                                New Gear Bin
+                            </Button>
+                        </AddGearBinButton>
+                    </div>
                     <Accordion
                         type='multiple'
                         className='w-full space-y-6'

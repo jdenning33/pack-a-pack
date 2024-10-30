@@ -29,17 +29,17 @@ export default function PacksPage() {
                 <div className='mx-auto p-4 w-full flex flex-col'>
                     <div className='flex justify-between items-center border rounded-md p-4 shadow mb-6 -mx-2'>
                         <h1 className='text-2xl font-bold'>My Packs</h1>
-                        <StandardAddPackButton variant='default' />
                     </div>
                     <div className='flex justify-between items-center mb-6'>
-                        <PackSearchBar className='flex-1' />
+                        <PackSearchBar className='flex-1' />{' '}
+                        <StandardAddPackButton variant='outline' />
                     </div>
 
-                    <div className='p-2 border border-background'>
+                    <div className='p-2 xborder xborder-opacity-50 bg-muted/50 rounded-md'>
                         <FilteredPackList past={false} />
                     </div>
 
-                    <Accordion type='multiple'>
+                    <Accordion type='multiple' defaultValue={['past']}>
                         <AccordionItem value='past'>
                             <AccordionTrigger className='justify-start'>
                                 <h2 className='text-lg font-bold'>

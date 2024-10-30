@@ -20,10 +20,11 @@ import { useAuth } from '@/features/auth/useAuth';
 import { BadgeCheckIcon, EarthIcon } from 'lucide-react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { cn } from '@/lib/utils';
+import { Slot } from '@radix-ui/react-slot';
 
 // GearModal component
 
-export const GearModal: React.FC = () => {
+export const GearModal = ({ children }: { children?: React.ReactNode }) => {
     const { isModalOpen, setIsModalOpen, isEditing, setIsEditing } =
         useGearContext();
     return (
@@ -34,6 +35,7 @@ export const GearModal: React.FC = () => {
                 if (!isOpen) setIsEditing(false);
             }}
         >
+            {children}
             <DialogContent>
                 {isEditing ? <EditGearModalContent /> : <GearModalContent />}
             </DialogContent>
@@ -173,20 +175,36 @@ const EditGearModalContent: React.FC = () => {
     );
 };
 
-export const GearModalTrigger: React.FC<{
+export const GearModalTrigger = ({
+    className,
+    children,
+    defaultEditing = false,
+    asChild = false,
+}: {
     className?: string;
+    defaultEditing?: boolean;
+    asChild?: boolean;
     children: React.ReactNode;
-}> = ({ className, children }) => {
-    const { setIsModalOpen } = useGearContext();
+}) => {
+    const { setIsModalOpen, setIsEditing } = useGearContext();
+    const Comp = asChild ? Slot : 'div';
+
     return (
-        <div
-            onClick={() => setIsModalOpen(true)}
-            className={cn(
-                'cursor-pointer hover:scale-[99%] transition-all',
-                className
-            )}
+        <Comp
+            onClick={() => {
+                setIsModalOpen(true);
+                setIsEditing?.(defaultEditing);
+            }}
+            className={
+                asChild
+                    ? undefined
+                    : cn(
+                          'cursor-pointer hover:scale-[99%] transition-all',
+                          className
+                      )
+            }
         >
             {children}
-        </div>
+        </Comp>
     );
 };

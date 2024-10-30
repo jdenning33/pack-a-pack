@@ -16,6 +16,7 @@ export function UploadGearButton() {
         console.log('Uploading gear...');
         gear.forEach((gearItem) => {
             const appGearItem: Omit<Gear, 'id'> = {
+                type: gearItem.type,
                 name: gearItem.name,
                 price: gearItem.price,
                 description: gearItem.description,

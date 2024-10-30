@@ -1,5 +1,6 @@
 export const gearToUpload = [
     {
+        type: 'Stove',
         name: 'MSR PocketRocket 2',
         price: 50,
         description: '',
@@ -8,6 +9,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Jetboil Flash Cooking System',
         price: 130,
         description: '',
@@ -16,6 +18,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Soto Amicus Stove Cookset',
         price: 50,
         description: '',
@@ -24,6 +27,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'MSR Reactor 2.5L System',
         price: 310,
         description: '',
@@ -32,6 +36,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Jetboil MiniMo System',
         price: 170,
         description: '',
@@ -40,6 +45,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'MSR WhisperLite Universal',
         price: 200,
         description: '',
@@ -48,6 +54,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Solo Stove Lite',
         price: 70,
         description: '',
@@ -56,6 +63,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'MSR WindBurner System',
         price: 190,
         description: '',
@@ -64,6 +72,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Soto WindMaster Stove',
         price: 70,
         description: '',
@@ -72,6 +81,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Solo Stove Alcohol Burner',
         price: 20,
         description: '',
@@ -80,6 +90,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'OliCamp Ion w/ Titanium Mug',
         price: 85,
         description: '',
@@ -88,6 +99,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Snow Peak LiteMax',
         price: 50,
         description: '',
@@ -96,6 +108,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'OliCamp Generator Remote Stove',
         price: 60,
         description: '',
@@ -104,6 +117,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Jetboil Stash Cooking System',
         price: 150,
         description: '',
@@ -112,6 +126,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'BRS 3000T',
         price: 17,
         description: '',
@@ -120,6 +135,7 @@ export const gearToUpload = [
         weight: 0,
     },
     {
+        type: 'Stove',
         name: 'Esbit Pocket Stove',
         price: 16,
         description: '',

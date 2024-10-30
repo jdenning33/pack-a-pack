@@ -45,7 +45,7 @@ export function KitSuggestionMenu({
         (sk) => !pack.kits.some((kit) => kit.name === sk.name)
     );
 
-    const useCompact = true;
+    const useCompact = false;
 
     if (isReadOnly) return null;
     return (
@@ -57,13 +57,13 @@ export function KitSuggestionMenu({
                     {...buttonProps}
                     className={cn(buttonProps.className, 'group')}
                 >
-                    <SparklesIcon className='h-4 w-4 opacity-70 group-hover:opacity-90' />
+                    <SparklesIcon className='h-[.85rem] w-[.85rem] group-hover:opacity-90' />
                     {!useCompact && (
                         <span className='ml-2'>Suggested Kits</span>
                     )}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className='w-[200px] p-0' align='end'>
+            <PopoverContent className='w-[200px] p-0' align='start'>
                 <Command>
                     <CommandInput placeholder='Search popular kits...' />
                     <CommandList>

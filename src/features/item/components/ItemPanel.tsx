@@ -123,14 +123,6 @@ export const ItemPanel: React.FC = () => {
                     </div>
                 </ScrollArea>
             </div>
-            {/* <AlternateGearPanel
-                className={cn(
-                    'pt-12 shrink-0',
-                    isEditingGearDetails ? 'hidden' : ''
-                )}
-                itemFilter={item.name}
-                onSelected={isReadOnly ? undefined : afterGearUpdated}
-            /> */}
         </div>
     );
 };

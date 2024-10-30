@@ -28,10 +28,6 @@ export default function GearPage() {
             <div className='mx-auto p-4 w-full flex flex-col'>
                 <div className='flex justify-between items-center mb-6'>
                     <h1 className='text-2xl font-bold'>Gear</h1>
-                    <GearProvider closeModalOnSave={false}>
-                        <AddGearButton />
-                        <GearModal />
-                    </GearProvider>
                 </div>
                 <div>
                     <GearSearchProvider
@@ -39,7 +35,13 @@ export default function GearPage() {
                             gearType,
                         }}
                     >
-                        <GearSearchBar className='mb-6' />
+                        <div className='flex justify-between'>
+                            <GearSearchBar className='mb-6 flex-1' />{' '}
+                            <GearProvider closeModalOnSave={false}>
+                                <AddGearButton />
+                                <GearModal />
+                            </GearProvider>
+                        </div>
                         <GearDetailsCardList />
                     </GearSearchProvider>
                 </div>

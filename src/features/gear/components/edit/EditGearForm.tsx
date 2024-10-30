@@ -18,6 +18,7 @@ export interface GearFormValues {
     image?: string;
     weight: number;
     price: number;
+    type: string;
 }
 
 const EditGearContext = React.createContext<{
@@ -71,6 +72,7 @@ export function EditGearForm({
             image: gear?.image || '',
             weight: gear?.weight || 0,
             price: gear?.price || 0,
+            type: gear?.type || '',
         },
     });
 
@@ -91,6 +93,7 @@ export function EditGearForm({
             image: data.image || '',
             weight: data.weight,
             price: data.price,
+            type: data.type,
             isPublic: gear?.isPublic || false,
             isDeleted: gear?.isDeleted || false,
             purchaseLinks: gear?.purchaseLinks || [],

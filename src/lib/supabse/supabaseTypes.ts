@@ -65,6 +65,7 @@ interface SupabaseUserGear {
 
 interface SupabaseGear {
     id: string;
+    type: string;
     name: string;
     description: string;
     brand: string;
@@ -228,6 +229,7 @@ export function appToSupabaseGear(
         image: appGear.image,
         weight: appGear.weight,
         price: appGear.price,
+        type: appGear.type,
         is_public: appGear.isPublic,
         purchase_links: appGear.purchaseLinks,
         created_by_id: appGear.createdById,
@@ -241,6 +243,7 @@ export function supabaseToAppGear(
 ): Gear {
     return {
         id: supabaseGear.id,
+        type: supabaseGear.type,
         name: supabaseGear.name,
         description: supabaseGear.description,
         brand: supabaseGear.brand,

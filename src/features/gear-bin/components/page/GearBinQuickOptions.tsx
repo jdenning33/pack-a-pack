@@ -16,6 +16,11 @@ import {
     GearSearchModal,
     GearSearchModalTrigger,
 } from '@/features/gear-search/modal/GearSearchModal';
+import { GearProvider } from '@/features/gear/GearProvider';
+import {
+    GearModal,
+    GearModalTrigger,
+} from '@/features/gear/components/GearModal';
 
 export function GearBinQuickOptions() {
     const { gearBin } = useGearBin();
@@ -32,9 +37,28 @@ export function GearBinQuickOptions() {
                     <GearSearchModalTrigger asChild>
                         <Button className='mr-2' variant='outline' size='sm'>
                             <PlusIcon className='h-3 w-3 mr-2' />
-                            Add Gear
+                            Find Gear
                         </Button>
                     </GearSearchModalTrigger>
+                    <GearProvider
+                        afterGearUpdated={(gear) => {
+                            addGearToUser(gear.id, gearBin.id);
+                        }}
+                    >
+                        <GearModal>
+                            <GearModalTrigger defaultEditing={true}>
+                                <Button
+                                    className='mr-2'
+                                    variant='outline'
+                                    size='sm'
+                                    allowPropagation={true}
+                                >
+                                    <PlusIcon className='h-3 w-3 mr-2' />
+                                    New Gear
+                                </Button>
+                            </GearModalTrigger>
+                        </GearModal>
+                    </GearProvider>
 
                     <GearBinModalTrigger isEditing={true} asChild>
                         <Button

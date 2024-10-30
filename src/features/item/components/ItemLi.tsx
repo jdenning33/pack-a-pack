@@ -54,13 +54,23 @@ export function ItemLi({
                     onClick={(e) => {
                         e.preventDefault();
                     }}
-                    className='text-sm leading-none group-hover:underline cursor-pointer'
+                    className='text-sm leading-none group-hover:underline cursor-pointer relative py-2'
                 >
+                    {/* {item.gear && (
+                        <div className='text-xs text-muted-foreground'>
+                            {item.name}
+                        </div>
+                    )} */}
                     {item.name}{' '}
                     {item.quantity > 1 && (
                         <span className='text-xs font-semibold text-muted-foreground'>
                             x{item.quantity}
                         </span>
+                    )}
+                    {item.gear && (
+                        <div className='text-xs text-muted-foreground'>
+                            {item.gear.name}
+                        </div>
                     )}
                 </label>
             </div>

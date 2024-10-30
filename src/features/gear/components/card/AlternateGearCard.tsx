@@ -43,7 +43,7 @@ export const AlternateGearCard = forwardRef<
                         variant='default'
                         className='rounded-br-none rounded-tr'
                     >
-                        {gear.brand}
+                        {gear.type}&nbsp;
                     </Badge>
                     <Badge variant='outline' className='bg-background/95'>
                         {formatWeight(gear.weight)}
@@ -55,8 +55,9 @@ export const AlternateGearCard = forwardRef<
                 <div className='m-3 line-clamp-4'>
                     <h3 className='font-semibold text-sm'>{gear.name}</h3>
                     <p className='text-xs text-muted-foreground'>
-                        {gear.description}
+                        {gear.brand}
                     </p>
+                    <p className='text-xs'>{gear.description}</p>
                 </div>
             </CardContent>
         </Card>
