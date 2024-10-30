@@ -2,11 +2,11 @@ import React from 'react';
 import { Edit } from 'lucide-react';
 import { useAuth } from '@/features/auth/useAuth';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
-import { useGearBinModalContext } from '@/features/gear-bin/components/modal/GearBinModal';
+import { useGearModal } from '../modal/GearModal';
 
 export const GearEditInModalOption: React.FC = () => {
     const { user } = useAuth();
-    const { setIsEditing, setIsOpen } = useGearBinModalContext();
+    const { setIsEditing, setIsOpen } = useGearModal();
     if (!user) return null;
     return (
         <QuickActionMenuOption

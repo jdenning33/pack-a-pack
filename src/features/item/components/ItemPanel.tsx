@@ -88,35 +88,41 @@ export const ItemPanel: React.FC = () => {
                                 className='flex-1'
                                 afterGearUpdated={afterGearUpdated}
                             >
-                                {!isReadOnly && (
-                                    <GearQuickOptionsMenu>
-                                        <GearRemoveFromItemOption item={item} />
-                                        <GearEditInModalOption />
-                                    </GearQuickOptionsMenu>
-                                )}
-                                <GearDetailCard className='shadow-sm'></GearDetailCard>
-                                <NoGearSelectedHolder className='text-sm text-muted-foreground flex flex-col items-start'>
-                                    <div className='flex gap-1 mt-1'>
-                                        <GearSearchProvider
-                                            defaultSearchParams={{
-                                                gearType: 'user',
-                                                gearUserId: user?.id,
-                                            }}
-                                        >
-                                            <GearSearchBox
-                                                onGearSelect={(g) => {
-                                                    console.log(g);
-                                                    afterGearUpdated(g);
-                                                }}
+                                <GearModal>
+                                    {!isReadOnly && (
+                                        <GearQuickOptionsMenu>
+                                            <GearRemoveFromItemOption
+                                                item={item}
                                             />
-                                        </GearSearchProvider>
-                                        <Link href='/gear' target='_blank'>
-                                            <Button variant='link'>
-                                                Find Gear
-                                            </Button>
-                                        </Link>
-                                    </div>
-                                </NoGearSelectedHolder>
+                                            <GearEditInModalOption />
+                                        </GearQuickOptionsMenu>
+                                    )}
+                                    <GearDetailCard className='shadow-sm'></GearDetailCard>
+                                    <NoGearSelectedHolder className='text-sm text-muted-foreground flex flex-col items-start'>
+                                        <div className='flex gap-1 mt-1'>
+                                            <GearSearchProvider
+                                                defaultSearchParams={{
+                                                    gearType: 'user',
+                                                    gearUserId: user?.id,
+                                                }}
+                                            >
+                                                <GearModal>
+                                                    <GearSearchBox
+                                                        onGearSelect={(g) => {
+                                                            console.log(g);
+                                                            afterGearUpdated(g);
+                                                        }}
+                                                    />
+                                                </GearModal>
+                                            </GearSearchProvider>
+                                            <Link href='/gear' target='_blank'>
+                                                <Button variant='link'>
+                                                    Find Gear
+                                                </Button>
+                                            </Link>
+                                        </div>
+                                    </NoGearSelectedHolder>
+                                </GearModal>
                                 <GearModal />
                             </GearProvider>
                         </div>

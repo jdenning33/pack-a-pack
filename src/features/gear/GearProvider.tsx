@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import { GearContextType, GearContext } from './useGearContext';
@@ -10,13 +10,10 @@ export const GearProvider: React.FC<{
     afterGearUpdated?: (gear: Gear) => void;
     children: React.ReactNode;
 }> = ({ className, gear, afterGearUpdated, children }) => {
-    const [newGear, setNewGear] = useState<Gear | undefined>(gear);
-
     const contextValue: GearContextType = {
-        gear: gear || newGear,
+        gear: gear,
         afterGearUpdated: (gear) => {
             afterGearUpdated?.(gear);
-            setNewGear(gear);
         },
     };
 
