@@ -12,10 +12,6 @@ import { BinlessGearAccordionItem } from '@/features/gear-bin/components/page/Bi
 import { GearBinAccordionItem } from '@/features/gear-bin/components/page/GearBinAccordionItem';
 import { GearBinGearList } from '@/features/gear-bin/components/page/GearBinGearList';
 import { GearProvider } from '@/features/gear/GearProvider';
-import {
-    GearModal,
-    GearModalTrigger,
-} from '@/features/gear/components/GearModal';
 import { AlternateGearCard } from '@/features/gear/components/card/AlternateGearCard';
 import { Gear, UserGearBin } from '@/lib/appTypes';
 import {
@@ -33,6 +29,8 @@ import { useState } from 'react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { cn } from '@/lib/utils';
 import { Input } from '@/ui/input';
+import { GearModal } from '@/features/gear/components/modal/GearModal';
+import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
 
 export default function UserGearPage() {
     const { user } = useAuth();
@@ -187,19 +185,20 @@ function DraggableGearCard({ gear }: { gear: Gear }) {
 
     return (
         <GearProvider gear={gear}>
-            <GearModal />
-            <GearModalTrigger
-                className={cn('h-full', isDragging && 'opacity-70')}
-            >
-                <div
-                    ref={setNodeRef}
-                    className='h-full'
-                    {...listeners}
-                    {...attributes}
+            <GearModal>
+                <GearModalTrigger
+                    className={cn('h-full', isDragging && 'opacity-70')}
                 >
-                    <AlternateGearCard gear={gear} />
-                </div>
-            </GearModalTrigger>
+                    <div
+                        ref={setNodeRef}
+                        className='h-full'
+                        {...listeners}
+                        {...attributes}
+                    >
+                        <AlternateGearCard gear={gear} />
+                    </div>
+                </GearModalTrigger>
+            </GearModal>
         </GearProvider>
     );
 }

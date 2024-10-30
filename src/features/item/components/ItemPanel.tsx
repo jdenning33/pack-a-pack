@@ -5,14 +5,17 @@ import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { NoGearSelectedHolder } from '@/features/item/components/NoGearSelectedHolder';
 import { GearDetailCard } from '@/features/gear/components/card/GearDetailCard';
-import { GearEditInModalOption } from '@/features/gear/components/quick-options/GearEditOption';
+import { GearEditInModalOption } from '@/features/gear/components/quick-options/GearEditInModalOption';
 import { GearRemoveFromItemOption } from '@/features/gear/components/quick-options/GearRemoveFromItemOption';
 import { GearQuickOptionsMenu } from '@/features/gear/components/quick-options/GearQuickOptionsMenu';
 import { QuickEditItemName } from './QuickEditItemName';
 import { GearProvider } from '@/features/gear/GearProvider';
 import { useAppMutations } from '../../app-mutations/useAppMutations';
 import { useConfirmedItemContext, useItemContext } from '../useItem';
-import { GearModal } from '@/features/gear/components/GearModal';
+import {
+    GearModal,
+    useGearModal,
+} from '@/features/gear/components/modal/GearModal';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip';
 import { InfoIcon, PlusIcon } from 'lucide-react';
 import {
@@ -30,7 +33,6 @@ import { useAuth } from '@/features/auth/useAuth';
 import { Textarea } from '@/ui/textarea';
 import Link from 'next/link';
 import { ScrollArea } from '@/ui/scroll-area';
-import { useGearContext } from '@/features/gear/useGearContext';
 
 export const ItemPanel: React.FC = () => {
     const { updateItem } = useAppMutations();
@@ -83,9 +85,7 @@ export const ItemPanel: React.FC = () => {
                             </Label>
                             <GearProvider
                                 gear={item.gear}
-                                useModal={true}
                                 className='flex-1'
-                                onIsEditingChanged={setIsEditingGearDetails}
                                 afterGearUpdated={afterGearUpdated}
                             >
                                 {!isReadOnly && (
@@ -159,7 +159,7 @@ function GearSearchBox({
     onGearSelect?: (gear: Gear) => void;
 }) {
     const { gear } = useGearSearch();
-    const { setIsModalOpen, setIsEditing } = useGearContext();
+    const { setIsOpen, setIsEditing } = useGearModal();
     return (
         <Combobox placeholder='My Gear'>
             <ComboboxInput />
@@ -201,7 +201,7 @@ function GearSearchBox({
                 className='border-t rounded-none min-h-10'
                 onSelect={() => {
                     console.log('new');
-                    setIsModalOpen(true);
+                    setIsOpen(true);
                     setIsEditing(true);
                 }}
             >

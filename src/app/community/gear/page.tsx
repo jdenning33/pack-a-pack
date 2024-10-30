@@ -1,12 +1,8 @@
 'use client';
 import { AddGearButton } from '@/features/gear/components/AddGearButton';
-import {
-    GearModal,
-    GearModalTrigger,
-} from '@/features/gear/components/GearModal';
 import { GearDetailCard } from '@/features/gear/components/card/GearDetailCard';
 import { GearQuickOptionsMenu } from '@/features/gear/components/quick-options/GearQuickOptionsMenu';
-import { GearEditInModalOption } from '@/features/gear/components/quick-options/GearEditOption';
+import { GearEditInModalOption } from '@/features/gear/components/quick-options/GearEditInModalOption';
 import { GearDeleteOption } from '@/features/gear/components/quick-options/GearDeleteOption';
 import { GearOpenModalOption } from '@/features/gear/components/quick-options/GearOpenModalOption';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
@@ -19,6 +15,8 @@ import { GearProvider } from '@/features/gear/GearProvider';
 import { useAuth } from '@/features/auth/useAuth';
 import { GearAddToUserGearOption } from '@/features/gear/components/quick-options/GearAddToUserGearOption';
 import { GearRemoveFromUserGearOption } from '@/features/gear/components/quick-options/GearRemoveFromMyGearOption';
+import { GearModal } from '@/features/gear/components/modal/GearModal';
+import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
 
 export default function GearPage() {
     const { user } = useAuth();
@@ -37,9 +35,10 @@ export default function GearPage() {
                     >
                         <div className='flex justify-between'>
                             <GearSearchBar className='mb-6 flex-1' />{' '}
-                            <GearProvider closeModalOnSave={false}>
-                                <AddGearButton />
-                                <GearModal />
+                            <GearProvider>
+                                <GearModal>
+                                    <AddGearButton />
+                                </GearModal>
                             </GearProvider>
                         </div>
                         <GearDetailsCardList />
@@ -55,12 +54,7 @@ function GearDetailsCardList() {
     return (
         <div className='grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4'>
             {gear.map((gear) => (
-                <GearProvider
-                    key={gear.id}
-                    gear={gear}
-                    useModal={true}
-                    className='h-full'
-                >
+                <GearProvider key={gear.id} gear={gear} className='h-full'>
                     <GearQuickOptionsMenu className='bg-background/90 p-2'>
                         <GearOpenModalOption />
                         <GearEditInModalOption />

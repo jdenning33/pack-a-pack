@@ -7,7 +7,7 @@ export const GearQuickOptionsMenu: React.FC<{
     className?: string;
     children: React.ReactNode;
 }> = ({ className, children }) => {
-    const { gear, isEditing } = useGearContext();
-    if (!gear || isEditing) return null;
+    const { gear } = useGearContext();
+    if (!gear) return null;
     return <QuickActionMenu className={className}>{children}</QuickActionMenu>;
 };
