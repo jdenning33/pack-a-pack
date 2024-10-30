@@ -14,7 +14,7 @@ export const GearSearchBar = ({ className }: { className?: string }) => {
 
     const [localSearchText, setLocalSearchText] = React.useState(searchText);
     return (
-        <div className={cn('flex gap-1 max-w-96', className)}>
+        <div className={cn('flex gap-1 max-w-96 relative', className)}>
             <Input
                 id='gear-search-text'
                 type='text'

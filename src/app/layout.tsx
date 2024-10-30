@@ -66,7 +66,7 @@ export default function RootLayout({
 
 function AppHeader() {
     return (
-        <header className='border-b sticky top-0 bg-background z-30'>
+        <header className='border-b sticky top-0 bg-background shadow-md z-30'>
             <div className='m-auto px-4 sm:px-6 h-14 flex gap-6 items-center max-w-7xl'>
                 <div className='flex-1'>
                     <Link className='flex items-center' href='/'>

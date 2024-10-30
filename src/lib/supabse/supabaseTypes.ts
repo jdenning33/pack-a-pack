@@ -1,5 +1,12 @@
 // File: src/utils/supabaseConverters.ts
-import { Pack, Kit, Item, Gear, PackSummary } from '@/lib/appTypes';
+import {
+    Pack,
+    Kit,
+    Item,
+    Gear,
+    PackSummary,
+    UserGearBin,
+} from '@/lib/appTypes';
 import { Optional } from '../utils';
 
 export type Upsert<
@@ -71,7 +78,23 @@ interface SupabaseGear {
     updated_at: string;
     is_deleted: boolean;
     user?: { username: string };
-    user_gear?: { user_id: string; is_retired: boolean }[];
+    user_gear?: {
+        user_id: string;
+        is_retired: boolean;
+        user_gear_bin_id: string;
+    }[];
+}
+
+interface SupabaseUserGearBin {
+    id: string;
+    name: string;
+    description: string;
+    order: number;
+    user_id: string;
+    user_gear?: SupabaseUserGear[];
+    created_at: string;
+    updated_at: string;
+    is_deleted: boolean;
 }
 
 // Convert Supabase Pack to application Pack
@@ -237,5 +260,35 @@ export function supabaseToAppGear(
             supabaseGear.user_gear?.some(
                 (ug) => ug.user_id === userId && ug.is_retired
             ) || false,
+        userGearBinId: supabaseGear.user_gear?.find(
+            (ug) => ug.user_id === userId
+        )?.user_gear_bin_id,
+    };
+}
+
+export function appToSupabaseUserGearBin(
+    appGear: Optional<UserGearBin, 'id'>
+): Upsert<SupabaseUserGearBin> {
+    return {
+        id: appGear.id,
+        name: appGear.name,
+        description: appGear.description,
+        order: appGear.order,
+        user_id: appGear.userId,
+        is_deleted: appGear.isDeleted,
+    };
+}
+
+export function supabaseToAppUserGearBin(
+    supabaseGearBin: SupabaseUserGearBin
+): UserGearBin {
+    return {
+        id: supabaseGearBin.id,
+        name: supabaseGearBin.name,
+        description: supabaseGearBin.description,
+        order: supabaseGearBin.order,
+        userId: supabaseGearBin.user_id,
+        isDeleted: supabaseGearBin.is_deleted,
+        gear: [],
     };
 }
