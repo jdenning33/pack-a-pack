@@ -23,6 +23,7 @@ import { useUpsertUserGear } from '@/lib/supabse/user-gear/useUpsertUserGear';
 import { uploadGearImageFromFile } from '@/lib/supabse/gear-images/uploadGearImageFromFile';
 import { uploadGearImageFromUrl } from '@/lib/supabse/gear-images/uploadGearImageFromUrl';
 import { useUpsertUserGearBin } from '@/lib/supabse/gear-bin/useUpsertGearBin';
+import { useUpdateProfile } from '@/lib/supabse/profile/useUpdateProfile';
 
 export const AppMutationsProvider: React.FC<{
     children: ReactNode;
@@ -34,6 +35,7 @@ export const AppMutationsProvider: React.FC<{
     const upsertGearMutation = useUpsertGear();
     const upsertUserGearMutation = useUpsertUserGear(user?.id);
     const upsertUserGearBinMutation = useUpsertUserGearBin();
+    const updateProfileMutation = useUpdateProfile();
 
     const clonePack = async (pack: Pack, withGear: boolean) => {
         if (!user) {
@@ -186,6 +188,11 @@ export const AppMutationsProvider: React.FC<{
         },
         uploadGearImageFromUrl: async (url) => {
             return uploadGearImageFromUrl(url);
+        },
+
+        updateProfile: async (profile) => {
+            const result = await updateProfileMutation.mutateAsync(profile);
+            return result;
         },
     };
 

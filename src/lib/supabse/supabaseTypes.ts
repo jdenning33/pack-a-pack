@@ -6,6 +6,8 @@ import {
     Gear,
     PackSummary,
     UserGearBin,
+    Profile,
+    PreferredWeightFormat,
 } from '@/lib/appTypes';
 import { Optional } from '../utils';
 
@@ -96,6 +98,18 @@ interface SupabaseUserGearBin {
     created_at: string;
     updated_at: string;
     is_deleted: boolean;
+}
+
+interface SupabaseProfile {
+    id: string;
+    avatar_url: string;
+    full_name: string;
+    bio: string;
+    username: string;
+    preferred_weight_format: string;
+    location: string;
+    created_at: string;
+    updated_at: string;
 }
 
 // Convert Supabase Pack to application Pack
@@ -293,5 +307,47 @@ export function supabaseToAppUserGearBin(
         userId: supabaseGearBin.user_id,
         isDeleted: supabaseGearBin.is_deleted,
         gear: [],
+    };
+}
+
+export function getPreferredWeightFormat(
+    supabaseProfile: SupabaseProfile
+): PreferredWeightFormat {
+    switch (supabaseProfile.preferred_weight_format) {
+        case 'kg':
+            return 'kg';
+        case 'lbs':
+            return 'lbs';
+        case 'lbs+oz':
+            return 'lbs+oz';
+        default:
+            return 'kg';
+    }
+}
+export function supabaseToAppProfile(
+    supabaseProfile: SupabaseProfile
+): Profile {
+    return {
+        id: supabaseProfile.id,
+        avatarUrl: supabaseProfile.avatar_url,
+        fullname: supabaseProfile.full_name,
+        bio: supabaseProfile.bio,
+        username: supabaseProfile.username,
+        preferredWeightFormat: getPreferredWeightFormat(supabaseProfile),
+        location: supabaseProfile.location,
+    };
+}
+
+export function appToSupabaseProfile(
+    appProfile: Optional<Profile, 'id'>
+): Upsert<SupabaseProfile> {
+    return {
+        id: appProfile.id,
+        avatar_url: appProfile.avatarUrl,
+        full_name: appProfile.fullname,
+        bio: appProfile.bio,
+        username: appProfile.username,
+        preferred_weight_format: appProfile.preferredWeightFormat,
+        location: appProfile.location,
     };
 }
