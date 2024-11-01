@@ -6,7 +6,7 @@ import {
     FieldErrors,
 } from 'react-hook-form';
 import { Button } from '@/ui/button';
-import { Gear } from '@/lib/appTypes';
+import { Gear, WeightType } from '@/lib/appTypes';
 import { useAuth } from '@/features/auth/useAuth';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { AuthGuard } from '@/features/auth/components/AuthGuard';
@@ -19,6 +19,7 @@ export interface GearFormValues {
     weight: number;
     price: number;
     type: string;
+    weightType: WeightType;
 }
 
 const EditGearContext = React.createContext<{
@@ -73,6 +74,7 @@ export function EditGearForm({
             weight: gear?.weight || 0,
             price: gear?.price || 0,
             type: gear?.type || '',
+            weightType: gear?.weightType || 'base',
         },
     });
 
@@ -94,6 +96,7 @@ export function EditGearForm({
             weight: data.weight,
             price: data.price,
             type: data.type,
+            weightType: data.weightType,
             isPublic: gear?.isPublic || false,
             isDeleted: gear?.isDeleted || false,
             purchaseLinks: gear?.purchaseLinks || [],

@@ -33,7 +33,7 @@ export const EditGearModalContent: React.FC = () => {
                 }}
                 onCancel={() => setIsEditing(false)}
             >
-                <StandardEditGearInputs />
+                <StandardEditGearInputs className='bg-muted/30 border rounded p-2 -mx-2' />
                 <DialogFooter className='mt-4 !justify-start'>
                     <StandardEditGearButtons />
                 </DialogFooter>

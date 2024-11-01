@@ -49,6 +49,7 @@ export interface Item {
     isDeleted: boolean;
 }
 
+export type WeightType = 'base' | 'wearable' | 'consumable';
 export interface Gear {
     id: string;
     name: string;
@@ -63,6 +64,7 @@ export interface Gear {
     createdByUserName: string;
     isDeleted: boolean;
     type: string;
+    weightType: WeightType;
     isOwnedByUser: boolean;
     isRetiredByUser: boolean;
     userGearBinId?: string;

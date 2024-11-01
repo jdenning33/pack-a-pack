@@ -10,59 +10,55 @@ import { useAuth } from '@/features/auth/useAuth';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import { Label } from '@/ui/label';
 
-export function GearWeightInput2({ className }: { className?: string }) {
-    const { register, errors } = useEditGearForm();
-    return (
-        <div className={cn('min-w-20', className)}>
-            <div className='flex items-center gap-1'>
-                <Input
-                    type='number'
-                    placeholder='Weight'
-                    {...register('weight', {
-                        required: 'Weight is required',
-                        valueAsNumber: true,
-                        min: {
-                            value: 0,
-                            message: 'Weight must be a positive number',
-                        },
-                    })}
-                    aria-invalid={!!errors.weight}
-                />
-                <span className='text-sm font-semibold text-primary/70'>
-                    oz
-                </span>
-            </div>
-            {errors.weight && (
-                <p className='text-sm text-red-600'>{errors.weight.message}</p>
-            )}
-        </div>
-    );
+interface GearWeightInputProps {
+    className?: string;
+    includeLabel?: boolean;
 }
 
-export function GearWeightInput({ className }: { className?: string }) {
+export function GearWeightInput({
+    className,
+    includeLabel = true,
+}: GearWeightInputProps) {
     const { profile } = useAuth();
     const preferredWeightFormat =
         (profile?.preferredWeightFormat || 'kg') === 'kg' ? 'kg+g' : 'lbs+oz';
     const { errors, control } = useEditGearForm();
     const formatWeight = useFormatWeight();
     const [open, setOpen] = useState(false);
+    const inputId = 'gear-weight';
+
     return (
-        <div className={cn('min-w-20', className)}>
+        <div className={cn('', className)}>
+            {includeLabel && (
+                <Label
+                    htmlFor={inputId}
+                    className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                    Weight
+                </Label>
+            )}
             <Controller
                 name='weight'
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                    <div>
+                    <div className='min-w-20'>
                         <Popover open={open} onOpenChange={setOpen}>
                             <PopoverTrigger asChild>
                                 <Button
+                                    id={inputId}
                                     variant='outline'
                                     aria-invalid={!!errors.weight}
+                                    aria-describedby={
+                                        errors.weight
+                                            ? `${inputId}-error`
+                                            : undefined
+                                    }
+                                    className='w-full justify-start'
                                 >
                                     {formatWeight(+(value || 0))}
                                 </Button>
                             </PopoverTrigger>
-                            <PopoverContent className='xbg-muted p-2'>
+                            <PopoverContent className='p-2'>
                                 <PopoverArrow />
                                 <Tabs defaultValue={preferredWeightFormat}>
                                     <TabsContent value='kg+g' className='mt-0'>
@@ -101,7 +97,12 @@ export function GearWeightInput({ className }: { className?: string }) {
                 )}
             />
             {errors.weight && (
-                <p className='text-sm text-red-600'>{errors.weight.message}</p>
+                <p
+                    id={`${inputId}-error`}
+                    className='text-sm font-medium text-destructive'
+                >
+                    {errors.weight.message}
+                </p>
             )}
         </div>
     );

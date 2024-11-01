@@ -23,6 +23,7 @@ export function UploadGearButton() {
                 brand: gearItem.brand,
                 image: gearItem.image,
                 weight: gearItem.weight,
+                weightType: 'base',
                 isPublic: true,
                 purchaseLinks: [],
                 createdById: user?.id || '',

@@ -73,6 +73,7 @@ interface SupabaseGear {
     brand: string;
     image: string;
     weight: number;
+    weight_type: string;
     price: number;
     is_public: boolean;
     purchase_links: string[];
@@ -242,6 +243,7 @@ export function appToSupabaseGear(
         brand: appGear.brand,
         image: appGear.image,
         weight: appGear.weight,
+        weight_type: appGear.weightType,
         price: appGear.price,
         type: appGear.type,
         is_public: appGear.isPublic,
@@ -258,6 +260,12 @@ export function supabaseToAppGear(
     return {
         id: supabaseGear.id,
         type: supabaseGear.type,
+        weightType:
+            supabaseGear.weight_type === 'wearable'
+                ? 'wearable'
+                : supabaseGear.weight_type === 'consumable'
+                ? 'consumable'
+                : 'base',
         name: supabaseGear.name,
         description: supabaseGear.description,
         brand: supabaseGear.brand,
