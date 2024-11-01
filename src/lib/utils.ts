@@ -12,24 +12,7 @@ export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 export function useFormatWeight() {
     const { profile } = useAuth();
     return (grams: number) => {
-        if (!profile) return `${grams} g`;
-        switch (profile.preferredWeightFormat) {
-            case 'kg': {
-                const kgs = grams / 1000;
-                if (kgs < 1) return `${grams} g`;
-                return `${(grams / 1000).toFixed(2)} kg`;
-            }
-            case 'lbs':
-                return `${(grams / 453.59237).toFixed(1)} lbs`;
-            case 'lbs+oz': {
-                const lbs = Math.floor(grams / 453.59237);
-                const oz = Math.round((grams % 453.59237) / 28.3495);
-                if (lbs === 0) return `${oz} oz`;
-                return `${lbs} lbs ${oz} oz`;
-            }
-            default:
-                return `${grams} g`;
-        }
+        return formatWeight(grams, profile?.preferredWeightFormat || 'kg');
     };
 }
 
@@ -38,14 +21,21 @@ export function formatWeight(
     preferredUnit: PreferredWeightFormat
 ): string {
     switch (preferredUnit) {
-        case 'kg':
-            return `${(grams / 1000).toFixed(1)} kg`;
+        case 'kg': {
+            const kgs = grams / 1000;
+            if (kgs < 0.3) return `${maxPrecision(grams, 2)} g`;
+            return `${maxPrecision(grams / 1000, 2)} kg`;
+        }
         case 'lbs':
-            return `${(grams / 453.59237).toFixed(1)} lbs`;
+            return `${maxPrecision(grams / 453.59237, 2)} lbs`;
         case 'lbs+oz': {
             const lbs = Math.floor(grams / 453.59237);
             const oz = Math.round((grams % 453.59237) / 28.3495);
-            return `${lbs} lbs ${oz} oz`;
+            return `${lbs} lbs ${maxPrecision(oz, 2)} oz`;
         }
     }
+}
+
+function maxPrecision(value: number, maxPrecision: number) {
+    return Number.parseFloat(value.toFixed(maxPrecision));
 }

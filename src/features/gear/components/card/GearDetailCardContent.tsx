@@ -3,9 +3,11 @@ import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
 import { useGearContext } from '../../useGearContext';
 import { BadgeCheckIcon, EarthIcon } from 'lucide-react';
+import { useFormatWeight } from '@/lib/utils';
 
 export const GearDetailCardContent: React.FC = () => {
     const { gear } = useGearContext();
+    const formatWeight = useFormatWeight();
     if (!gear) return null;
 
     return (
@@ -43,9 +45,7 @@ export const GearDetailCardContent: React.FC = () => {
                     <Badge variant='outline' className='bg-background'>
                         {gear.brand}
                     </Badge>
-                    <Badge variant='outline'>
-                        {gear.weight?.toFixed(0) || '_'} oz
-                    </Badge>
+                    <Badge variant='outline'>{formatWeight(gear.weight)}</Badge>
                     <Badge variant='outline'>
                         $ {gear.price?.toFixed(0) || '_'}
                     </Badge>

@@ -13,10 +13,12 @@ import { useAuth } from '@/features/auth/useAuth';
 import { BadgeCheckIcon, EarthIcon } from 'lucide-react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { useGearModal } from './GearModal';
+import { useFormatWeight } from '@/lib/utils';
 
 export const GearModalContent: React.FC = () => {
     const { user } = useAuth();
     const { gear } = useGearContext();
+    const formatWeight = useFormatWeight();
     const { setIsEditing } = useGearModal();
     const { addGearToUser, removeGearFromUser } = useAppMutations();
     if (!gear) return null;
@@ -62,7 +64,7 @@ export const GearModalContent: React.FC = () => {
                                 {gear.brand}
                             </Badge>
                             <Badge variant='outline'>
-                                {gear.weight?.toFixed(0) || '_'} oz
+                                {formatWeight(gear.weight)}
                             </Badge>
                             <Badge variant='outline'>
                                 $ {gear.price?.toFixed(0) || '_'}

@@ -3,9 +3,11 @@ import { Card, CardContent } from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
 import { useGearContext } from '../../useGearContext';
+import { useFormatWeight } from '@/lib/utils';
 
 export const GearCard: React.FC<{ className?: string }> = ({ className }) => {
     const { gear } = useGearContext();
+    const formatWeight = useFormatWeight();
     if (!gear) return null;
     return (
         <Card className={className}>
@@ -28,7 +30,7 @@ export const GearCard: React.FC<{ className?: string }> = ({ className }) => {
                         variant='outline'
                         className='whitespace-nowrap bg-background/90'
                     >
-                        {gear.weight.toFixed(0)} oz
+                        {formatWeight(gear.weight)}
                     </Badge>
                     <Badge
                         variant='outline'

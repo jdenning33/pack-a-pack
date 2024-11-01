@@ -11,6 +11,7 @@ export function GearPriceInput({ className }: { className?: string }) {
                 <span className='text-sm font-semibold text-primary/70'>$</span>
                 <Input
                     type='number'
+                    step={0.01}
                     placeholder='Price'
                     {...register('price', {
                         required: 'Price is required',
