@@ -34,6 +34,17 @@ const buttonVariants = cva(
     }
 );
 
+export type ButtonVariant =
+    | 'link'
+    | 'outline'
+    | 'secondary'
+    | 'default'
+    | 'destructive'
+    | 'ghost'
+    | null;
+
+export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
+
 export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement>,
         VariantProps<typeof buttonVariants> {

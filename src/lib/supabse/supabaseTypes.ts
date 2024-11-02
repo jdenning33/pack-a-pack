@@ -8,6 +8,7 @@ import {
     UserGearBin,
     Profile,
     PreferredWeightFormat,
+    WeightType,
 } from '@/lib/appTypes';
 import { Optional } from '../utils';
 
@@ -50,6 +51,8 @@ interface SupabaseItem {
     quantity: number;
     is_packed: boolean;
     notes: string;
+    weight: number | null;
+    weight_type: string | null;
     user_gear_id?: string | null;
     created_at: string;
     updated_at: string;
@@ -178,6 +181,18 @@ export function appToSupabaseKit(
     };
 }
 
+function getWeightType(weightType: string | null): WeightType | null {
+    if (!weightType) return null;
+    switch (weightType) {
+        case 'wearable':
+            return 'wearable';
+        case 'consumable':
+            return 'consumable';
+        default:
+            return 'base';
+    }
+}
+
 // Convert Supabase Item to application Item
 export function supabaseToAppItem(
     supabaseItem: SupabaseItem,
@@ -192,6 +207,8 @@ export function supabaseToAppItem(
         quantity: supabaseItem.quantity,
         isPacked: supabaseItem.is_packed,
         notes: supabaseItem.notes,
+        weight: supabaseItem.weight,
+        weightType: getWeightType(supabaseItem.weight_type),
         gearId: supabaseItem.user_gear?.gear_id,
         gear: supabaseItem.user_gear?.gear
             ? supabaseToAppGear(supabaseItem.user_gear.gear, userId)
@@ -212,6 +229,8 @@ export function appToSupabaseItem(
         quantity: appItem.quantity,
         is_packed: appItem.isPacked,
         notes: appItem.notes,
+        weight: appItem.weight,
+        weight_type: appItem.weightType,
         user_gear_id: userGearId || null,
         is_deleted: appItem.isDeleted,
     };

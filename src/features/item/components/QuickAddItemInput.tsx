@@ -25,6 +25,8 @@ export const QuickAddPackItem = () => {
                 kitId: kit.id,
                 packId: kit.packId,
                 name: newItemName.trim(),
+                weight: null,
+                weightType: null,
                 quantity: 1,
                 isPacked: false,
                 isDeleted: false,
@@ -46,6 +48,8 @@ export const QuickAddPackItem = () => {
             isDeleted: false,
             notes: '',
             gearId: gear.id,
+            weight: null,
+            weightType: null,
         });
         setIsOpen(false);
     };

@@ -31,6 +31,7 @@ export function formatWeight(
         case 'lbs+oz': {
             const lbs = Math.floor(grams / 453.59237);
             const oz = Math.round((grams % 453.59237) / 28.3495);
+            if (lbs === 0) return `${oz} oz`;
             return `${lbs} lbs ${maxPrecision(oz, 2)} oz`;
         }
     }

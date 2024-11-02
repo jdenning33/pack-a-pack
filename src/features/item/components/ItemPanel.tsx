@@ -16,8 +16,8 @@ import {
     GearModal,
     useGearModal,
 } from '@/features/gear/components/modal/GearModal';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip';
-import { InfoIcon, PlusIcon } from 'lucide-react';
+import { OpinionatedTooltip } from '@/ui/tooltip';
+import { PlusIcon } from 'lucide-react';
 import {
     ComboboxItem,
     Combobox,
@@ -33,6 +33,9 @@ import { useAuth } from '@/features/auth/useAuth';
 import { Textarea } from '@/ui/textarea';
 import Link from 'next/link';
 import { ScrollArea } from '@/ui/scroll-area';
+import { EditWeightPopover } from '@/features/shared/EditWeightPopover';
+import { cn } from '@/lib/utils';
+import { EditWeightTypeToggle } from '@/features/shared/EditWeightTypeToggle';
 
 export const ItemPanel: React.FC = () => {
     const { updateItem } = useAppMutations();
@@ -126,6 +129,78 @@ export const ItemPanel: React.FC = () => {
                                 <GearModal />
                             </GearProvider>
                         </div>
+                        <div
+                            className={cn(
+                                'flex items-start',
+                                !item.weight &&
+                                    item.gear?.weight &&
+                                    'opacity-50'
+                            )}
+                        >
+                            <Label className='w-20 text-right p-2 flex items-center justify-end'>
+                                Weight
+                                <GearWeightTooltip />
+                            </Label>
+                            <EditWeightPopover
+                                grams={item.weight || item.gear?.weight || 0}
+                                onChange={(v) => {
+                                    updateItem({ ...item, weight: v });
+                                }}
+                            />
+                            {item.weight && item.gear?.weight && (
+                                <Button
+                                    className='translate-y-1 opacity-80'
+                                    variant='link'
+                                    size='sm'
+                                    onClick={() => {
+                                        updateItem({ ...item, weight: null });
+                                    }}
+                                >
+                                    use gear weight
+                                </Button>
+                            )}
+                        </div>
+                        <div
+                            className={cn(
+                                'flex items-start',
+                                !item.weightType &&
+                                    item.gear?.weightType &&
+                                    'opacity-50'
+                            )}
+                        >
+                            <Label className='w-20 text-right p-2 flex items-center justify-end'>
+                                Weight Type
+                                <GearWeightTooltip />
+                            </Label>
+                            <EditWeightTypeToggle
+                                weightType={
+                                    item.weightType ||
+                                    item.gear?.weightType ||
+                                    'base'
+                                }
+                                buttonSize='sm'
+                                onChange={(v) => {
+                                    updateItem({ ...item, weightType: v });
+                                }}
+                                activeButtonVariant='default'
+                                inactiveButtonVariant='outline'
+                            />
+                            {item.weightType && item.gear?.weightType && (
+                                <Button
+                                    className='translate-y-1 opacity-80'
+                                    variant='link'
+                                    size='sm'
+                                    onClick={() => {
+                                        updateItem({
+                                            ...item,
+                                            weightType: null,
+                                        });
+                                    }}
+                                >
+                                    use gear weight type
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </ScrollArea>
             </div>
@@ -135,27 +210,32 @@ export const ItemPanel: React.FC = () => {
 
 function GearTooltip() {
     return (
-        <Tooltip>
-            <TooltipTrigger>
-                <InfoIcon className='h-4 w-4 ml-1' />
-            </TooltipTrigger>
-            <TooltipContent side='bottom' className='max-w-48'>
-                <ul>
-                    <li>
-                        - An item is a thing you need to pack, i.e.
-                        &quot;Stove&quot;.
-                    </li>
-                    <li>
-                        - Gear is the actual item you own, i.e. &quot;MSR Pocket
-                        Rocket&quot;.
-                    </li>
-                </ul>
-                <br />
-                Items belong to a pack and are only used once. Gear, however,
-                can be used across multiple packs so that you don&apos;t have to
-                re-enter tedious details like weight and price.
-            </TooltipContent>
-        </Tooltip>
+        <OpinionatedTooltip side='right' className='max-w-48'>
+            <ul>
+                <li>
+                    - Item is a type of thing you need to pack, i.e.
+                    &quot;Stove&quot;.
+                </li>
+                <li>
+                    - Gear is the actual thing you own, i.e. &quot;MSR Pocket
+                    Rocket&quot;.
+                </li>
+            </ul>
+            <br />
+            Items belong to a pack and are only used once. Gear, however, can be
+            used across multiple packs so that you don&apos;t have to re-enter
+            tedious details like weight and price.
+        </OpinionatedTooltip>
+    );
+}
+
+function GearWeightTooltip() {
+    return (
+        <OpinionatedTooltip side='right' className='max-w-48'>
+            This weight will only apply for this trip. If you want this weight
+            to reflect for future trips update the gear weight instead. This
+            will default to the gear weight if you have selected gear.
+        </OpinionatedTooltip>
     );
 }
 

@@ -44,6 +44,8 @@ export interface Item {
     quantity: number;
     isPacked: boolean;
     notes: string;
+    weight: number | null;
+    weightType: WeightType | null;
     gearId?: string;
     gear?: Gear;
     isDeleted: boolean;

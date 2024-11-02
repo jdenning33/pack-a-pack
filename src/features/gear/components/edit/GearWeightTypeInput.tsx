@@ -2,8 +2,8 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useEditGearForm } from './EditGearForm';
 import { Controller } from 'react-hook-form';
-import { Button } from '@/ui/button';
 import { Label } from '@/ui/label';
+import { EditWeightTypeToggle } from '@/features/shared/EditWeightTypeToggle';
 
 interface GearWeightInputProps {
     className?: string;
@@ -31,33 +31,13 @@ export function GearWeightTypeInput({
                 name='weightType'
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                    <div className='flex [&>button]:rounded-none [&>button:first-child]:rounded-l-md [&>button:last-child]:rounded-r-md'>
-                        <Button
-                            type='button'
-                            variant={value == 'base' ? 'outline' : 'secondary'}
-                            onClick={() => onChange('base')}
-                        >
-                            Base
-                        </Button>
-                        <Button
-                            type='button'
-                            variant={
-                                value == 'wearable' ? 'outline' : 'secondary'
-                            }
-                            onClick={() => onChange('wearable')}
-                        >
-                            Clothes
-                        </Button>
-                        <Button
-                            type='button'
-                            variant={
-                                value == 'consumable' ? 'outline' : 'secondary'
-                            }
-                            onClick={() => onChange('consumable')}
-                        >
-                            Food
-                        </Button>
-                    </div>
+                    <EditWeightTypeToggle
+                        weightType={value}
+                        onChange={onChange}
+                        activeButtonVariant='outline'
+                        inactiveButtonVariant='secondary'
+                        activeButtonClassName='hover:bg-background'
+                    />
                 )}
             />
             {errors.weight && (

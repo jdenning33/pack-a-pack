@@ -11,6 +11,7 @@ import { AuthProvider } from '@/features/auth/components/AuthProvider';
 import { Toaster } from '@/ui/sonner';
 import { AppMutationsProvider } from '@/features/app-mutations/AppMutationsProvider';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/ui/hover-card';
+import { cn } from '@/lib/utils';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -156,10 +157,10 @@ function AppFooter() {
     );
 }
 
-function BackpackSvg({ className }: { className?: string }) {
+export function BackpackSvg({ className }: { className?: string }) {
     return (
         <svg
-            className={className}
+            className={cn('stroke-foreground', className)}
             viewBox='0 0 24 24'
             id='Line'
             xmlns='http://www.w3.org/2000/svg'
@@ -177,7 +178,6 @@ function BackpackSvg({ className }: { className?: string }) {
                     d='M19,9V20a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V9'
                     style={{
                         fill: 'none',
-                        stroke: '#000000',
                         strokeLinecap: 'round',
                         strokeLinejoin: 'round',
                         strokeWidth: '2px',
@@ -189,7 +189,6 @@ function BackpackSvg({ className }: { className?: string }) {
                     d='M19,19h1a1,1,0,0,0,1-1V15H19ZM5,15H3v3a1,1,0,0,0,1,1H5ZM20,7V4a1,1,0,0,0-1-1H5A1,1,0,0,0,4,4V7A2,2,0,0,0,6,9H18A2,2,0,0,0,20,7ZM15,8v2M9,8v2m6,11H9V16a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1Z'
                     style={{
                         fill: 'none',
-                        stroke: '#000000',
                         strokeLinecap: 'round',
                         strokeLinejoin: 'round',
                         strokeWidth: '2px',

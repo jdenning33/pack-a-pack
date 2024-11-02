@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
 import { cn } from '@/lib/utils';
+import { InfoIcon } from 'lucide-react';
 
 const Tooltip = React.forwardRef<
     React.ElementRef<typeof TooltipPrimitive.Root>,
@@ -36,3 +37,16 @@ const TooltipContent = React.forwardRef<
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 export { Tooltip, TooltipTrigger, TooltipContent };
+
+export function OpinionatedTooltip({
+    ...tooltipContentProps
+}: React.ComponentPropsWithoutRef<typeof TooltipContent>) {
+    return (
+        <Tooltip>
+            <TooltipTrigger>
+                <InfoIcon className='h-4 w-4 ml-1' />
+            </TooltipTrigger>
+            <TooltipContent {...tooltipContentProps} />
+        </Tooltip>
+    );
+}
