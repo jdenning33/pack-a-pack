@@ -1,13 +1,13 @@
 import React from 'react';
 import { Maximize } from 'lucide-react';
-import { useGearContext } from '../../useGearContext';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
+import { useGearModal } from '../modal/GearModal';
 
 export const GearOpenModalOption: React.FC = () => {
-    const { setIsModalOpen } = useGearContext();
+    const { setIsOpen } = useGearModal();
     return (
         <QuickActionMenuOption
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setIsOpen(true)}
             icon={<Maximize size={14} />}
             name='Details'
         />

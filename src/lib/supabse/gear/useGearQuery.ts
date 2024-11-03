@@ -16,7 +16,7 @@ export function useGearQuery(queryParams: GearQueryParams) {
                     `
                         *,
                         user_gear!inner (
-                            user_id,is_retired
+                            user_id,is_retired,user_gear_bin_id
                         ),
                         user:profiles!gear_created_by_id_fkey (username)
                     `
@@ -26,7 +26,9 @@ export function useGearQuery(queryParams: GearQueryParams) {
 
             if (queryParams.searchText) {
                 const searchText = queryParams.searchText.replace(/\s/g, '%');
-                query = query.like('name', `%${searchText}%`);
+                query = query.or(
+                    `name.ilike.%${searchText}%,description.ilike.%${searchText}%`
+                );
             }
 
             if (queryParams.gearType === 'user') {

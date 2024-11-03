@@ -15,7 +15,7 @@ export function PackEditInModalOption() {
                 setIsEditing(true);
             }}
             icon={<Edit size={14} />}
-            name='Edit'
+            name='Edit Pack Details'
         />
     );
 }

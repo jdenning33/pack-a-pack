@@ -1,31 +1,47 @@
 import React from 'react';
 import { Gear } from '@/lib/appTypes';
-import { AlternateGearPanel } from '../../gear-search/components/AlternateGearPanel';
 import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { NoGearSelectedHolder } from '@/features/item/components/NoGearSelectedHolder';
 import { GearDetailCard } from '@/features/gear/components/card/GearDetailCard';
-import { GearEditOption } from '@/features/gear/components/quick-options/GearEditOption';
-import { GearDeleteOption } from '@/features/gear/components/quick-options/GearDeleteOption';
-import { GearOpenModalOption } from '@/features/gear/components/quick-options/GearOpenModalOption';
+import { GearEditInModalOption } from '@/features/gear/components/quick-options/GearEditInModalOption';
 import { GearRemoveFromItemOption } from '@/features/gear/components/quick-options/GearRemoveFromItemOption';
 import { GearQuickOptionsMenu } from '@/features/gear/components/quick-options/GearQuickOptionsMenu';
-import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
 import { QuickEditItemName } from './QuickEditItemName';
-import { cn } from '@/lib/utils';
 import { GearProvider } from '@/features/gear/GearProvider';
 import { useAppMutations } from '../../app-mutations/useAppMutations';
 import { useConfirmedItemContext, useItemContext } from '../useItem';
 import {
     GearModal,
-    GearModalTrigger,
-} from '@/features/gear/components/GearModal';
+    useGearModal,
+} from '@/features/gear/components/modal/GearModal';
+import { OpinionatedTooltip } from '@/ui/tooltip';
+import { PlusIcon } from 'lucide-react';
+import {
+    ComboboxItem,
+    Combobox,
+    ComboboxInput,
+    ComboboxList,
+} from '@/ui/combobox';
+import {
+    GearSearchProvider,
+    useGearSearch,
+} from '@/features/gear-search/GearSearchProvider';
+import { ImageWithFallback } from '@/ui/image-with-fallback';
+import { useAuth } from '@/features/auth/useAuth';
+import { Textarea } from '@/ui/textarea';
+import Link from 'next/link';
+import { ScrollArea } from '@/ui/scroll-area';
+import { EditWeightPopover } from '@/features/shared/EditWeightPopover';
+import { cn } from '@/lib/utils';
+import { EditWeightTypeToggle } from '@/features/shared/EditWeightTypeToggle';
 
 export const ItemPanel: React.FC = () => {
     const { updateItem } = useAppMutations();
-    const { item, isReadOnly, isEditingGearDetails, setIsEditingGearDetails } =
-        useItemContext();
+    const { user } = useAuth();
+    const { item, isReadOnly, setIsEditingGearDetails } = useItemContext();
+    const [itemNotes, setItemNotes] = React.useState(item?.notes || '');
 
     if (!item)
         return (
@@ -45,48 +61,242 @@ export const ItemPanel: React.FC = () => {
 
     return (
         <div className='h-full flex flex-col'>
-            <div className='flex-1'>
+            <div className='flex-1 flex flex-col gap-2 overflow-hidden'>
                 <div className='flex flex-col sm:flex-row sm:items-end justify-between mb-2 space-y-4 sm:space-y-0'>
                     <QuickEditItemName />
-                    <div className='flex items-center gap-4'>
-                        <QuickEditItemQuantity />
-                        <QuickEditItemIsPacked />
-                    </div>
+                    <div className='flex items-center gap-4'></div>
                 </div>
-                <GearProvider
-                    gear={item.gear}
-                    useModal={true}
-                    onIsEditingChanged={setIsEditingGearDetails}
-                    afterGearUpdated={afterGearUpdated}
-                >
-                    {!isReadOnly && (
-                        <GearQuickOptionsMenu>
-                            <GearOpenModalOption />
-                            <GearRemoveFromItemOption item={item} />
-                            <GearEditOption />
-                            <DropdownMenuSeparator />
-                            <GearDeleteOption />
-                        </GearQuickOptionsMenu>
-                    )}
-                    <GearModalTrigger>
-                        <GearDetailCard />
-                    </GearModalTrigger>
-                    <NoGearSelectedHolder className='p-2' />
-                    <GearModal />
-                </GearProvider>
+                <ScrollArea className='flex-1 overflow-auto '>
+                    <div className=' flex flex-col gap-2'>
+                        <QuickEditItemIsPacked />
+                        <QuickEditItemQuantity />
+                        <div className='relative flex'>
+                            <Label className='w-20 text-right p-2'>Notes</Label>
+                            <Textarea
+                                value={itemNotes}
+                                onChange={(e) => setItemNotes(e.target.value)}
+                                onBlur={(_e) =>
+                                    updateItem({ ...item, notes: itemNotes })
+                                }
+                                className='flex-1 h-12 bg-background'
+                            />
+                        </div>
+                        <div className='flex items-start'>
+                            <Label className='w-20 text-right p-2 flex items-center justify-end'>
+                                Gear
+                                <GearTooltip />
+                            </Label>
+                            <GearProvider
+                                gear={item.gear}
+                                className='flex-1'
+                                afterGearUpdated={afterGearUpdated}
+                            >
+                                <GearModal>
+                                    {!isReadOnly && (
+                                        <GearQuickOptionsMenu>
+                                            <GearRemoveFromItemOption
+                                                item={item}
+                                            />
+                                            <GearEditInModalOption />
+                                        </GearQuickOptionsMenu>
+                                    )}
+                                    <GearDetailCard className='shadow-sm'></GearDetailCard>
+                                    <NoGearSelectedHolder className='text-sm text-muted-foreground flex flex-col items-start'>
+                                        <div className='flex gap-1 mt-1'>
+                                            <GearSearchProvider
+                                                defaultSearchParams={{
+                                                    gearType: 'user',
+                                                    gearUserId: user?.id,
+                                                }}
+                                            >
+                                                <GearModal>
+                                                    <GearSearchBox
+                                                        onGearSelect={(g) => {
+                                                            console.log(g);
+                                                            afterGearUpdated(g);
+                                                        }}
+                                                    />
+                                                </GearModal>
+                                            </GearSearchProvider>
+                                            <Link href='/gear' target='_blank'>
+                                                <Button variant='link'>
+                                                    Find Gear
+                                                </Button>
+                                            </Link>
+                                        </div>
+                                    </NoGearSelectedHolder>
+                                </GearModal>
+                                <GearModal />
+                            </GearProvider>
+                        </div>
+                        <div
+                            className={cn(
+                                'flex items-start',
+                                !item.weight &&
+                                    item.gear?.weight &&
+                                    'opacity-50'
+                            )}
+                        >
+                            <Label className='w-20 text-right p-2 flex items-center justify-end'>
+                                Weight
+                                <GearWeightTooltip />
+                            </Label>
+                            <EditWeightPopover
+                                grams={item.weight || item.gear?.weight || 0}
+                                onChange={(v) => {
+                                    updateItem({ ...item, weight: v });
+                                }}
+                            />
+                            {item.weight && item.gear?.weight && (
+                                <Button
+                                    className='translate-y-1 opacity-80'
+                                    variant='link'
+                                    size='sm'
+                                    onClick={() => {
+                                        updateItem({ ...item, weight: null });
+                                    }}
+                                >
+                                    use gear weight
+                                </Button>
+                            )}
+                        </div>
+                        <div
+                            className={cn(
+                                'flex items-start',
+                                !item.weightType &&
+                                    item.gear?.weightType &&
+                                    'opacity-50'
+                            )}
+                        >
+                            <Label className='w-20 text-right p-2 flex items-center justify-end'>
+                                Weight Type
+                                <GearWeightTooltip />
+                            </Label>
+                            <EditWeightTypeToggle
+                                weightType={
+                                    item.weightType ||
+                                    item.gear?.weightType ||
+                                    'base'
+                                }
+                                buttonSize='sm'
+                                onChange={(v) => {
+                                    updateItem({ ...item, weightType: v });
+                                }}
+                                activeButtonVariant='default'
+                                inactiveButtonVariant='outline'
+                            />
+                            {item.weightType && item.gear?.weightType && (
+                                <Button
+                                    className='translate-y-1 opacity-80'
+                                    variant='link'
+                                    size='sm'
+                                    onClick={() => {
+                                        updateItem({
+                                            ...item,
+                                            weightType: null,
+                                        });
+                                    }}
+                                >
+                                    use gear weight type
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                </ScrollArea>
             </div>
-
-            <AlternateGearPanel
-                className={cn(
-                    'pt-12 shrink-0',
-                    isEditingGearDetails ? 'hidden' : ''
-                )}
-                itemFilter={item.name}
-                onSelected={isReadOnly ? undefined : afterGearUpdated}
-            />
         </div>
     );
 };
+
+function GearTooltip() {
+    return (
+        <OpinionatedTooltip side='right' className='max-w-48'>
+            <ul>
+                <li>
+                    - Item is a type of thing you need to pack, i.e.
+                    &quot;Stove&quot;.
+                </li>
+                <li>
+                    - Gear is the actual thing you own, i.e. &quot;MSR Pocket
+                    Rocket&quot;.
+                </li>
+            </ul>
+            <br />
+            Items belong to a pack and are only used once. Gear, however, can be
+            used across multiple packs so that you don&apos;t have to re-enter
+            tedious details like weight and price.
+        </OpinionatedTooltip>
+    );
+}
+
+function GearWeightTooltip() {
+    return (
+        <OpinionatedTooltip side='right' className='max-w-48'>
+            This weight will only apply for this trip. If you want this weight
+            to reflect for future trips update the gear weight instead. This
+            will default to the gear weight if you have selected gear.
+        </OpinionatedTooltip>
+    );
+}
+
+function GearSearchBox({
+    onGearSelect,
+}: {
+    onGearSelect?: (gear: Gear) => void;
+}) {
+    const { gear } = useGearSearch();
+    const { setIsOpen, setIsEditing } = useGearModal();
+    return (
+        <Combobox placeholder='My Gear'>
+            <ComboboxInput />
+            <ComboboxList className='max-h-64'>
+                {gear.map((g) => (
+                    <ComboboxItem
+                        key={g.id}
+                        onSelect={() => onGearSelect && onGearSelect(g)}
+                        keywords={[g.name, g.description, g.brand]}
+                        className='border-b rounded-none'
+                    >
+                        <div className='flex gap-4 w-full'>
+                            <ImageWithFallback
+                                src='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
+                                alt='test'
+                                className='rounded object-contain'
+                                width={32}
+                                height={48}
+                            />
+                            <div className='flex-1'>
+                                <div className='font-bold mr-2 line-clamp-1'>
+                                    {g.name}
+                                </div>
+                                <div className='text-muted-foreground line-clamp-1'>
+                                    {g.description}
+                                </div>
+                                <div className='flex justify-between'>
+                                    <div>${g.price}</div>
+                                    <div>{g.weight} oz</div>
+                                </div>
+                            </div>
+                        </div>
+                    </ComboboxItem>
+                ))}
+            </ComboboxList>
+            <ComboboxItem
+                value='new'
+                forceMount={true}
+                className='border-t rounded-none min-h-10'
+                onSelect={() => {
+                    console.log('new');
+                    setIsOpen(true);
+                    setIsEditing(true);
+                }}
+            >
+                <PlusIcon className='h-4 w-4 mr-2' />
+                Add New Gear
+            </ComboboxItem>
+        </Combobox>
+    );
+}
 
 function QuickEditItemQuantity() {
     const { item, isReadOnly } = useConfirmedItemContext();
@@ -96,9 +306,9 @@ function QuickEditItemQuantity() {
         updateItem({ ...item, quantity });
     }
     return (
-        <div className='flex items-center space-x-1'>
-            <Label htmlFor='quantity' className='text-sm font-medium'>
-                Qty:
+        <div className='flex items-center'>
+            <Label htmlFor='quantity' className='w-20 text-right p-2'>
+                Quantity
             </Label>
             {isReadOnly ? (
                 <span>{item.quantity}</span>
@@ -123,9 +333,9 @@ function QuickEditItemIsPacked() {
         updateItem({ ...item, isPacked });
     }
     return (
-        <div className='flex items-center space-x-1'>
-            <Label htmlFor='packed' className='text-sm font-medium'>
-                Packed:
+        <div className='flex items-center'>
+            <Label htmlFor='packed' className='w-20 text-right p-2'>
+                Is Packed
             </Label>
             {isReadOnly ? (
                 <span>{item.isPacked ? 'Yes' : 'No'}</span>

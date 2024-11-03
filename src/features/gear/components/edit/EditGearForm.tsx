@@ -1,17 +1,12 @@
 import React, { MouseEventHandler } from 'react';
 import {
     useForm,
-    useWatch,
     Control,
     UseFormRegister,
     FieldErrors,
 } from 'react-hook-form';
 import { Button } from '@/ui/button';
-import { Input } from '@/ui/input';
-import { Textarea } from '@/ui/textarea';
-import { Gear } from '@/lib/appTypes';
-import { cn } from '@/lib/utils';
-import { ImageWithFallback } from '@/ui/image-with-fallback';
+import { Gear, WeightType } from '@/lib/appTypes';
 import { useAuth } from '@/features/auth/useAuth';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { AuthGuard } from '@/features/auth/components/AuthGuard';
@@ -23,6 +18,8 @@ export interface GearFormValues {
     image?: string;
     weight: number;
     price: number;
+    type: string;
+    weightType: WeightType;
 }
 
 const EditGearContext = React.createContext<{
@@ -38,7 +35,7 @@ const EditGearContext = React.createContext<{
     onCancel: (() => void) | undefined;
 } | null>(null);
 
-function useEditGearForm() {
+export function useEditGearForm() {
     const context = React.useContext(EditGearContext);
     if (!context) {
         throw new Error(
@@ -76,6 +73,8 @@ export function EditGearForm({
             image: gear?.image || '',
             weight: gear?.weight || 0,
             price: gear?.price || 0,
+            type: gear?.type || '',
+            weightType: gear?.weightType || 'base',
         },
     });
 
@@ -96,6 +95,8 @@ export function EditGearForm({
             image: data.image || '',
             weight: data.weight,
             price: data.price,
+            type: data.type,
+            weightType: data.weightType,
             isPublic: gear?.isPublic || false,
             isDeleted: gear?.isDeleted || false,
             purchaseLinks: gear?.purchaseLinks || [],
@@ -139,143 +140,6 @@ export function EditGearForm({
                 <form onSubmit={handleSubmit(onSubmitSave)}>{children}</form>
             </EditGearContext.Provider>
         </AuthGuard>
-    );
-}
-
-export function GearImage() {
-    const { control, gear } = useEditGearForm();
-    const gearImage = useWatch({
-        control: control,
-        name: 'image',
-    });
-
-    return (
-        <div className='relative w-24 h-24 rounded-lg flex-shrink-0'>
-            <ImageWithFallback
-                src={gearImage || ''}
-                fallbackSrc='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-                alt={gear?.name || 'placeholder'}
-                fill={true}
-                sizes='100% 100%'
-                className='rounded w-full h-full object-contain'
-            />
-        </div>
-    );
-}
-
-export function GearNameInput({ className }: { className?: string }) {
-    const { register, errors } = useEditGearForm();
-    return (
-        <div className={cn(className)}>
-            <Input
-                placeholder='Gear Name'
-                {...register('name', {
-                    required: 'Gear name is required',
-                })}
-                aria-invalid={!!errors.name}
-            />
-            {errors.name && (
-                <p className='text-sm text-red-600'>{errors.name.message}</p>
-            )}
-        </div>
-    );
-}
-
-export function GearWeightInput({ className }: { className?: string }) {
-    const { register, errors } = useEditGearForm();
-    return (
-        <div className={cn('min-w-20', className)}>
-            <div className='flex items-center gap-1'>
-                <Input
-                    type='number'
-                    placeholder='Weight'
-                    {...register('weight', {
-                        required: 'Weight is required',
-                        valueAsNumber: true,
-                        min: {
-                            value: 0,
-                            message: 'Weight must be a positive number',
-                        },
-                    })}
-                    aria-invalid={!!errors.weight}
-                />
-                <span className='text-sm font-semibold text-primary/70'>
-                    oz
-                </span>
-            </div>
-            {errors.weight && (
-                <p className='text-sm text-red-600'>{errors.weight.message}</p>
-            )}
-        </div>
-    );
-}
-
-export function GearPriceInput({ className }: { className?: string }) {
-    const { register, errors } = useEditGearForm();
-    return (
-        <div className={cn('min-w-20', className)}>
-            <div className='flex items-center gap-1'>
-                <span className='text-sm font-semibold text-primary/70'>$</span>
-                <Input
-                    type='number'
-                    placeholder='Price'
-                    {...register('price', {
-                        required: 'Price is required',
-                        valueAsNumber: true,
-                        min: {
-                            value: 0,
-                            message: 'Price must be a positive number',
-                        },
-                    })}
-                    aria-invalid={!!errors.price}
-                />
-            </div>
-            {errors.price && (
-                <p className='text-sm text-red-600'>{errors.price.message}</p>
-            )}
-        </div>
-    );
-}
-
-export function GearDescriptionInput({ className }: { className?: string }) {
-    const { register } = useEditGearForm();
-    return (
-        <div className={className}>
-            <Textarea
-                placeholder='Description (optional)'
-                {...register('description')}
-            />
-        </div>
-    );
-}
-
-export function GearImageUrlInput({ className }: { className?: string }) {
-    const { register, errors } = useEditGearForm();
-    return (
-        <div className={className}>
-            <Input
-                placeholder='Image URL (optional)'
-                {...register('image', {
-                    pattern: {
-                        value: /^https?:\/\/.*\.(?:png|jpg|jpeg|gif)$/i,
-                        message: 'Invalid image URL',
-                    },
-                })}
-                aria-invalid={!!errors.image}
-            />
-            {errors.image && (
-                <p className='text-sm text-red-600'>{errors.image.message}</p>
-            )}
-        </div>
-    );
-}
-
-export function GearBrandInput({ className }: { className?: string }) {
-    const { register } = useEditGearForm();
-    return (
-        <div className={cn('min-w-20', className)}>
-            <Input placeholder='Brand (optional)' {...register('brand')} />
-        </div>
     );
 }
 

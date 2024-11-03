@@ -7,7 +7,7 @@ import {
     CardContent,
     CardDescription,
 } from '@/ui/card';
-import { cn } from '@/lib/utils';
+import { cn, useFormatWeight } from '@/lib/utils';
 import { Item } from '@/lib/appTypes';
 import { useKitContext } from '../../useKitContext';
 import { StandardEditKitForm } from '../edit/StandardEditKitForm';
@@ -73,7 +73,7 @@ export const KitCard = ({
                                     No items in this kit yet.
                                 </p>
                             ) : (
-                                <ul className='space-y-2'>
+                                <ul className='cursor-default'>
                                     {kit.items.map((item) => (
                                         <KitItemLineItem
                                             onItemSelected={() => {
@@ -105,6 +105,7 @@ function KitItemLineItem({
 }) {
     const { updateItem } = useAppMutations();
     const { isReadOnly } = useKitContext();
+    const formatWeight = useFormatWeight();
 
     const modalContext = useContext(KitModalContext);
 
@@ -116,7 +117,16 @@ function KitItemLineItem({
     };
 
     return (
-        <li key={item.id} className='flex items-center space-x-2 w-fit'>
+        <li
+            key={item.id}
+            className='flex p-1 items-center space-x-2 hover:bg-muted text-sm transition-all cursor-pointer'
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                modalContext?.setIsOpen(true);
+                onItemSelected?.(item);
+            }}
+        >
             {!isReadOnly && (
                 <Checkbox
                     id={`item-${item.id}`}
@@ -128,31 +138,30 @@ function KitItemLineItem({
                     disabled={isReadOnly}
                 />
             )}
-            <label
-                htmlFor={`item-${item.id}`}
-                onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    modalContext?.setIsOpen(true);
-                    onItemSelected?.(item);
-                }}
-                className='text-sm font-medium leading-none hover:underline hover:cursor-pointer line-clamp-1'
-                title={
-                    item.name + (item.gear ? ' (' + item.gear.name + ')' : '')
-                }
-            >
-                {item.name}
-                {item.quantity > 1 && (
-                    <span className='text-xs font-semibold text-muted-foreground'>
-                        &nbsp;x{item.quantity}
-                    </span>
-                )}
-                {item.gear && (
-                    <span className='text-xs text-muted-foreground'>
-                        &nbsp;&nbsp;{'(' + item.gear.name + ')'}
-                    </span>
-                )}
-            </label>
+            <div className='flex-1 overflow-hidden'>
+                <div className='flex justify-between items-center w-full'>
+                    <div
+                        className='text-sm font-medium truncate flex-1'
+                        title={
+                            item.name +
+                            (item.gear ? ' (' + item.gear.name + ')' : '')
+                        }
+                    >
+                        {item.name}
+                    </div>
+                    <div className='pl-1 text-sm flex items-center'>
+                        <span className='mr-1 text-muted-foreground'>
+                            {item.quantity > 1 && <>{item.quantity}x</>}
+                        </span>
+                        {formatWeight(item.weight || item.gear?.weight || 0)}
+                    </div>
+                </div>
+                <div className='flex w-full'>
+                    <div className='text-xs text-muted-foreground flex-1'>
+                        {item.gear && item.gear.name}
+                    </div>
+                </div>
+            </div>
         </li>
     );
 }

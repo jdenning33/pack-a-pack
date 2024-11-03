@@ -1,24 +1,33 @@
 import React, { ReactNode } from 'react';
+import { Slot } from '@radix-ui/react-slot';
 import { cn } from '@/lib/utils';
 import { usePackModalContext } from './PackModal';
 
+interface PackModalTriggerProps {
+    className?: string;
+    defaultEditing?: boolean;
+    children: ReactNode;
+    asChild?: boolean;
+}
+
 export function PackModalTrigger({
     className,
+    defaultEditing = false,
     children,
-}: {
-    className?: string;
-    children: ReactNode;
-}) {
+    asChild = false,
+}: PackModalTriggerProps) {
     const { setIsOpen, setIsEditing } = usePackModalContext();
+    const Comp = asChild ? Slot : 'div';
+
     return (
-        <div
-            className={cn('cursor-pointer', className)}
-            onClick={(_) => {
+        <Comp
+            className={asChild ? undefined : cn('cursor-pointer', className)}
+            onClick={(_e) => {
                 setIsOpen(true);
-                setIsEditing(false);
+                setIsEditing(defaultEditing);
             }}
         >
             {children}
-        </div>
+        </Comp>
     );
 }

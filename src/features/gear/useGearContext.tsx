@@ -3,10 +3,6 @@ import { Gear } from '@/lib/appTypes';
 
 export type GearContextType = {
     gear?: Gear;
-    isEditing: boolean;
-    setIsEditing: (isEditing: boolean) => void;
-    isModalOpen: boolean;
-    setIsModalOpen: (isOpen: boolean) => void;
     afterGearUpdated: (gear: Gear) => void;
 };
 

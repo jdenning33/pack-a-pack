@@ -14,35 +14,41 @@ import {
     CommandList,
 } from '@/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
-import { usePack } from '../pack/usePack';
 import { useAppMutations } from '../app-mutations/useAppMutations';
-import { Kit } from '@/lib/appTypes';
+import { Item } from '@/lib/appTypes';
 import { suggestedKits } from './suggestedKits';
+import { useKitContext } from '../kit/useKitContext';
 
-export function KitSuggestionMenu({
+export function ItemSuggestionMenu({
     ...buttonProps
 }: React.ComponentProps<typeof Button>) {
-    const { pack } = usePack();
-    const { addKit } = useAppMutations();
+    const { kit } = useKitContext();
+    const { addItem } = useAppMutations();
 
-    if (!pack) return null;
+    if (!kit) return null;
 
-    const addKitToPack = (kitName: string) => {
-        console.log('Adding kit:', kitName);
-        const kit = suggestedKits.find((sk) => sk.name === kitName);
-        if (!kit) return;
-        const newKit: Omit<Kit, 'id'> = {
-            items: [],
-            name: kit.name,
-            packId: pack.id,
-            description: kit.description,
+    const relatedSuggestedKit = suggestedKits.find(
+        (sk) => sk.name === kit.name
+    );
+    const suggestedItems = relatedSuggestedKit?.items || [];
+    const addItemToPack = (itemName: string) => {
+        console.log('Adding item:', itemName);
+        const newItem: Omit<Item, 'id'> = {
+            kitId: kit.id,
+            packId: kit.packId,
+            name: itemName,
+            weight: null,
+            weightType: null,
+            notes: '',
+            quantity: 1,
+            isPacked: false,
             isDeleted: false,
         };
-        addKit(newKit);
+        addItem(newItem);
     };
 
-    const kits = suggestedKits.filter(
-        (sk) => !pack.kits.some((kit) => kit.name === sk.name)
+    const items = suggestedItems.filter(
+        (itemName) => !kit.items.some((item) => item.name === itemName)
     );
 
     return (
@@ -50,32 +56,32 @@ export function KitSuggestionMenu({
             <PopoverTrigger asChild>
                 <Button
                     role='combobox'
-                    title='Quick Add Kit Suggestions'
                     {...buttonProps}
                     className={cn(buttonProps.className, 'group')}
+                    disabled={items.length === 0}
+                    disabledTitle='Uh oh! No more items to suggest for this kit.'
                 >
                     <SparklesIcon className='h-4 w-4 shrink-0 opacity-70 group-hover:opacity-90' />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className='w-[200px] p-0' align='end'>
                 <Command>
-                    <CommandInput placeholder='Search popular kits...' />
+                    <CommandInput placeholder='Search popular items...' />
                     <CommandList>
                         <CommandEmpty>No items found.</CommandEmpty>
                         <CommandGroup>
-                            {kits.map((kit) => (
+                            {items.map((itemName) => (
                                 <CommandItem
-                                    key={kit.name}
-                                    value={kit.name}
-                                    onSelect={addKitToPack}
-                                    title={kit.description}
+                                    key={itemName}
+                                    value={itemName}
+                                    onSelect={addItemToPack}
                                 >
                                     <PlusIcon
                                         className={cn(
                                             'mr-2 h-4 w-4 cursor-pointer'
                                         )}
                                     />
-                                    {kit.name}
+                                    {itemName}
                                 </CommandItem>
                             ))}
                         </CommandGroup>

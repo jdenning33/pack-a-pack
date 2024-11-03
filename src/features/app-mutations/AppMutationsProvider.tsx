@@ -8,11 +8,22 @@ import { useUpsertPack } from '@/lib/supabse/pack/useUpsertPack';
 import { useUpsertKit } from '@/lib/supabse/kit/useUpsertKit';
 import { useUpsertItem } from '@/lib/supabse/item/useUpsertItem';
 import { useUpsertGear } from '@/lib/supabse/gear/useUpsertGear';
-import { Pack, PackSummary, Kit, Item, Gear } from '@/lib/appTypes';
+import {
+    Pack,
+    PackSummary,
+    Kit,
+    Item,
+    Gear,
+    UserGearBin,
+} from '@/lib/appTypes';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import { toast } from 'sonner';
 import { Optional } from '@/lib/utils';
 import { useUpsertUserGear } from '@/lib/supabse/user-gear/useUpsertUserGear';
+import { uploadGearImageFromFile } from '@/lib/supabse/gear-images/uploadGearImageFromFile';
+import { uploadGearImageFromUrl } from '@/lib/supabse/gear-images/uploadGearImageFromUrl';
+import { useUpsertUserGearBin } from '@/lib/supabse/gear-bin/useUpsertGearBin';
+import { useUpdateProfile } from '@/lib/supabse/profile/useUpdateProfile';
 
 export const AppMutationsProvider: React.FC<{
     children: ReactNode;
@@ -23,6 +34,8 @@ export const AppMutationsProvider: React.FC<{
     const upsertItemMutation = useUpsertItem(user?.id);
     const upsertGearMutation = useUpsertGear();
     const upsertUserGearMutation = useUpsertUserGear(user?.id);
+    const upsertUserGearBinMutation = useUpsertUserGearBin();
+    const updateProfileMutation = useUpdateProfile();
 
     const clonePack = async (pack: Pack, withGear: boolean) => {
         if (!user) {
@@ -143,17 +156,43 @@ export const AppMutationsProvider: React.FC<{
             await upsertGearMutation.mutateAsync({ ...gear, isDeleted: true });
         },
 
-        addGearToUser: async (gearId: string) => {
+        addGearToUser: async (gearId: string, gearBinId?: string) => {
             await upsertUserGearMutation.mutateAsync({
                 gearId,
                 isRetired: false,
+                userGearBinId: gearBinId,
             });
         },
         removeGearFromUser: async (gearId: string) => {
             await upsertUserGearMutation.mutateAsync({
                 gearId,
                 isRetired: true,
+                userGearBinId: undefined,
             });
+        },
+
+        upsertUserGearBin: async (bin: Omit<UserGearBin, 'id'>) => {
+            const result = await upsertUserGearBinMutation.mutateAsync(bin);
+            return result;
+        },
+        deleteUserGearBin: async (bin: UserGearBin) => {
+            const result = await upsertUserGearBinMutation.mutateAsync({
+                ...bin,
+                isDeleted: true,
+            });
+            return result;
+        },
+
+        uploadGearImageFromFile: async (file: File) => {
+            return uploadGearImageFromFile(file);
+        },
+        uploadGearImageFromUrl: async (url) => {
+            return uploadGearImageFromUrl(url);
+        },
+
+        updateProfile: async (profile) => {
+            const result = await updateProfileMutation.mutateAsync(profile);
+            return result;
         },
     };
 
