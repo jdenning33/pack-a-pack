@@ -5,7 +5,7 @@ import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Button } from '@/ui/button';
 import { Gear } from '@/lib/appTypes';
 import { Badge } from '@/ui/badge';
-import { formatWeight } from '@/features/gear-bin/components/page/GearBinAccordionItem';
+import { useFormatWeight } from '@/lib/utils';
 
 interface AlternateGearCardProps {
     gear: Gear;
@@ -17,6 +17,7 @@ export const AlternateGearCard = forwardRef<
     HTMLDivElement,
     AlternateGearCardProps
 >(({ gear, onSelected, className = '' }, ref) => {
+    const formatWeight = useFormatWeight();
     return (
         <Card
             ref={ref}

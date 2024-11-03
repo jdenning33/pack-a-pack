@@ -23,7 +23,7 @@ export function GearUploadImageFromUrlInput({
         return (
             <Button
                 variant='link'
-                className='p-0'
+                className={cn('p-0', className)}
                 onClick={() => setUploadFromUrl(true)}
             >
                 Upload Gear Image from Web URL
@@ -85,6 +85,14 @@ export function GearUploadImageFromUrlInput({
                     </div>
                 )}
             />
+            <Button
+                variant='link'
+                className='ml-1 p-0'
+                type='button'
+                onClick={() => setUploadFromUrl(false)}
+            >
+                Cancel
+            </Button>{' '}
             {error && <p className='text-sm text-red-500'>{error}</p>}
         </div>
     );

@@ -21,6 +21,10 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
+import {
+    PackStatsModal,
+    PackStatsModalTrigger,
+} from '@/features/pack/components/stats/PackStatsModal';
 
 // For some reason next did not like this being in the same file as the PackPage...
 export function PackContents() {
@@ -51,6 +55,17 @@ export function PackContents() {
                 <PackModal>
                     <ClonePackModal>
                         <div className='flex'>
+                            <PackStatsModal>
+                                <PackStatsModalTrigger asChild>
+                                    <Button
+                                        className='mr-2'
+                                        variant='outline'
+                                        size='sm'
+                                    >
+                                        Pack Stats
+                                    </Button>
+                                </PackStatsModalTrigger>
+                            </PackStatsModal>
                             <ClonePackModalTrigger asChild>
                                 <Button
                                     className='rounded-r-none'

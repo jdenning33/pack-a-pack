@@ -1,4 +1,5 @@
 'use client';
+import { Profile } from '@/lib/appTypes';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import { createContext, useContext } from 'react';
 
@@ -18,6 +19,7 @@ export interface Session {
 
 export interface AuthContract {
     user: User | null;
+    profile: Profile | null;
     session: Session | null;
     isSignedIn: boolean;
     isLoading: boolean;

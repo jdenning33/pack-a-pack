@@ -10,21 +10,18 @@ import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import { GearProvider } from '../../gear/GearProvider';
 import { AddGearButton } from '../../gear/components/AddGearButton';
-import {
-    GearCard,
-    GearSelectBanner,
-} from '../../gear/components/card/GearCard';
-import { GearModal, GearModalTrigger } from '../../gear/components/GearModal';
+import { GearCard } from '../../gear/components/card/GearCard';
+import { GearSelectBanner } from '@/features/gear/components/card/GearSelectBanner';
+import { GearModal } from '../../gear/components/modal/GearModal';
+import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
 import { useGearSearch } from '../useGearSearch';
 
 export function GearCarousel({
     onSelected,
     variant = 'default',
-    useModal = true,
 }: {
     className?: string;
     variant?: 'default' | 'compact';
-    useModal?: boolean;
     onSelected?: (gear: Gear) => void;
 }) {
     const { gear } = useGearSearch();
@@ -51,21 +48,18 @@ export function GearCarousel({
                                 key={g.id}
                                 className='w-36 max-w-36 pl-2 '
                             >
-                                <GearProvider
-                                    gear={g}
-                                    className=''
-                                    useModal={useModal}
-                                >
-                                    <GearModalTrigger>
-                                        <GearCard
-                                            className={
-                                                variant === 'compact'
-                                                    ? 'h-52'
-                                                    : 'h-[12.5rem] shadow-sm'
-                                            }
-                                        />
-                                    </GearModalTrigger>
-                                    <GearModal />
+                                <GearProvider gear={g} className=''>
+                                    <GearModal>
+                                        <GearModalTrigger>
+                                            <GearCard
+                                                className={
+                                                    variant === 'compact'
+                                                        ? 'h-52'
+                                                        : 'h-[12.5rem] shadow-sm'
+                                                }
+                                            />
+                                        </GearModalTrigger>
+                                    </GearModal>
                                     {onSelected && (
                                         <GearSelectBanner
                                             onSelect={onSelected}
@@ -76,13 +70,16 @@ export function GearCarousel({
                         ))}
                         <CarouselItem className='basis-1/2 md:basis-1/3 pl-2 flex items-center '>
                             <GearProvider afterGearUpdated={onSelected}>
-                                <AddGearButton
-                                    className={cn(
-                                        'bg-[unset] border-0 shadow-none',
-                                        variant === 'compact' ? 'h-52' : 'h-48'
-                                    )}
-                                />
-                                <GearModal />
+                                <GearModal>
+                                    <AddGearButton
+                                        className={cn(
+                                            'bg-[unset] border-0 shadow-none',
+                                            variant === 'compact'
+                                                ? 'h-52'
+                                                : 'h-48'
+                                        )}
+                                    />
+                                </GearModal>
                             </GearProvider>
                         </CarouselItem>
                     </CarouselContent>

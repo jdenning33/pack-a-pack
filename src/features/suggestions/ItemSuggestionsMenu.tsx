@@ -37,6 +37,8 @@ export function ItemSuggestionMenu({
             kitId: kit.id,
             packId: kit.packId,
             name: itemName,
+            weight: null,
+            weightType: null,
             notes: '',
             quantity: 1,
             isPacked: false,

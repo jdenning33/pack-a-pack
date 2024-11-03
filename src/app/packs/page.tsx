@@ -47,7 +47,7 @@ export default function PacksPage() {
                                 </h2>
                             </AccordionTrigger>
                             <AccordionContent>
-                                <div className='bg-muted rounded-md border p-2'>
+                                <div className='bg-muted rounded-md border p-2 min-h-32'>
                                     <FilteredPackList past={true} />
                                 </div>
                             </AccordionContent>

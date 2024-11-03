@@ -17,10 +17,8 @@ import {
     GearSearchModalTrigger,
 } from '@/features/gear-search/modal/GearSearchModal';
 import { GearProvider } from '@/features/gear/GearProvider';
-import {
-    GearModal,
-    GearModalTrigger,
-} from '@/features/gear/components/GearModal';
+import { GearModal } from '@/features/gear/components/modal/GearModal';
+import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
 
 export function GearBinQuickOptions() {
     const { gearBin } = useGearBin();

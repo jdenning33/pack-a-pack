@@ -6,6 +6,9 @@ import {
     Gear,
     PackSummary,
     UserGearBin,
+    Profile,
+    PreferredWeightFormat,
+    WeightType,
 } from '@/lib/appTypes';
 import { Optional } from '../utils';
 
@@ -48,6 +51,8 @@ interface SupabaseItem {
     quantity: number;
     is_packed: boolean;
     notes: string;
+    weight: number | null;
+    weight_type: string | null;
     user_gear_id?: string | null;
     created_at: string;
     updated_at: string;
@@ -71,6 +76,7 @@ interface SupabaseGear {
     brand: string;
     image: string;
     weight: number;
+    weight_type: string;
     price: number;
     is_public: boolean;
     purchase_links: string[];
@@ -96,6 +102,18 @@ interface SupabaseUserGearBin {
     created_at: string;
     updated_at: string;
     is_deleted: boolean;
+}
+
+interface SupabaseProfile {
+    id: string;
+    avatar_url: string;
+    full_name: string;
+    bio: string;
+    username: string;
+    preferred_weight_format: string;
+    location: string;
+    created_at: string;
+    updated_at: string;
 }
 
 // Convert Supabase Pack to application Pack
@@ -163,6 +181,18 @@ export function appToSupabaseKit(
     };
 }
 
+function getWeightType(weightType: string | null): WeightType | null {
+    if (!weightType) return null;
+    switch (weightType) {
+        case 'wearable':
+            return 'wearable';
+        case 'consumable':
+            return 'consumable';
+        default:
+            return 'base';
+    }
+}
+
 // Convert Supabase Item to application Item
 export function supabaseToAppItem(
     supabaseItem: SupabaseItem,
@@ -177,6 +207,8 @@ export function supabaseToAppItem(
         quantity: supabaseItem.quantity,
         isPacked: supabaseItem.is_packed,
         notes: supabaseItem.notes,
+        weight: supabaseItem.weight,
+        weightType: getWeightType(supabaseItem.weight_type),
         gearId: supabaseItem.user_gear?.gear_id,
         gear: supabaseItem.user_gear?.gear
             ? supabaseToAppGear(supabaseItem.user_gear.gear, userId)
@@ -197,6 +229,8 @@ export function appToSupabaseItem(
         quantity: appItem.quantity,
         is_packed: appItem.isPacked,
         notes: appItem.notes,
+        weight: appItem.weight,
+        weight_type: appItem.weightType,
         user_gear_id: userGearId || null,
         is_deleted: appItem.isDeleted,
     };
@@ -228,6 +262,7 @@ export function appToSupabaseGear(
         brand: appGear.brand,
         image: appGear.image,
         weight: appGear.weight,
+        weight_type: appGear.weightType,
         price: appGear.price,
         type: appGear.type,
         is_public: appGear.isPublic,
@@ -244,6 +279,12 @@ export function supabaseToAppGear(
     return {
         id: supabaseGear.id,
         type: supabaseGear.type,
+        weightType:
+            supabaseGear.weight_type === 'wearable'
+                ? 'wearable'
+                : supabaseGear.weight_type === 'consumable'
+                ? 'consumable'
+                : 'base',
         name: supabaseGear.name,
         description: supabaseGear.description,
         brand: supabaseGear.brand,
@@ -293,5 +334,47 @@ export function supabaseToAppUserGearBin(
         userId: supabaseGearBin.user_id,
         isDeleted: supabaseGearBin.is_deleted,
         gear: [],
+    };
+}
+
+export function getPreferredWeightFormat(
+    supabaseProfile: SupabaseProfile
+): PreferredWeightFormat {
+    switch (supabaseProfile.preferred_weight_format) {
+        case 'kg':
+            return 'kg';
+        case 'lbs':
+            return 'lbs';
+        case 'lbs+oz':
+            return 'lbs+oz';
+        default:
+            return 'kg';
+    }
+}
+export function supabaseToAppProfile(
+    supabaseProfile: SupabaseProfile
+): Profile {
+    return {
+        id: supabaseProfile.id,
+        avatarUrl: supabaseProfile.avatar_url,
+        fullname: supabaseProfile.full_name,
+        bio: supabaseProfile.bio,
+        username: supabaseProfile.username,
+        preferredWeightFormat: getPreferredWeightFormat(supabaseProfile),
+        location: supabaseProfile.location,
+    };
+}
+
+export function appToSupabaseProfile(
+    appProfile: Optional<Profile, 'id'>
+): Upsert<SupabaseProfile> {
+    return {
+        id: appProfile.id,
+        avatar_url: appProfile.avatarUrl,
+        full_name: appProfile.fullname,
+        bio: appProfile.bio,
+        username: appProfile.username,
+        preferred_weight_format: appProfile.preferredWeightFormat,
+        location: appProfile.location,
     };
 }

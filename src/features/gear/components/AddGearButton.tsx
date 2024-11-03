@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button } from '@/ui/button';
-import { useGearContext } from '../useGearContext';
 import { Plus } from 'lucide-react';
 import { useAuth } from '@/features/auth/useAuth';
+import { useGearModal } from './modal/GearModal';
 
 export const AddGearButton: React.FC<{
     className?: string;
     children?: React.ReactNode;
 }> = ({ className, children }) => {
     const { user } = useAuth();
-    const { setIsEditing, setIsModalOpen } = useGearContext();
+    const { setIsEditing, setIsOpen } = useGearModal();
     return (
         <Button
             className={className + ' relative'}
@@ -17,7 +17,7 @@ export const AddGearButton: React.FC<{
             size='sm'
             onClick={() => {
                 setIsEditing(true);
-                setIsModalOpen(true);
+                setIsOpen(true);
             }}
             disabled={!user}
             disabledTitle='You must be logged in to add gear'

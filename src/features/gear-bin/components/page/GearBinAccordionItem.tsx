@@ -7,7 +7,7 @@ import {
 import { useGearBin } from '@/features/gear-bin/useGearBin';
 import { GearBinQuickOptions } from './GearBinQuickOptions';
 import { Gear } from '@/lib/appTypes';
-import { cn } from '@/lib/utils';
+import { cn, useFormatWeight } from '@/lib/utils';
 
 export function GearBinAccordionItem({
     className,
@@ -17,6 +17,7 @@ export function GearBinAccordionItem({
     children: React.ReactNode;
 }) {
     const { gearBin } = useGearBin();
+    const formatWeight = useFormatWeight();
 
     const stats = useMemo(
         () => calculateKitStats(gearBin?.gear || []),
@@ -52,13 +53,6 @@ export function GearBinAccordionItem({
             </AccordionContent>
         </AccordionItem>
     );
-}
-export function formatWeight(oz: number): string {
-    const lbs = Math.floor(oz / 16);
-    const remainingOz = oz % 16;
-    if (lbs === 0) return `${remainingOz.toFixed(1)} oz`;
-    if (remainingOz === 0) return `${lbs} lbs`;
-    return `${lbs} lbs ${remainingOz.toFixed(0)} oz`;
 }
 
 export function calculateKitStats(gear: Gear[]) {

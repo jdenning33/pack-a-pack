@@ -3,20 +3,21 @@ import React, { ReactNode, useMemo } from 'react';
 import {
     UserGearBinsContext,
     UserGearBinsContextType,
+    useUserGearBins,
 } from './useGearBinSearch';
 import { useAuth } from '../auth/useAuth';
 import { useGearQuery } from '@/lib/supabse/gear/useGearQuery';
+import { Input } from '@/ui/input';
 
 export const UserGearBinSearchProvider: React.FC<{
     children: ReactNode;
 }> = ({ children }) => {
     const { user } = useAuth();
+    const [filterText, setFilterText] = React.useState<string>('');
 
-    const searchParams = {
+    const userGearBinQuery = useGearBinQuery({
         userId: user?.id || '',
-    };
-
-    const userGearBinQuery = useGearBinQuery(searchParams);
+    });
     const userGearQuery = useGearQuery({
         gearType: 'user',
         gearUserId: user?.id,
@@ -27,8 +28,16 @@ export const UserGearBinSearchProvider: React.FC<{
         [userGearBinQuery.data]
     );
     const userGear = useMemo(
-        () => userGearQuery.data || [],
-        [userGearQuery.data]
+        () =>
+            userGearQuery.data?.filter((d) => {
+                return (
+                    d.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                    d.description
+                        .toLowerCase()
+                        .includes(filterText.toLowerCase())
+                );
+            }) || [],
+        [userGearQuery.data, filterText]
     );
 
     const gearBinsWithGear = useMemo(
@@ -40,24 +49,19 @@ export const UserGearBinSearchProvider: React.FC<{
         [userGearBins, userGear]
     );
 
-    const binlessGear = useMemo(
-        () =>
-            userGear.filter(
-                (gear) =>
-                    !userGearBins.some((bin) => bin.id === gear.userGearBinId)
-            ),
-        [userGear, userGearBins]
-    );
-
-    const setSearchParams = () => {
-        console.error('setSearchParams not available for this provider');
-    };
+    const binlessGear = useMemo(() => {
+        if (!userGear || !userGearBins) return [];
+        return userGear.filter(
+            (gear) => !userGearBins.some((bin) => bin.id === gear.userGearBinId)
+        );
+    }, [userGear, userGearBins]);
 
     const value: UserGearBinsContextType = {
+        isLoading: userGearBinQuery.isLoading || userGearQuery.isLoading,
         gearBins: gearBinsWithGear,
         binlessGear: binlessGear,
-        searchParams,
-        setSearchParams,
+        filterText: filterText,
+        setFilterText: setFilterText,
     };
 
     return (
@@ -66,3 +70,25 @@ export const UserGearBinSearchProvider: React.FC<{
         </UserGearBinsContext.Provider>
     );
 };
+
+export function UserGearFilterBar(
+    inputProps: React.ComponentProps<typeof Input>
+) {
+    const { filterText, setFilterText } = useUserGearBins();
+    const [text, setText] = React.useState(filterText);
+    return (
+        <Input
+            {...inputProps}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onBlur={() => {
+                setFilterText(text);
+            }}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                    setFilterText(text);
+                }
+            }}
+        />
+    );
+}

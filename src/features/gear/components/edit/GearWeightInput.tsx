@@ -1,32 +1,48 @@
 import React from 'react';
-import { Input } from '@/ui/input';
 import { cn } from '@/lib/utils';
 import { useEditGearForm } from './EditGearForm';
+import { Controller } from 'react-hook-form';
+import { Label } from '@/ui/label';
+import { EditWeightPopover } from '@/features/shared/EditWeightPopover';
 
-export function GearWeightInput({ className }: { className?: string }) {
-    const { register, errors } = useEditGearForm();
+interface GearWeightInputProps {
+    className?: string;
+    includeLabel?: boolean;
+}
+
+export function GearWeightInput({
+    className,
+    includeLabel = true,
+}: GearWeightInputProps) {
+    const { errors, control } = useEditGearForm();
+    const inputId = 'gear-weight';
+
     return (
-        <div className={cn('min-w-20', className)}>
-            <div className='flex items-center gap-1'>
-                <Input
-                    type='number'
-                    placeholder='Weight'
-                    {...register('weight', {
-                        required: 'Weight is required',
-                        valueAsNumber: true,
-                        min: {
-                            value: 0,
-                            message: 'Weight must be a positive number',
-                        },
-                    })}
-                    aria-invalid={!!errors.weight}
-                />
-                <span className='text-sm font-semibold text-primary/70'>
-                    oz
-                </span>
-            </div>
+        <div className={cn('', className)}>
+            {includeLabel && (
+                <Label
+                    htmlFor={inputId}
+                    className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                    Weight
+                </Label>
+            )}
+            <Controller
+                name='weight'
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                    <div className='min-w-20'>
+                        <EditWeightPopover grams={value} onChange={onChange} />
+                    </div>
+                )}
+            />
             {errors.weight && (
-                <p className='text-sm text-red-600'>{errors.weight.message}</p>
+                <p
+                    id={`${inputId}-error`}
+                    className='text-sm font-medium text-destructive'
+                >
+                    {errors.weight.message}
+                </p>
             )}
         </div>
     );

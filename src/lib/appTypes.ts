@@ -1,3 +1,14 @@
+export type PreferredWeightFormat = 'kg' | 'lbs' | 'lbs+oz';
+export interface Profile {
+    id: string;
+    avatarUrl: string;
+    fullname: string;
+    bio: string;
+    username: string;
+    preferredWeightFormat: PreferredWeightFormat;
+    location: string;
+}
+
 // This represents a backpack and it's contents for a single trip, it may be cloned for a new trip
 export interface Pack {
     id: string;
@@ -33,11 +44,14 @@ export interface Item {
     quantity: number;
     isPacked: boolean;
     notes: string;
+    weight: number | null;
+    weightType: WeightType | null;
     gearId?: string;
     gear?: Gear;
     isDeleted: boolean;
 }
 
+export type WeightType = 'base' | 'wearable' | 'consumable';
 export interface Gear {
     id: string;
     name: string;
@@ -52,6 +66,7 @@ export interface Gear {
     createdByUserName: string;
     isDeleted: boolean;
     type: string;
+    weightType: WeightType;
     isOwnedByUser: boolean;
     isRetiredByUser: boolean;
     userGearBinId?: string;

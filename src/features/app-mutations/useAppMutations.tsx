@@ -7,6 +7,7 @@ import {
     Item,
     Gear,
     UserGearBin,
+    Profile,
 } from '@/lib/appTypes';
 
 export interface AppMutationsContextType {
@@ -38,6 +39,8 @@ export interface AppMutationsContextType {
 
     uploadGearImageFromFile: (file: File) => Promise<string>;
     uploadGearImageFromUrl: (url: string) => Promise<string>;
+
+    updateProfile: (profile: Profile) => Promise<string>;
 }
 
 export const AppMutationsContext = createContext<
