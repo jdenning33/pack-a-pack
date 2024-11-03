@@ -137,8 +137,8 @@ export default function UserGearPage() {
 }
 
 function GearBinAccordion() {
-    const { gearBins } = useUserGearBins();
-    if (!gearBins) return null;
+    const { gearBins, isLoading } = useUserGearBins();
+    if (isLoading) return null;
     return (
         <Accordion
             type='multiple'

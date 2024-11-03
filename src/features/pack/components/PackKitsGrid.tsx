@@ -22,7 +22,7 @@ export function PackKitsGrid({ className }: { className?: string }) {
     return (
         <div
             className={cn(
-                'grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]',
+                'grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]',
                 className
             )}
         >

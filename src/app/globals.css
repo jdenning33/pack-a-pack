@@ -33,11 +33,18 @@ body {
         --border: 0 0% 89.8%;
         --input: 0 0% 89.8%;
         --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
+        --chart-1: 12 76% 61%; /* Coral red */
+        --chart-2: 173 58% 39%; /* Teal */
+        --chart-3: 197 37% 24%; /* Dark blue */
+        --chart-4: 43 74% 66%; /* Yellow */
+        --chart-5: 27 87% 67%; /* Orange */
+        --chart-6: 152 75% 40%; /* Emerald green */
+        --chart-7: 271 68% 63%; /* Purple */
+        --chart-8: 338 71% 62%; /* Pink */
+        --chart-9: 190 95% 39%; /* Azure blue */
+        --chart-10: 95 58% 52%; /* Lime green */
+        --chart-11: 313 59% 47%; /* Magenta */
+        --chart-12: 204 96% 27%; /* Deep blue */
         --radius: 0.5rem;
     }
     .dark {

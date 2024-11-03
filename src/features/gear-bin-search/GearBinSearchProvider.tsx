@@ -57,6 +57,7 @@ export const UserGearBinSearchProvider: React.FC<{
     }, [userGear, userGearBins]);
 
     const value: UserGearBinsContextType = {
+        isLoading: userGearBinQuery.isLoading || userGearQuery.isLoading,
         gearBins: gearBinsWithGear,
         binlessGear: binlessGear,
         filterText: filterText,

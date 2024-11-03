@@ -3,6 +3,7 @@ import { createContext, useContext } from 'react';
 import { Gear, UserGearBin } from '@/lib/appTypes';
 
 export interface UserGearBinsContextType {
+    isLoading: boolean;
     gearBins: UserGearBin[];
     binlessGear: Gear[];
     filterText: string;
