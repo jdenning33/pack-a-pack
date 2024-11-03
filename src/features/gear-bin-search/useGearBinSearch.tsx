@@ -2,22 +2,11 @@
 import { createContext, useContext } from 'react';
 import { Gear, UserGearBin } from '@/lib/appTypes';
 
-export type UserGearBinSearchOptions = Partial<{
-    searchText: string;
-    orderBy: 'name' | 'created_at' | 'updated_at' | 'user_id';
-    orderDirection: 'asc' | 'desc';
-    limit: number;
-    page: number;
-    userId: string;
-}>;
-
 export interface UserGearBinsContextType {
     gearBins: UserGearBin[];
     binlessGear: Gear[];
-    searchParams: UserGearBinSearchOptions;
-    setSearchParams: (
-        setter: (prev: UserGearBinSearchOptions) => UserGearBinSearchOptions
-    ) => void;
+    filterText: string;
+    setFilterText: (filter: string) => void;
 }
 
 export const UserGearBinsContext = createContext<

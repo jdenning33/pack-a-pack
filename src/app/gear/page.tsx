@@ -3,7 +3,10 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/ui/button';
 import { AddGearBinButton } from '@/features/gear-bin/components/AddGearBinButton';
-import { UserGearBinSearchProvider } from '@/features/gear-bin-search/GearBinSearchProvider';
+import {
+    UserGearBinSearchProvider,
+    UserGearFilterBar,
+} from '@/features/gear-bin-search/GearBinSearchProvider';
 import { useAuth } from '@/features/auth/useAuth';
 import { GearBinList } from '@/features/gear-bin/components/page/GearBinList';
 import { Accordion } from '@/ui/accordion';
@@ -28,9 +31,9 @@ import {
 import { useState } from 'react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { cn } from '@/lib/utils';
-import { Input } from '@/ui/input';
 import { GearModal } from '@/features/gear/components/modal/GearModal';
 import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
+import { useUserGearBins } from '@/features/gear-bin-search/useGearBinSearch';
 
 export default function UserGearPage() {
     const { user } = useAuth();
@@ -102,10 +105,10 @@ export default function UserGearPage() {
                 </div>
 
                 <UserGearBinSearchProvider>
-                    <div className='flex justify-between'>
-                        <Input
-                            className='flex-1 max-w-[20rem]'
-                            placeholder='Search gear...'
+                    <div className='flex justify-between items-center'>
+                        <UserGearFilterBar
+                            placeholder='Filter...'
+                            className='max-w-sm'
                         />
                         <AddGearBinButton>
                             <Button
@@ -118,24 +121,7 @@ export default function UserGearPage() {
                             </Button>
                         </AddGearBinButton>
                     </div>
-                    <Accordion
-                        type='multiple'
-                        className='w-full space-y-6'
-                        defaultValue={['binless']}
-                    >
-                        <BinlessGearAccordionItem>
-                            <PageGearList />
-                        </BinlessGearAccordionItem>
-                        <GearBinList
-                            className='flex flex-col gap-4'
-                            binRenderer={(bin) => (
-                                <DroppableGearBinAccordionItem
-                                    key={bin.id}
-                                    gearBin={bin}
-                                />
-                            )}
-                        />
-                    </Accordion>
+                    <GearBinAccordion />
                 </UserGearBinSearchProvider>
 
                 <DragOverlay>
@@ -147,6 +133,28 @@ export default function UserGearPage() {
                 </DragOverlay>
             </DndContext>
         </main>
+    );
+}
+
+function GearBinAccordion() {
+    const { gearBins } = useUserGearBins();
+    if (!gearBins) return null;
+    return (
+        <Accordion
+            type='multiple'
+            className='w-full space-y-6'
+            defaultValue={['binless', ...gearBins.map((bin) => bin.id)]}
+        >
+            <BinlessGearAccordionItem>
+                <PageGearList />
+            </BinlessGearAccordionItem>
+            <GearBinList
+                className='flex flex-col gap-4'
+                binRenderer={(bin) => (
+                    <DroppableGearBinAccordionItem key={bin.id} gearBin={bin} />
+                )}
+            />
+        </Accordion>
     );
 }
 
