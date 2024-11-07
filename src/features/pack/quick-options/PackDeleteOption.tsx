@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
 
 export function PackDeleteOption() {

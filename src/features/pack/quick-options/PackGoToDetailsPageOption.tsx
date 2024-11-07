@@ -1,7 +1,7 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
 
 export function PackGoToDetailsPageOption() {

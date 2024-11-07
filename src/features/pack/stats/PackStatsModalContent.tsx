@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { useFormatWeight } from '@/lib/utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import { WeightBreakdownChart } from './WeightBreakdownChart';

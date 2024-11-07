@@ -1,6 +1,6 @@
 import React from 'react';
 import { Edit } from 'lucide-react';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
 import { usePackModalContext } from '../modal/PackModal';
 

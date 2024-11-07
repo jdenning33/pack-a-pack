@@ -10,9 +10,9 @@ import { useEffect, useState } from 'react';
 import { AuthSignInButton } from '@/features/auth/components/AuthSignInButton';
 import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
 import { GearCarousel } from '@/features/gear-search/components/GearCarousel';
-import { PackSearchProvider } from '@/features/pack-search/PackSearchProvider';
-import { PackList } from '@/features/pack-search/components/PackList';
-import { StandardAddPackButton } from '@/features/pack/components/StandardAddPackButton';
+import { PackSearchProvider } from '@/features/pack/search/PackSearchProvider';
+import { StandardAddPackButton } from '@/features/pack/new/StandardAddPackButton';
+import { PackList } from '@/features/pack/search/PackList';
 
 export default function Home() {
     return (

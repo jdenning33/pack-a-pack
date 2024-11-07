@@ -8,7 +8,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/ui/dialog';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { Button } from '@/ui/button';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { useRouter } from 'next/navigation';

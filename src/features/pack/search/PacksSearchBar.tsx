@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/ui/input';
 import { cn } from '@/lib/utils';
-import { usePacks } from '../usePackSearch';
+import { usePacks } from './usePackSearch';
 
 export const PackSearchBar = ({ className }: { className?: string }) => {
     const { searchParams, setSearchParams } = usePacks();

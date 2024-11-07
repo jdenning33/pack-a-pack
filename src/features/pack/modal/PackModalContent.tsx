@@ -5,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/ui/dialog';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { Button } from '@/ui/button';
 import { usePackModalContext } from './PackModal';
 import Link from 'next/link';

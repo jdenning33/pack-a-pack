@@ -6,7 +6,7 @@ import {
     CardTitle,
 } from '@/ui/card';
 import { cn } from '@/lib/utils';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { EarthIcon } from 'lucide-react';
 import { AttributeBadge } from '@/features/attributes/AttributeBadge';
 

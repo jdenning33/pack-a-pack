@@ -5,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/ui/dialog';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { EditPackForm } from '../edit/EditPackForm';
 import { usePackModalContext } from './PackModal';
 import {

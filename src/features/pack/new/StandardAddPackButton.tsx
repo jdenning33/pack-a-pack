@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { LoadedPackProvider } from '../LoadedPackProvider';
-import { PackModal } from './modal/PackModal';
+import { PackModal } from '../modal/PackModal';
 import { Button } from '@/ui/button';
 import { useAuth } from '@/features/auth/useAuth';
 import { Plus } from 'lucide-react';
-import { usePacks } from '@/features/pack-search/usePackSearch';
+import { usePacks } from '@/features/pack/search/usePackSearch';
 import { useRouter } from 'next/navigation';
 
 export function StandardAddPackButton({

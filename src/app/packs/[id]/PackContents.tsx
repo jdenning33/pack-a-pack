@@ -1,30 +1,41 @@
 'use client';
 import { KitSuggestionMenu } from '@/features/suggestions/KitSuggestionMenu';
 import { StandardAddKitButton } from '@/features/kit/components/StandardAddKitButton';
-import { PackKitsGrid } from '@/features/pack/components/PackKitsGrid';
 import {
     ClonePackModal,
     ClonePackModalTrigger,
-} from '@/features/pack/components/clone-modal/ClonePackModal';
-import { PackModal } from '@/features/pack/components/modal/PackModal';
-import { PackCloneOption } from '@/features/pack/components/quick-options/PackCloneOption';
-import { PackDeleteOption } from '@/features/pack/components/quick-options/PackDeleteOption';
-import { PackEditInModalOption } from '@/features/pack/components/quick-options/PackEditInModalOption';
+} from '@/features/pack/clone-modal/ClonePackModal';
+import { PackModal } from '@/features/pack/modal/PackModal';
+import { PackCloneOption } from '@/features/pack/quick-options/PackCloneOption';
+import { PackDeleteOption } from '@/features/pack/quick-options/PackDeleteOption';
+import { PackEditInModalOption } from '@/features/pack/quick-options/PackEditInModalOption';
 import { usePack } from '@/features/pack/usePack';
-import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import { ChevronDown, EarthIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
-import { PackModalTrigger } from '@/features/pack/components/modal/PackModalTrigger';
+import { PackModalTrigger } from '@/features/pack/modal/PackModalTrigger';
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
     PackStatsModal,
     PackStatsModalTrigger,
-} from '@/features/pack/components/stats/PackStatsModal';
+} from '@/features/pack/stats/PackStatsModal';
+import { KitProvider } from '@/features/kit/KitProvider';
+import { KitCard } from '@/features/kit/components/card/KitCard';
+import {
+    KitModal,
+    KitModalTrigger,
+} from '@/features/kit/components/modal/KitModal';
+import { DeleteKitOption } from '@/features/kit/components/quick-options/DeleteKitOption';
+import {
+    KitOpenModalOption,
+    KitOpenEditModalOption,
+} from '@/features/kit/components/quick-options/KitOpenModalOption';
+import { KitQuickOptionsMenuButton } from '@/features/kit/components/quick-options/KitQuickOptionsMenuButton';
 
 // For some reason next did not like this being in the same file as the PackPage...
 export function PackContents() {
@@ -126,13 +137,54 @@ export function PackContents() {
         </div>
     );
 }
-export function PackNoKitsMessage({ className }: { className?: string }) {
+function PackNoKitsMessage({ className }: { className?: string }) {
     const { pack, isReadOnly } = usePack();
     if (pack?.kits.length) return null;
     return (
         <div className={cn('text-muted-foreground', className)}>
             Looks like this pack is empty.
             {!isReadOnly && ' Add a kit to get started!'}
+        </div>
+    );
+}
+function PackKitsGrid({ className }: { className?: string }) {
+    const { pack, isReadOnly } = usePack();
+
+    if (!pack) return null;
+    return (
+        <div
+            className={cn(
+                'grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]',
+                className
+            )}
+        >
+            {pack.kits.map((kit) => (
+                <KitProvider
+                    key={kit.id}
+                    packId={kit.packId}
+                    isReadOnly={isReadOnly}
+                    kit={kit}
+                    className='h-full'
+                    style={{
+                        gridRow: `span ${
+                            kit.items.length + (kit.description.length ? 6 : 4)
+                        }`,
+                    }}
+                >
+                    <KitModal>
+                        <KitModalTrigger className='h-full'>
+                            <KitCard className='h-full'>
+                                <KitQuickOptionsMenuButton>
+                                    <KitOpenModalOption />
+                                    <KitOpenEditModalOption />
+                                    <DropdownMenuSeparator />
+                                    <DeleteKitOption />
+                                </KitQuickOptionsMenuButton>
+                            </KitCard>
+                        </KitModalTrigger>
+                    </KitModal>
+                </KitProvider>
+            ))}
         </div>
     );
 }

@@ -11,7 +11,7 @@ import { Optional } from '@/lib/utils';
 import { useAuth } from '@/features/auth/useAuth';
 import { toast } from 'sonner';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 
 export interface PackFormValues {
     name: string;

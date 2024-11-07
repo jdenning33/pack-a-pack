@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Dialog, DialogContent } from '@/ui/dialog';
-import { usePack } from '../../usePack';
+import { usePack } from '../usePack';
 import { EditPackModalContent } from './EditPackModalContent';
 import { PackModalContent } from './PackModalContent';
 
