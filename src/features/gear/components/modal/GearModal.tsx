@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { Dialog, DialogContent } from '@/ui/dialog';
 import { GearModalContent } from './GearModalContent';
 import { EditGearModalContent } from './EditGearModalContent';
+import { usePropDrivenState } from '@/lib/utils';
 
 // Define the context type
 type GearModalContextType = {
@@ -26,8 +27,16 @@ export const useGearModal = () => {
 };
 
 // GearModal component with context provider
-export const GearModal = ({ children }: { children?: React.ReactNode }) => {
-    const [isOpen, setIsOpen] = useState(false);
+export const GearModal = ({
+    isOpen: propIsOpen = false,
+    onIsOpenChange,
+    children,
+}: {
+    children?: React.ReactNode;
+    isOpen?: boolean;
+    onIsOpenChange?: (isOpen: boolean) => void;
+}) => {
+    const [isOpen, setIsOpen] = usePropDrivenState(propIsOpen, onIsOpenChange);
     const [isEditing, setIsEditing] = useState(false);
 
     const handleOpenChange = (open: boolean) => {

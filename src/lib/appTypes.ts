@@ -67,9 +67,10 @@ export interface Gear {
     isDeleted: boolean;
     type: string;
     weightType: WeightType;
+    order: number;
     isOwnedByUser: boolean;
     isRetiredByUser: boolean;
-    userGearBinId?: string;
+    userGearBinId?: string | null;
 }
 
 export interface UserGearBin {

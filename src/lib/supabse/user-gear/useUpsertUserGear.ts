@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { supabase } from '../supabaseClient';
 import { toast } from 'sonner';
+import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
+import { Gear } from '@/lib/appTypes';
 
 export function useUpsertUserGear(userId: string | undefined) {
     const queryClient = useQueryClient();
@@ -9,30 +11,57 @@ export function useUpsertUserGear(userId: string | undefined) {
             gearId,
             isRetired = false,
             userGearBinId = undefined,
+            order = undefined,
         }: {
             gearId: string;
             isRetired: boolean;
-            userGearBinId: string | undefined;
+            userGearBinId: string | null | undefined;
+            order: number | undefined | null;
         }): Promise<string> => {
             if (!userId) {
                 throw new Error('You must be signed in to save items.');
             }
 
+            const supabaseUserGear = {
+                gear_id: gearId,
+                user_id: userId,
+                is_retired: isRetired,
+                order: order,
+                user_gear_bin_id: userGearBinId,
+            };
+
+            console.log('supabaseUserGear:', supabaseUserGear);
+
             const { data: userGear, error: userGearError } = await supabase
                 .from('user_gear')
-                .upsert({
-                    gear_id: gearId,
-                    user_id: userId,
-                    is_retired: isRetired,
-                    user_gear_bin_id: userGearBinId,
-                })
+                .upsert(supabaseUserGear)
                 .select()
                 .single();
             if (userGearError) throw userGearError;
             return userGear?.id;
         },
-        onError: (err, _item, _context) => {
+        onMutate: async (userGear) => {
+            const gear = {
+                id: userGear.gearId,
+                order: userGear.order || 0,
+                userGearBinId: userGear.userGearBinId,
+            } satisfies Partial<Gear>;
+
+            // Optimistically update the cache with the new or updated gear
+            const rollbackData = await optimisticUpdateHandler(
+                queryClient,
+                { queryKey: ['gear'], exact: false },
+                gear
+            );
+
+            return { rollbackData };
+        },
+        onError: (err, _item, context) => {
             console.error('Failed to save user gear:', err);
+            // Rollback all affected queries
+            context?.rollbackData.forEach(({ queryKey, previousData }) => {
+                queryClient.setQueryData(queryKey, previousData);
+            });
             toast.error('Failed to update user gear.', {
                 description:
                     (err as { message: string }).message ||

@@ -1,17 +1,19 @@
 import React from 'react';
 import { DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
-import { useGearBin } from '../../useGearBin';
+import { useGearBin } from '../useGearBin';
 import { Button } from '@/ui/button';
-import { useGearBinModalContext } from './GearBinModal';
+import {
+    GearBinModalViewContents,
+    useGearBinModalContext,
+} from './GearBinModal';
 
-export const GearBinModalContent: React.FC = () => {
+export const StandardGearBinModalViewContents: React.FC = () => {
     const { gearBin } = useGearBin();
-    const { setIsEditing } = useGearBinModalContext();
+    const { setIsEditing, isEditing } = useGearBinModalContext();
 
-    if (!gearBin) return null;
-
+    if (isEditing) return null;
     return (
-        <>
+        <GearBinModalViewContents>
             <DialogHeader className=''>
                 <div className='gap-4 items-baseline'>
                     <DialogTitle className='text-2xl font-bold text-left'>
@@ -32,6 +34,6 @@ export const GearBinModalContent: React.FC = () => {
                     Edit Details
                 </Button>
             </DialogFooter>
-        </>
+        </GearBinModalViewContents>
     );
 };

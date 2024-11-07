@@ -1,13 +1,13 @@
 import { useGearBinQuery } from '@/lib/supabse/gear-bin/useGearBinQuery';
 import React, { ReactNode, useMemo } from 'react';
-import {
-    UserGearBinsContext,
-    UserGearBinsContextType,
-    useUserGearBins,
-} from './useGearBinSearch';
-import { useAuth } from '../auth/useAuth';
+import { useAuth } from '../../auth/useAuth';
 import { useGearQuery } from '@/lib/supabse/gear/useGearQuery';
 import { Input } from '@/ui/input';
+import {
+    UserGearBinsContextType,
+    UserGearBinsContext,
+    useUserGearBins,
+} from './useGearBinSearch';
 
 export const UserGearBinSearchProvider: React.FC<{
     children: ReactNode;

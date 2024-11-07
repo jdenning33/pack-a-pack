@@ -1,7 +1,6 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { Dialog, DialogContent } from '@/ui/dialog';
-import { GearBinModalContent } from './GearBinModalContent';
-import { EditGearBinModalContent } from './EditGearBinModalContent';
+import { usePropDrivenState } from '@/lib/utils';
 
 export const GearBinModalContext = React.createContext<{
     isOpen: boolean;
@@ -19,7 +18,6 @@ export function useGearBinModalContext() {
     }
     return context;
 }
-
 export const GearBinModal = ({
     children,
     isOpen: isOpenProp = false,
@@ -33,28 +31,11 @@ export const GearBinModal = ({
     isEditing?: boolean;
     onIsEditingChange?: (isEditing: boolean) => void;
 }) => {
-    const [isOpen, setIsOpen] = useState(isOpenProp);
-    const [isEditing, setIsEditing] = useState(isEditingProp);
-
-    // enable control the modal open state through props
-    useEffect(() => {
-        setIsOpen(isOpenProp);
-    }, [isOpenProp]);
-
-    // inform the parent component when the modal is closed
-    useEffect(() => {
-        onIsOpenChange?.(isOpen);
-    }, [isOpen, onIsOpenChange]);
-
-    // enable control the modal editing state through props
-    useEffect(() => {
-        setIsEditing(isEditingProp);
-    }, [isEditingProp]);
-
-    // inform the parent component when the modal editing state is changed
-    useEffect(() => {
-        onIsEditingChange?.(isEditing);
-    }, [isEditing, onIsEditingChange]);
+    const [isOpen, setIsOpen] = usePropDrivenState(isOpenProp, onIsOpenChange);
+    const [isEditing, setIsEditing] = usePropDrivenState(
+        isEditingProp,
+        onIsEditingChange
+    );
 
     return (
         <GearBinModalContext.Provider
@@ -67,14 +48,27 @@ export const GearBinModal = ({
         >
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 {children}
-                <DialogContent>
-                    {isEditing ? (
-                        <EditGearBinModalContent />
-                    ) : (
-                        <GearBinModalContent />
-                    )}
-                </DialogContent>
             </Dialog>
         </GearBinModalContext.Provider>
     );
+};
+
+export const GearBinModalContent = DialogContent;
+
+export const GearBinModalEditContents = ({
+    children,
+}: {
+    children: ReactNode;
+}) => {
+    const { isEditing } = useGearBinModalContext();
+    return isEditing ? <>{children}</> : null;
+};
+
+export const GearBinModalViewContents = ({
+    children,
+}: {
+    children: ReactNode;
+}) => {
+    const { isEditing } = useGearBinModalContext();
+    return isEditing ? null : <>{children}</>;
 };

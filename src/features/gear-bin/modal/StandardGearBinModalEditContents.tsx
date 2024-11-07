@@ -5,31 +5,39 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/ui/dialog';
-import { useGearBin } from '../../useGearBin';
-import { useGearBinModalContext } from './GearBinModal';
+import {
+    GearBinModalEditContents,
+    useGearBinModalContext,
+} from './GearBinModal';
 import { EditGearBinForm } from '../edit/EditGearBinForm';
 import { GearBinNameInput } from '../edit/GearBinNameInput';
 import { GearBinDescriptionInput } from '../edit/GearBinDescriptionInput';
 import { GearBinSaveButton } from '../edit/GearBinSaveButton';
 import { GearBinCancelButton } from '../edit/GearBinCancelButton';
+import { useOptionalGearBin } from '../useGearBin';
 
-export const EditGearBinModalContent: React.FC = () => {
-    const { gearBin } = useGearBin();
+export const StandardGearBinModalEditContents = () => {
+    const { gearBin } = useOptionalGearBin();
     const { setIsEditing } = useGearBinModalContext();
 
     return (
-        <>
+        <GearBinModalEditContents>
             <DialogHeader>
                 <DialogTitle>
-                    {gearBin ? 'Edit GearBin' : 'Create New GearBin'}
+                    {gearBin
+                        ? `Edit ${gearBin.name} Gear Bin`
+                        : 'Create New GearBin'}
                 </DialogTitle>
                 <DialogDescription>
                     {gearBin
-                        ? 'Update your gearbin details.'
-                        : 'Enter details for your new gearbin.'}
+                        ? 'Update your gear bin details.'
+                        : 'Enter details for your new gear bin.'}
                 </DialogDescription>
             </DialogHeader>
-            <EditGearBinForm onFinished={() => setIsEditing(false)}>
+            <EditGearBinForm
+                gearBin={gearBin}
+                onFinished={() => setIsEditing(false)}
+            >
                 <div className='flex flex-col gap-4'>
                     <GearBinNameInput />
                     <GearBinDescriptionInput />
@@ -39,6 +47,6 @@ export const EditGearBinModalContent: React.FC = () => {
                     <GearBinCancelButton />
                 </DialogFooter>
             </EditGearBinForm>
-        </>
+        </GearBinModalEditContents>
     );
 };

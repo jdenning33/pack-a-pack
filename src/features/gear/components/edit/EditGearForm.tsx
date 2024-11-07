@@ -101,6 +101,7 @@ export function EditGearForm({
             isDeleted: gear?.isDeleted || false,
             purchaseLinks: gear?.purchaseLinks || [],
             createdById: gear?.createdById || user?.id || '',
+            order: gear?.order || Math.random() * 1000,
         };
         if (saveAs) {
             newGear = {
