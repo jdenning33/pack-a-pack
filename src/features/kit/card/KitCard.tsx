@@ -9,7 +9,7 @@ import {
 } from '@/ui/card';
 import { cn, useFormatWeight } from '@/lib/utils';
 import { Item } from '@/lib/appTypes';
-import { useKitContext } from '../../useKitContext';
+import { useKitContext } from '../useKitContext';
 import { StandardEditKitForm } from '../edit/StandardEditKitForm';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { KitModalContext } from '../modal/KitModal';

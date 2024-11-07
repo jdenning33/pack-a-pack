@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Dialog, DialogContent } from '@/ui/dialog';
 import { cn } from '@/lib/utils';
-import { useKitContext } from '../../useKitContext';
+import { useKitContext } from '../useKitContext';
 import { KitModalContent } from './KitModalContent';
 import { EditKitModalContent } from './EditKitModalContent';
 import { Item } from '@/lib/appTypes';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useKitContext } from '../../useKitContext';
+import { useKitContext } from '../useKitContext';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
 import { Trash } from 'lucide-react';

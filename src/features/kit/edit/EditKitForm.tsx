@@ -6,14 +6,12 @@ import {
     FieldErrors,
 } from 'react-hook-form';
 import { Button } from '@/ui/button';
-import { Input } from '@/ui/input';
-import { Textarea } from '@/ui/textarea';
 import { Kit } from '@/lib/appTypes';
-import { Optional, cn } from '@/lib/utils';
+import { Optional } from '@/lib/utils';
 import { useAuth } from '@/features/auth/useAuth';
 import { toast } from 'sonner';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
-import { useKitContext } from '../../useKitContext';
+import { useKitContext } from '../useKitContext';
 
 export interface KitFormValues {
     name: string;
@@ -34,7 +32,7 @@ type KitContract = {
 
 const EditKitContext = React.createContext<KitContract | null>(null);
 
-function useEditKitForm() {
+export function useEditKitForm() {
     const context = React.useContext(EditKitContext);
     if (!context) {
         throw new Error(
@@ -112,42 +110,6 @@ export function EditKitForm({
                 {children}
             </form>
         </EditKitContext.Provider>
-    );
-}
-
-export function KitNameInput({ className }: { className?: string }) {
-    const { register, errors } = useEditKitForm();
-    return (
-        <div className={cn(className)}>
-            <Input
-                placeholder='Kit Name'
-                {...register('name', {
-                    required: 'Kit name is required',
-                })}
-                aria-invalid={!!errors.name}
-            />
-            {errors.name && (
-                <p className='text-sm text-red-600'>{errors.name.message}</p>
-            )}
-        </div>
-    );
-}
-
-export function KitDescriptionInput({ className }: { className?: string }) {
-    const { register, errors } = useEditKitForm();
-    return (
-        <div className={className}>
-            <Textarea
-                placeholder='Description'
-                {...register('description')}
-                aria-invalid={!!errors.description}
-            />
-            {errors.description && (
-                <p className='text-sm text-red-600'>
-                    {errors.description.message}
-                </p>
-            )}
-        </div>
     );
 }
 

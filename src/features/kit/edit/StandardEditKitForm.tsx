@@ -1,12 +1,8 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import {
-    EditKitForm,
-    KitNameInput,
-    KitDescriptionInput,
-    KitSaveButton,
-    KitCancelButton,
-} from './EditKitForm';
+import { EditKitForm, KitSaveButton, KitCancelButton } from './EditKitForm';
+import { KitDescriptionInput } from './KitDescriptionInput';
+import { KitNameInput } from './KitNameInput';
 
 export function StandardEditKitForm(
     props: Omit<React.ComponentProps<typeof EditKitForm>, 'children'>

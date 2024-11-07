@@ -1,6 +1,5 @@
 'use client';
 import { KitSuggestionMenu } from '@/features/suggestions/KitSuggestionMenu';
-import { StandardAddKitButton } from '@/features/kit/components/StandardAddKitButton';
 import {
     ClonePackModal,
     ClonePackModalTrigger,
@@ -25,17 +24,15 @@ import {
     PackStatsModalTrigger,
 } from '@/features/pack/stats/PackStatsModal';
 import { KitProvider } from '@/features/kit/KitProvider';
-import { KitCard } from '@/features/kit/components/card/KitCard';
-import {
-    KitModal,
-    KitModalTrigger,
-} from '@/features/kit/components/modal/KitModal';
-import { DeleteKitOption } from '@/features/kit/components/quick-options/DeleteKitOption';
+import { KitCard } from '@/features/kit/card/KitCard';
+import { KitModal, KitModalTrigger } from '@/features/kit/modal/KitModal';
+import { DeleteKitOption } from '@/features/kit/quick-options/DeleteKitOption';
 import {
     KitOpenModalOption,
     KitOpenEditModalOption,
-} from '@/features/kit/components/quick-options/KitOpenModalOption';
-import { KitQuickOptionsMenuButton } from '@/features/kit/components/quick-options/KitQuickOptionsMenuButton';
+} from '@/features/kit/quick-options/KitOpenModalOption';
+import { KitQuickOptionsMenuButton } from '@/features/kit/quick-options/KitQuickOptionsMenuButton';
+import { StandardAddKitButton } from '@/features/kit/new/StandardAddKitButton';
 
 // For some reason next did not like this being in the same file as the PackPage...
 export function PackContents() {

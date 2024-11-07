@@ -1,6 +1,6 @@
 import React from 'react';
 import { useKitModalContext } from '../modal/KitModal';
-import { useKitContext } from '../../useKitContext';
+import { useKitContext } from '../useKitContext';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
 import { Edit, Maximize } from 'lucide-react';
 

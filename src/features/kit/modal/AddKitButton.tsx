@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/ui/button';
 import { Plus } from 'lucide-react';
 import { useKitModalContext } from './KitModal';
-import { useKitContext } from '../../useKitContext';
+import { useKitContext } from '../useKitContext';
 
 export const AddKitButton: React.FC<{
     className?: string;

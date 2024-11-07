@@ -1,7 +1,7 @@
 'use client';
 import { KitProvider } from '@/features/kit/KitProvider';
 import { usePack } from '../../pack/usePack';
-import { KitModal } from '@/features/kit/components/modal/KitModal';
+import { KitModal } from '@/features/kit/modal/KitModal';
 import { useState } from 'react';
 import { Button } from '@/ui/button';
 import { Plus } from 'lucide-react';
