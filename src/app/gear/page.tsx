@@ -12,10 +12,9 @@ import { GearBinProvider } from '@/features/gear-bin/GearBinProvider';
 import { AlternateGearCard } from '@/features/gear/components/card/AlternateGearCard';
 import { DragOverlay } from '@dnd-kit/core';
 import { useUserGearBins } from '@/features/gear-bin/search/useGearBinSearch';
-import { GearDragProvider } from '../../features/gear-bin/drag-n-drop/GearDragProvider';
-import { GearDragDropSlot } from '@/features/gear-bin/drag-n-drop/GearDragDropSlot';
-import { GearDragContext } from '../../features/gear-bin/drag-n-drop/GearDragProvider';
-import { GearBinDropSlot } from '@/features/gear-bin/drag-n-drop/GearBinDropSlot';
+import { GearBinGearDragProvider } from '../../features/gear-bin/drag-n-drop/GearBinGearDragProvider';
+import { GearDragContext } from '../../features/gear-bin/drag-n-drop/GearBinGearDragProvider';
+import { GearBinGearDropSlot } from '@/features/gear-bin/drag-n-drop/GearBinGearDropSlot';
 import { PageHeader } from '@/ui/page-header';
 import { PageHeaderTitle } from '@/ui/page-header';
 import { PageHeaderActions } from '@/ui/page-header';
@@ -29,6 +28,7 @@ import { cn } from '@/lib/utils';
 import { useGearContext } from '@/features/gear/useGearContext';
 import { BinlessGearBinProvider } from '@/features/gear-bin/BinlessGearBinProvider';
 import { AddGearBinButton } from '@/features/gear-bin/new/AddGearBinButton';
+import { GearDragDropSlot } from '@/features/gear-bin/drag-n-drop/GearBinDraggableGear';
 
 export default function UserGearPage() {
     const { user } = useAuth();
@@ -58,10 +58,10 @@ export default function UserGearPage() {
                     <AddGearBinButton variant='outline' size='sm' />
                 </div>
 
-                <GearDragProvider>
+                <GearBinGearDragProvider>
                     <GearDragOverlay />
                     <GearBinsContent />
-                </GearDragProvider>
+                </GearBinGearDragProvider>
             </UserGearBinSearchProvider>
         </main>
     );
@@ -107,27 +107,29 @@ function GearBinsContent() {
         >
             {/* Binless gear bin */}
             <BinlessGearBinProvider>
-                <GearBinDropSlot>
+                <GearBinGearDropSlot>
                     <GearBinAccordionItem variant='binless'>
                         <GearBinGearGrid filter={filterActiveGear}>
                             <DraggableGearCard />
                         </GearBinGearGrid>
                     </GearBinAccordionItem>
-                </GearBinDropSlot>
+                </GearBinGearDropSlot>
             </BinlessGearBinProvider>
 
             {/* Gear bin accordion items */}
-            {gearBins.map((bin) => (
-                <GearBinProvider key={bin.id} gearBin={bin}>
-                    <GearBinDropSlot>
-                        <GearBinAccordionItem>
-                            <GearBinGearGrid filter={filterActiveGear}>
-                                <DraggableGearCard />
-                            </GearBinGearGrid>
-                        </GearBinAccordionItem>
-                    </GearBinDropSlot>
-                </GearBinProvider>
-            ))}
+            {gearBins
+                .sort((a, b) => a.order - b.order)
+                .map((bin) => (
+                    <GearBinProvider key={bin.id} gearBin={bin}>
+                        <GearBinGearDropSlot isOverClassName='ring'>
+                            <GearBinAccordionItem>
+                                <GearBinGearGrid filter={filterActiveGear}>
+                                    <DraggableGearCard />
+                                </GearBinGearGrid>
+                            </GearBinAccordionItem>
+                        </GearBinGearDropSlot>
+                    </GearBinProvider>
+                ))}
         </Accordion>
     );
 }

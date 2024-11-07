@@ -159,7 +159,7 @@ export const AppMutationsProvider: React.FC<{
         addGearToUser: async (
             gearId: string,
             gearBinId?: string | null,
-            order?: number
+            order?: number | null
         ) => {
             await upsertUserGearMutation.mutateAsync({
                 gearId,

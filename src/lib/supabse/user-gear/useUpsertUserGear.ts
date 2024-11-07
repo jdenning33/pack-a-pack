@@ -16,7 +16,7 @@ export function useUpsertUserGear(userId: string | undefined) {
             gearId: string;
             isRetired: boolean;
             userGearBinId: string | null | undefined;
-            order: number | undefined;
+            order: number | undefined | null;
         }): Promise<string> => {
             if (!userId) {
                 throw new Error('You must be signed in to save items.');
@@ -43,7 +43,7 @@ export function useUpsertUserGear(userId: string | undefined) {
         onMutate: async (userGear) => {
             const gear = {
                 id: userGear.gearId,
-                order: userGear.order,
+                order: userGear.order || 0,
                 userGearBinId: userGear.userGearBinId,
             } satisfies Partial<Gear>;
 

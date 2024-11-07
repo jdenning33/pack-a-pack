@@ -22,7 +22,11 @@ export const GearDragContext = React.createContext<{
     setActiveGear: () => {},
 });
 
-export function GearDragProvider({ children }: { children: React.ReactNode }) {
+export function GearBinGearDragProvider({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const [activeGear, setActiveGear] = useState<Gear | null>(null);
     const { gearBins, binlessGear } = useUserGearBins();
 

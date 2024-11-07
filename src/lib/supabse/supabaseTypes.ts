@@ -61,6 +61,7 @@ interface SupabaseItem {
 
 interface SupabaseUserGear {
     id: string;
+    nid?: number;
     user_id: string;
     gear_id: string;
     gear: SupabaseGear;
@@ -91,11 +92,13 @@ interface SupabaseGear {
         is_retired: boolean;
         user_gear_bin_id: string;
         order: number;
+        nid?: number;
     }[];
 }
 
 interface SupabaseUserGearBin {
     id: string;
+    nid?: number;
     name: string;
     description: string;
     order: number;
@@ -311,7 +314,7 @@ export function supabaseToAppGear(
         isOwnedByUser: !userGear?.is_retired || false,
         isRetiredByUser: userGear?.is_retired || false,
         userGearBinId: userGear?.user_gear_bin_id,
-        order: userGear?.order || hashCode(supabaseGear.id),
+        order: userGear?.order || userGear?.nid || hashCode(supabaseGear.id),
     };
 }
 
@@ -335,7 +338,7 @@ export function supabaseToAppUserGearBin(
         id: supabaseGearBin.id,
         name: supabaseGearBin.name,
         description: supabaseGearBin.description,
-        order: supabaseGearBin.order,
+        order: supabaseGearBin.order || supabaseGearBin.nid || 0,
         userId: supabaseGearBin.user_id,
         isDeleted: supabaseGearBin.is_deleted,
         gear: [],
