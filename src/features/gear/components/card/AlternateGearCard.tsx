@@ -52,6 +52,9 @@ export const AlternateGearCard = forwardRef<
                     <Badge variant='outline' className='bg-background/95'>
                         ${gear.price}
                     </Badge>
+                    <Badge variant='outline' className='bg-background/95'>
+                        {gear.order}
+                    </Badge>
                 </div>
                 <div className='m-3 line-clamp-4'>
                     <h3 className='font-semibold text-sm'>{gear.name}</h3>

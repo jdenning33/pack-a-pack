@@ -37,7 +37,7 @@ export interface AppMutationsContextType {
     addGearToUser: (
         gearId: string,
         gearBinId?: string | null,
-        order?: number
+        order?: number | null
     ) => Promise<void>;
     removeGearFromUser: (gearId: string) => Promise<void>;
 

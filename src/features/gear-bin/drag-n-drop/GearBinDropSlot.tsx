@@ -5,7 +5,6 @@ import { useGearBin } from '@/features/gear-bin/useGearBin';
 
 export function GearBinDropSlot({ children }: { children?: React.ReactNode }) {
     const { gearBin } = useGearBin();
-    if (!gearBin) throw new Error('Gear bin not found');
 
     const { setNodeRef } = useDroppable({
         id: gearBin.id,

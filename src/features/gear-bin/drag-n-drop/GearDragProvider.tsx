@@ -11,7 +11,7 @@ import {
 } from '@dnd-kit/core';
 import { useState } from 'react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
-import { useUserGearBins } from '@/features/gear-bin-search/useGearBinSearch';
+import { useUserGearBins } from '@/features/gear-bin/search/useGearBinSearch';
 import { getNewOrderValue } from './getNewOrderValue';
 
 export const GearDragContext = React.createContext<{

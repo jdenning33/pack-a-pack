@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import { useUserGearBins } from '@/features/gear-bin-search/useGearBinSearch';
-import { UserGearBinProvider } from '@/features/gear-bin/GearBinProvider';
+import { useUserGearBins } from '@/features/gear-bin/search/useGearBinSearch';
+import { GearBinProvider } from '@/features/gear-bin/GearBinProvider';
 
 export function BinlessGearBinProvider({
     children,
@@ -11,7 +11,7 @@ export function BinlessGearBinProvider({
     const { binlessGear } = useUserGearBins();
     if (!binlessGear.length) return null;
     return (
-        <UserGearBinProvider
+        <GearBinProvider
             key='binlessgear'
             gearBin={{
                 id: 'binlessgear',
@@ -24,6 +24,6 @@ export function BinlessGearBinProvider({
             }}
         >
             {children}
-        </UserGearBinProvider>
+        </GearBinProvider>
     );
 }

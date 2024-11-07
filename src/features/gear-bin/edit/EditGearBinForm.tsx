@@ -9,7 +9,6 @@ import { Optional } from '@/lib/utils';
 import { useAuth } from '@/features/auth/useAuth';
 import { toast } from 'sonner';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
-import { useGearBin } from '../../useGearBin';
 import { UserGearBin } from '@/lib/appTypes';
 
 export interface GearBinFormValues {
@@ -21,7 +20,7 @@ export interface GearBinFormValues {
 }
 
 type GearBinFormContract = {
-    gearBin?: UserGearBin;
+    gearBin?: UserGearBin | null;
     control: Control<GearBinFormValues, unknown>;
     register: UseFormRegister<GearBinFormValues>;
     errors: FieldErrors<GearBinFormValues>;
@@ -47,17 +46,18 @@ export function useEditGearBinForm() {
 }
 
 export function EditGearBinForm({
+    gearBin,
     onFinished,
     children,
     className,
 }: {
+    gearBin?: UserGearBin | null;
     onFinished?: (gearBinId?: string) => void;
     children: React.ReactNode;
     className?: string;
 }) {
     const { user } = useAuth();
     const { upsertUserGearBin } = useAppMutations();
-    const { gearBin, afterGearBinUpdated } = useGearBin();
 
     const {
         control,
@@ -90,7 +90,6 @@ export function EditGearBinForm({
         };
 
         const upsertId = await upsertUserGearBin(newGearBin);
-        afterGearBinUpdated?.({ ...newGearBin, id: upsertId, gear: [] });
         reset();
         onFinished?.(upsertId);
     }

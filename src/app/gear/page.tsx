@@ -2,26 +2,25 @@
 import { useCallback, useContext } from 'react';
 import { LayoutGrid, Table } from 'lucide-react';
 import { Button } from '@/ui/button';
-import { AddGearBinButton } from '@/features/gear-bin/components/AddGearBinButton';
 import {
     UserGearBinSearchProvider,
     UserGearFilterBar,
-} from '@/features/gear-bin-search/GearBinSearchProvider';
+} from '@/features/gear-bin/search/GearBinSearchProvider';
 import { useAuth } from '@/features/auth/useAuth';
 import { Accordion } from '@/ui/accordion';
-import { UserGearBinProvider } from '@/features/gear-bin/GearBinProvider';
+import { GearBinProvider } from '@/features/gear-bin/GearBinProvider';
 import { AlternateGearCard } from '@/features/gear/components/card/AlternateGearCard';
 import { DragOverlay } from '@dnd-kit/core';
-import { useUserGearBins } from '@/features/gear-bin-search/useGearBinSearch';
-import { GearDragProvider } from '../../features/gear-bin-search/gear-drag/GearDragProvider';
-import { GearDragDropSlot } from '@/features/gear-bin-search/gear-drag/GearDragDropSlot';
-import { GearDragContext } from '../../features/gear-bin-search/gear-drag/GearDragProvider';
-import { GearBinDropSlot } from '@/features/gear-bin-search/gear-drag/GearBinDropSlot';
+import { useUserGearBins } from '@/features/gear-bin/search/useGearBinSearch';
+import { GearDragProvider } from '../../features/gear-bin/drag-n-drop/GearDragProvider';
+import { GearDragDropSlot } from '@/features/gear-bin/drag-n-drop/GearDragDropSlot';
+import { GearDragContext } from '../../features/gear-bin/drag-n-drop/GearDragProvider';
+import { GearBinDropSlot } from '@/features/gear-bin/drag-n-drop/GearBinDropSlot';
 import { PageHeader } from '@/ui/page-header';
 import { PageHeaderTitle } from '@/ui/page-header';
 import { PageHeaderActions } from '@/ui/page-header';
-import { GearBinAccordionItem } from '@/features/gear-bin/components/accordion/GearBinAccordionItem';
-import { GearBinGearGrid } from '@/features/gear-bin/components/accordion/GearBinGearGrid';
+import { GearBinAccordionItem } from '@/features/gear-bin/accordion/GearBinAccordionItem';
+import { GearBinGearGrid } from '@/features/gear-bin/accordion/GearBinGearGrid';
 import { ButtonGroup } from '@/ui/button-group';
 import { Gear } from '@/lib/appTypes';
 import { GearModal } from '@/features/gear/components/modal/GearModal';
@@ -29,6 +28,7 @@ import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrig
 import { cn } from '@/lib/utils';
 import { useGearContext } from '@/features/gear/useGearContext';
 import { BinlessGearBinProvider } from '@/features/gear-bin/BinlessGearBinProvider';
+import { AddGearBinButton } from '@/features/gear-bin/new/AddGearBinButton';
 
 export default function UserGearPage() {
     const { user } = useAuth();
@@ -103,7 +103,7 @@ function GearBinsContent() {
         <Accordion
             type='multiple'
             className='w-full space-y-6'
-            defaultValue={['binless', ...gearBins.map((bin) => bin.id)]}
+            defaultValue={['binlessgear', ...gearBins.map((bin) => bin.id)]}
         >
             {/* Binless gear bin */}
             <BinlessGearBinProvider>
@@ -118,7 +118,7 @@ function GearBinsContent() {
 
             {/* Gear bin accordion items */}
             {gearBins.map((bin) => (
-                <UserGearBinProvider key={bin.id} gearBin={bin}>
+                <GearBinProvider key={bin.id} gearBin={bin}>
                     <GearBinDropSlot>
                         <GearBinAccordionItem>
                             <GearBinGearGrid filter={filterActiveGear}>
@@ -126,7 +126,7 @@ function GearBinsContent() {
                             </GearBinGearGrid>
                         </GearBinAccordionItem>
                     </GearBinDropSlot>
-                </UserGearBinProvider>
+                </GearBinProvider>
             ))}
         </Accordion>
     );

@@ -4,20 +4,17 @@ import React, { ReactNode } from 'react';
 import { GearBinContext, GearBinContract } from './useGearBin';
 import { UserGearBin } from '@/lib/appTypes';
 
-interface UserGearBinProviderProps {
+interface GearBinProviderProps {
     children: ReactNode;
-    gearBin?: UserGearBin;
-    afterGearBinUpdated?: (usergearbin: UserGearBin) => void;
+    gearBin: UserGearBin;
 }
 
-export const UserGearBinProvider: React.FC<UserGearBinProviderProps> = ({
+export const GearBinProvider: React.FC<GearBinProviderProps> = ({
     children,
     gearBin,
-    afterGearBinUpdated,
 }) => {
     const value: GearBinContract = {
         gearBin: gearBin,
-        afterGearBinUpdated,
     };
     return (
         <GearBinContext.Provider value={value}>

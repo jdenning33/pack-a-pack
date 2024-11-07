@@ -22,11 +22,10 @@ export function GearBinAccordionItem({
     const formatWeight = useFormatWeight();
 
     const stats = useMemo(
-        () => calculateKitStats(gearBin?.gear || []),
+        () => calculateBinStats(gearBin?.gear || []),
         [gearBin]
     );
 
-    if (!gearBin) return null;
     return (
         <AccordionItem
             disabled={variant === 'binless'}
@@ -45,9 +44,9 @@ export function GearBinAccordionItem({
                         variant === 'binless' && '[&>svg]:opacity-20'
                     )}
                 >
-                    <div className='flex items-center justify-between w-full'>
-                        <span className='text-lg'>{gearBin.name}</span>
-                    </div>
+                    <span className='flex-1 text-lg text-left'>
+                        {gearBin.name}
+                    </span>
                 </AccordionTrigger>
                 {variant !== 'binless' && (
                     <>
@@ -77,7 +76,7 @@ export function GearBinAccordionItem({
     );
 }
 
-export function calculateKitStats(gear: Gear[]) {
+export function calculateBinStats(gear: Gear[]) {
     const weight = gear.reduce((sum, g) => sum + g.weight, 0);
     const cost = gear.reduce((sum, item) => sum + item.price, 0);
     return { weight, cost, count: gear.length };

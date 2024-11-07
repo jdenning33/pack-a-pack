@@ -3,8 +3,7 @@ import { UserGearBin } from '@/lib/appTypes';
 import { createContext, useContext } from 'react';
 
 export interface GearBinContract {
-    gearBin?: UserGearBin;
-    afterGearBinUpdated?: (kit: UserGearBin) => void;
+    gearBin: UserGearBin;
 }
 
 export const GearBinContext = createContext<GearBinContract | undefined>(
@@ -17,4 +16,11 @@ export const useGearBin = (): GearBinContract => {
         throw new Error('useGearBin must be used within a GearBinProvider');
     }
     return context;
+};
+
+export const useOptionalGearBin = () => {
+    const context = useContext(GearBinContext);
+    return {
+        gearBin: context?.gearBin,
+    };
 };
