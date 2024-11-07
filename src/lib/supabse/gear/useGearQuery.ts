@@ -16,7 +16,7 @@ export function useGearQuery(queryParams: GearQueryParams) {
                     `
                         *,
                         user_gear!inner (
-                            user_id,is_retired,user_gear_bin_id
+                            *
                         ),
                         user:profiles!gear_created_by_id_fkey (username)
                     `

@@ -11,9 +11,11 @@ import { cn, useFormatWeight } from '@/lib/utils';
 
 export function GearBinAccordionItem({
     className,
+    variant = 'default',
     children,
 }: {
     className?: string;
+    variant?: 'default' | 'binless';
     children: React.ReactNode;
 }) {
     const { gearBin } = useGearBin();
@@ -27,28 +29,48 @@ export function GearBinAccordionItem({
     if (!gearBin) return null;
     return (
         <AccordionItem
+            disabled={variant === 'binless'}
             value={gearBin.id}
             key={gearBin.id}
             className={cn(
                 'rounded-lg [&[data-state=closed]>div]:rounded-b-md group',
+                variant === 'binless' && '!border-b-0',
                 className
             )}
         >
             <div className='flex items-center rounded-t-md '>
-                <AccordionTrigger className='px-4 py-2 hover:underline rounded-t-lg w-48'>
+                <AccordionTrigger
+                    className={cn(
+                        'px-4 py-2 hover:underline rounded-t-lg w-48',
+                        variant === 'binless' && '[&>svg]:opacity-20'
+                    )}
+                >
                     <div className='flex items-center justify-between w-full'>
                         <span className='text-lg'>{gearBin.name}</span>
                     </div>
                 </AccordionTrigger>
-                <div className='flex-grow px-4 text-sm hidden md:block'>
-                    <span className='mr-4'>{formatWeight(stats.weight)}</span>
-                    <span className='mr-4'>${stats.cost.toFixed(2)}</span>
-                    <span>{stats.count} items</span>
-                </div>
-                <div className='flex-grow'></div>
-                <GearBinQuickOptions />
+                {variant !== 'binless' && (
+                    <>
+                        <div className='flex-grow px-4 text-sm hidden md:block'>
+                            <span className='mr-4'>
+                                {formatWeight(stats.weight)}
+                            </span>
+                            <span className='mr-4'>
+                                ${stats.cost.toFixed(2)}
+                            </span>
+                            <span>{stats.count} items</span>
+                        </div>
+                        <div className='flex-grow'></div>
+                        <GearBinQuickOptions />
+                    </>
+                )}
             </div>
-            <AccordionContent className='bg-muted text-primary-foreground border rounded-md p-2 min-h-48'>
+            <AccordionContent
+                className={cn(
+                    'text-primary-foreground rounded-md p-2 min-h-48',
+                    variant !== 'binless' && 'bg-muted border'
+                )}
+            >
                 {children}
             </AccordionContent>
         </AccordionItem>

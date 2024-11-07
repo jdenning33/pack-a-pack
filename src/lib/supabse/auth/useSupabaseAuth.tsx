@@ -31,7 +31,7 @@ export function useSupabaseAuth(): AuthContract {
     const [user, setUser] = useState<User | null>(null);
     const [session, setSession] = useState<Session | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const { data: profile } = useProfile(session?.userId || '');
+    const { data: profile } = useProfile(user?.id || '');
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {

@@ -86,9 +86,11 @@ interface SupabaseGear {
     is_deleted: boolean;
     user?: { username: string };
     user_gear?: {
+        id: string;
         user_id: string;
         is_retired: boolean;
         user_gear_bin_id: string;
+        order: number;
     }[];
 }
 
@@ -272,10 +274,20 @@ export function appToSupabaseGear(
     };
 }
 
+const hashCode = function (s: string) {
+    return s.split('').reduce(function (a, b) {
+        a = (a << 5) - a + b.charCodeAt(0);
+        return a & a;
+    }, 0);
+};
+
 export function supabaseToAppGear(
     supabaseGear: SupabaseGear,
     userId: string
 ): Gear {
+    const userGear = supabaseGear.user_gear?.find(
+        (ug) => ug.user_id === userId
+    );
     return {
         id: supabaseGear.id,
         type: supabaseGear.type,
@@ -296,17 +308,10 @@ export function supabaseToAppGear(
         createdById: supabaseGear.created_by_id,
         createdByUserName: supabaseGear.user?.username || 'unknown',
         isDeleted: supabaseGear.is_deleted,
-        isOwnedByUser:
-            supabaseGear.user_gear?.some(
-                (ug) => ug.user_id === userId && !ug.is_retired
-            ) || false,
-        isRetiredByUser:
-            supabaseGear.user_gear?.some(
-                (ug) => ug.user_id === userId && ug.is_retired
-            ) || false,
-        userGearBinId: supabaseGear.user_gear?.find(
-            (ug) => ug.user_id === userId
-        )?.user_gear_bin_id,
+        isOwnedByUser: !userGear?.is_retired || false,
+        isRetiredByUser: userGear?.is_retired || false,
+        userGearBinId: userGear?.user_gear_bin_id,
+        order: userGear?.order || hashCode(supabaseGear.id),
     };
 }
 

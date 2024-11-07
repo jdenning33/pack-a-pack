@@ -1,6 +1,6 @@
 'use client';
-import React from 'react';
-import { Plus } from 'lucide-react';
+import { useCallback, useContext } from 'react';
+import { LayoutGrid, Table } from 'lucide-react';
 import { Button } from '@/ui/button';
 import { AddGearBinButton } from '@/features/gear-bin/components/AddGearBinButton';
 import {
@@ -8,44 +8,30 @@ import {
     UserGearFilterBar,
 } from '@/features/gear-bin-search/GearBinSearchProvider';
 import { useAuth } from '@/features/auth/useAuth';
-import { GearBinList } from '@/features/gear-bin/components/page/GearBinList';
 import { Accordion } from '@/ui/accordion';
 import { UserGearBinProvider } from '@/features/gear-bin/GearBinProvider';
-import { BinlessGearAccordionItem } from '@/features/gear-bin/components/page/BinlessGearAccordionItem';
-import { GearBinAccordionItem } from '@/features/gear-bin/components/page/GearBinAccordionItem';
-import { GearBinGearList } from '@/features/gear-bin/components/page/GearBinGearList';
-import { GearProvider } from '@/features/gear/GearProvider';
 import { AlternateGearCard } from '@/features/gear/components/card/AlternateGearCard';
-import { Gear, UserGearBin } from '@/lib/appTypes';
-import {
-    DndContext,
-    DragOverlay,
-    useSensor,
-    useSensors,
-    PointerSensor,
-    useDroppable,
-    useDraggable,
-    DragStartEvent,
-    DragEndEvent,
-} from '@dnd-kit/core';
-import { useState } from 'react';
-import { useAppMutations } from '@/features/app-mutations/useAppMutations';
-import { cn } from '@/lib/utils';
+import { DragOverlay } from '@dnd-kit/core';
+import { useUserGearBins } from '@/features/gear-bin-search/useGearBinSearch';
+import { GearDragProvider } from '../../features/gear-bin-search/gear-drag/GearDragProvider';
+import { GearDragDropSlot } from '@/features/gear-bin-search/gear-drag/GearDragDropSlot';
+import { GearDragContext } from '../../features/gear-bin-search/gear-drag/GearDragProvider';
+import { GearBinDropSlot } from '@/features/gear-bin-search/gear-drag/GearBinDropSlot';
+import { PageHeader } from '@/ui/page-header';
+import { PageHeaderTitle } from '@/ui/page-header';
+import { PageHeaderActions } from '@/ui/page-header';
+import { GearBinAccordionItem } from '@/features/gear-bin/components/accordion/GearBinAccordionItem';
+import { GearBinGearGrid } from '@/features/gear-bin/components/accordion/GearBinGearGrid';
+import { ButtonGroup } from '@/ui/button-group';
+import { Gear } from '@/lib/appTypes';
 import { GearModal } from '@/features/gear/components/modal/GearModal';
 import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
-import { useUserGearBins } from '@/features/gear-bin-search/useGearBinSearch';
+import { cn } from '@/lib/utils';
+import { useGearContext } from '@/features/gear/useGearContext';
+import { BinlessGearBinProvider } from '@/features/gear-bin/BinlessGearBinProvider';
 
 export default function UserGearPage() {
     const { user } = useAuth();
-    const [activeGear, setActiveGear] = useState<Gear | null>(null);
-    const { addGearToUser } = useAppMutations();
-    const sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 8,
-            },
-        })
-    );
 
     if (!user)
         return (
@@ -54,90 +40,64 @@ export default function UserGearPage() {
             </div>
         );
 
-    const handleDragStart = (event: DragStartEvent) => {
-        const { active } = event;
-        const draggedGear = active.data.current as Gear;
-        setActiveGear(draggedGear);
-    };
-
-    const handleDragEnd = async (event: DragEndEvent) => {
-        const { active, over } = event;
-
-        if (over && active.data.current) {
-            const gearId = active.data.current.id;
-            const newBinId = over.id as string;
-
-            try {
-                await addGearToUser(gearId, newBinId);
-            } catch (error) {
-                console.error('Failed to move gear:', error);
-            }
-        }
-
-        setActiveGear(null);
-    };
-
     return (
         <main className='container flex flex-col gap-4 sm:p-4 m-auto'>
-            <DndContext
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-                sensors={sensors}
-            >
-                <div className='flex justify-between items-center border rounded-md p-4 shadow -mx-2 mb-4'>
-                    <h1 className='text-2xl font-bold'>My Gear</h1>
-                    <div className='flex'>
-                        {/* <Button
-                            size='sm'
-                            variant='outline'
-                            className='px-2 rounded-r-none'
-                        >
-                            <Table className='h-4 w-4' />
-                        </Button>
-                        <Button
-                            size='sm'
-                            variant='outline'
-                            className='px-2 rounded-l-none'
-                        >
-                            <LayoutGrid className='h-4 w-4' />
-                        </Button> */}
-                    </div>
+            <PageHeader>
+                <PageHeaderTitle>Your Gear</PageHeaderTitle>
+                <PageHeaderActions>
+                    <LayoutToggleButtons />
+                </PageHeaderActions>
+            </PageHeader>
+
+            <UserGearBinSearchProvider>
+                <div className='flex justify-between items-center'>
+                    <UserGearFilterBar
+                        placeholder='Filter...'
+                        className='max-w-sm'
+                    />
+                    <AddGearBinButton variant='outline' size='sm' />
                 </div>
 
-                <UserGearBinSearchProvider>
-                    <div className='flex justify-between items-center'>
-                        <UserGearFilterBar
-                            placeholder='Filter...'
-                            className='max-w-sm'
-                        />
-                        <AddGearBinButton>
-                            <Button
-                                variant='outline'
-                                size='sm'
-                                className='flex items-center gap-2 mr-2'
-                            >
-                                <Plus size={14} />
-                                New Gear Bin
-                            </Button>
-                        </AddGearBinButton>
-                    </div>
-                    <GearBinAccordion />
-                </UserGearBinSearchProvider>
-
-                <DragOverlay>
-                    {activeGear ? (
-                        <div className='opacity-80'>
-                            <AlternateGearCard gear={activeGear} />
-                        </div>
-                    ) : null}
-                </DragOverlay>
-            </DndContext>
+                <GearDragProvider>
+                    <GearDragOverlay />
+                    <GearBinsContent />
+                </GearDragProvider>
+            </UserGearBinSearchProvider>
         </main>
     );
 }
 
-function GearBinAccordion() {
+function LayoutToggleButtons() {
+    return (
+        <ButtonGroup>
+            <Button size='sm' variant='outline' className='px-2'>
+                <Table className='h-4 w-4' />
+            </Button>
+            <Button size='sm' variant='outline' className='px-2'>
+                <LayoutGrid className='h-4 w-4' />
+            </Button>
+        </ButtonGroup>
+    );
+}
+
+function GearDragOverlay() {
+    const { activeGear } = useContext(GearDragContext);
+    return (
+        <DragOverlay>
+            {activeGear ? (
+                <AlternateGearCard gear={activeGear} className='opacity-90' />
+            ) : null}
+        </DragOverlay>
+    );
+}
+
+function GearBinsContent() {
     const { gearBins, isLoading } = useUserGearBins();
+    const { activeGear } = useContext(GearDragContext);
+    const filterActiveGear = useCallback(
+        (g: Gear) => g.id !== activeGear?.id,
+        [activeGear]
+    );
     if (isLoading) return null;
     return (
         <Accordion
@@ -145,68 +105,48 @@ function GearBinAccordion() {
             className='w-full space-y-6'
             defaultValue={['binless', ...gearBins.map((bin) => bin.id)]}
         >
-            <BinlessGearAccordionItem>
-                <PageGearList />
-            </BinlessGearAccordionItem>
-            <GearBinList
-                className='flex flex-col gap-4'
-                binRenderer={(bin) => (
-                    <DroppableGearBinAccordionItem key={bin.id} gearBin={bin} />
-                )}
-            />
+            {/* Binless gear bin */}
+            <BinlessGearBinProvider>
+                <GearBinDropSlot>
+                    <GearBinAccordionItem variant='binless'>
+                        <GearBinGearGrid filter={filterActiveGear}>
+                            <DraggableGearCard />
+                        </GearBinGearGrid>
+                    </GearBinAccordionItem>
+                </GearBinDropSlot>
+            </BinlessGearBinProvider>
+
+            {/* Gear bin accordion items */}
+            {gearBins.map((bin) => (
+                <UserGearBinProvider key={bin.id} gearBin={bin}>
+                    <GearBinDropSlot>
+                        <GearBinAccordionItem>
+                            <GearBinGearGrid filter={filterActiveGear}>
+                                <DraggableGearCard />
+                            </GearBinGearGrid>
+                        </GearBinAccordionItem>
+                    </GearBinDropSlot>
+                </UserGearBinProvider>
+            ))}
         </Accordion>
     );
 }
 
-function DroppableGearBinAccordionItem({ gearBin }: { gearBin: UserGearBin }) {
-    const { setNodeRef } = useDroppable({
-        id: gearBin.id,
-    });
-
+function DraggableGearCard() {
+    const { gear } = useGearContext();
+    if (!gear) return null;
     return (
-        <div ref={setNodeRef}>
-            <UserGearBinProvider key={gearBin.id} gearBin={gearBin}>
-                <GearBinAccordionItem>
-                    <PageGearList />
-                </GearBinAccordionItem>
-            </UserGearBinProvider>
-        </div>
-    );
-}
-
-function PageGearList() {
-    return (
-        <GearBinGearList
-            className='gap-2 grid grid-cols-[repeat(auto-fill,minmax(9rem,1fr))]'
-            gearRenderer={(gear) => (
-                <DraggableGearCard key={gear.id} gear={gear} />
-            )}
-        />
-    );
-}
-
-function DraggableGearCard({ gear }: { gear: Gear }) {
-    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-        id: gear.id,
-        data: gear,
-    });
-
-    return (
-        <GearProvider gear={gear}>
-            <GearModal>
-                <GearModalTrigger
-                    className={cn('h-full', isDragging && 'opacity-70')}
+        <GearModal>
+            <GearModalTrigger className={cn('h-full')}>
+                <GearDragDropSlot
+                    key={gear.id}
+                    className={cn('h-full rounded')}
+                    isOverClassName='ring'
+                    isDraggingClassName='opacity-40'
                 >
-                    <div
-                        ref={setNodeRef}
-                        className='h-full'
-                        {...listeners}
-                        {...attributes}
-                    >
-                        <AlternateGearCard gear={gear} />
-                    </div>
-                </GearModalTrigger>
-            </GearModal>
-        </GearProvider>
+                    <AlternateGearCard gear={gear} />
+                </GearDragDropSlot>
+            </GearModalTrigger>
+        </GearModal>
     );
 }

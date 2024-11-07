@@ -28,6 +28,7 @@ export function UploadGearButton() {
                 purchaseLinks: [],
                 createdById: user?.id || '',
                 createdByUserName: '',
+                order: Math.random() * 1000,
                 isDeleted: false,
                 isOwnedByUser: false,
                 isRetiredByUser: false,

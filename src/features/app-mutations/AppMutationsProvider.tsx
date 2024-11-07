@@ -156,10 +156,15 @@ export const AppMutationsProvider: React.FC<{
             await upsertGearMutation.mutateAsync({ ...gear, isDeleted: true });
         },
 
-        addGearToUser: async (gearId: string, gearBinId?: string) => {
+        addGearToUser: async (
+            gearId: string,
+            gearBinId?: string | null,
+            order?: number
+        ) => {
             await upsertUserGearMutation.mutateAsync({
                 gearId,
                 isRetired: false,
+                order: order,
                 userGearBinId: gearBinId,
             });
         },
@@ -168,6 +173,7 @@ export const AppMutationsProvider: React.FC<{
                 gearId,
                 isRetired: true,
                 userGearBinId: undefined,
+                order: undefined,
             });
         },
 
