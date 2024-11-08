@@ -9,7 +9,7 @@ import {
 import { useAuth } from '@/features/auth/useAuth';
 import { Accordion } from '@/ui/accordion';
 import { GearBinProvider } from '@/features/gear-bin/GearBinProvider';
-import { AlternateGearCard } from '@/features/gear/components/card/AlternateGearCard';
+import { AlternateGearCard } from '@/features/gear/card/AlternateGearCard';
 import { DragOverlay } from '@dnd-kit/core';
 import { useUserGearBins } from '@/features/gear-bin/search/useGearBinSearch';
 import { GearBinGearDragProvider } from '../../features/gear-bin/drag-n-drop/GearBinGearDragProvider';
@@ -22,13 +22,13 @@ import { GearBinAccordionItem } from '@/features/gear-bin/accordion/GearBinAccor
 import { GearBinGearGrid } from '@/features/gear-bin/accordion/GearBinGearGrid';
 import { ButtonGroup } from '@/ui/button-group';
 import { Gear } from '@/lib/appTypes';
-import { GearModal } from '@/features/gear/components/modal/GearModal';
-import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
+import { GearModal } from '@/features/gear/modal/GearModal';
+import { GearModalTrigger } from '@/features/gear/modal/GearModalTrigger';
 import { cn } from '@/lib/utils';
-import { useGearContext } from '@/features/gear/useGearContext';
 import { BinlessGearBinProvider } from '@/features/gear-bin/BinlessGearBinProvider';
 import { AddGearBinButton } from '@/features/gear-bin/new/AddGearBinButton';
 import { GearDragDropSlot } from '@/features/gear-bin/drag-n-drop/GearBinDraggableGear';
+import { GearProvider } from '@/features/gear/GearProvider';
 
 export default function UserGearPage() {
     const { user } = useAuth();
@@ -85,7 +85,9 @@ function GearDragOverlay() {
     return (
         <DragOverlay>
             {activeGear ? (
-                <AlternateGearCard gear={activeGear} className='opacity-90' />
+                <GearProvider gear={activeGear}>
+                    <AlternateGearCard className='opacity-90' />
+                </GearProvider>
             ) : null}
         </DragOverlay>
     );
@@ -135,18 +137,15 @@ function GearBinsContent() {
 }
 
 function DraggableGearCard() {
-    const { gear } = useGearContext();
-    if (!gear) return null;
     return (
         <GearModal>
             <GearModalTrigger className={cn('h-full')}>
                 <GearDragDropSlot
-                    key={gear.id}
                     className={cn('h-full rounded')}
                     isOverClassName='ring'
                     isDraggingClassName='opacity-40'
                 >
-                    <AlternateGearCard gear={gear} />
+                    <AlternateGearCard />
                 </GearDragDropSlot>
             </GearModalTrigger>
         </GearModal>

@@ -14,10 +14,10 @@ import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import {
     GearSearchModal,
     GearSearchModalTrigger,
-} from '@/features/gear-search/modal/GearSearchModal';
+} from '@/features/gear/search/modal/GearSearchModal';
 import { GearProvider } from '@/features/gear/GearProvider';
-import { GearModal } from '@/features/gear/components/modal/GearModal';
-import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
+import { GearModal } from '@/features/gear/modal/GearModal';
+import { GearModalTrigger } from '@/features/gear/modal/GearModalTrigger';
 import { StandardGearBinModal } from '../modal/StandardGearBinModal';
 import { ButtonGroup } from '@/ui/button-group';
 

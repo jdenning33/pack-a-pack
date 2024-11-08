@@ -10,6 +10,7 @@ export function EditWeightTypeToggle({
     inactiveButtonVariant = 'outline',
     activeButtonClassName,
     inactiveButtonClassName,
+    disabled,
 }: {
     weightType: WeightType;
     onChange: (value: WeightType) => void;
@@ -18,6 +19,7 @@ export function EditWeightTypeToggle({
     inactiveButtonVariant?: ButtonVariant;
     activeButtonClassName?: string;
     inactiveButtonClassName?: string;
+    disabled?: boolean;
 }) {
     return (
         <div className='flex [&>button]:rounded-none [&>button:first-child]:rounded-l-md [&>button:last-child]:rounded-r-md'>
@@ -36,6 +38,7 @@ export function EditWeightTypeToggle({
                 }
                 onClick={() => onChange('base')}
                 title='Mark as Base Weight'
+                disabled={disabled}
             >
                 <Tent size={14} />
             </Button>
@@ -54,6 +57,7 @@ export function EditWeightTypeToggle({
                 }
                 onClick={() => onChange('wearable')}
                 title='Mark as Worn Weight'
+                disabled={disabled}
             >
                 <Shirt size={14} />
             </Button>
@@ -72,6 +76,7 @@ export function EditWeightTypeToggle({
                 }
                 onClick={() => onChange('consumable')}
                 title='Mark as Consumable Weight'
+                disabled={disabled}
             >
                 <Utensils size={14} />
             </Button>
