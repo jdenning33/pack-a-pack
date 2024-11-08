@@ -49,6 +49,16 @@ export const GearDetailCardContent: React.FC = () => {
                     <Badge variant='outline'>
                         $ {gear.price?.toFixed(0) || '_'}
                     </Badge>
+                    {Object.entries(gear.attributes).map(([type, value]) => (
+                        <Badge
+                            key={type}
+                            variant='outline'
+                            className='bg-background/95'
+                            title={`${type}: ${value}`}
+                        >
+                            {value}
+                        </Badge>
+                    ))}
                 </div>
                 <p className='text-sm text-muted-foreground line-clamp-2'>
                     {gear.description}

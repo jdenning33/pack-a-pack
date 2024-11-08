@@ -62,6 +62,8 @@ export function EditAttributesList({
                     onDelete={() => handleAttributeDelete(type)}
                 />
             ))}
+            {/* force a line break for flex-row variant */}
+            <div className='basis-full h-0'></div>
             <EditAttributePopover
                 availableAttributes={remainingAttributes}
                 onUpdate={(value) => {

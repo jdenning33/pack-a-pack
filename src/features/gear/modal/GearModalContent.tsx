@@ -69,6 +69,18 @@ export const GearModalContent: React.FC = () => {
                             <Badge variant='outline'>
                                 $ {gear.price?.toFixed(0) || '_'}
                             </Badge>
+                            {Object.entries(gear.attributes).map(
+                                ([type, value]) => (
+                                    <Badge
+                                        key={type}
+                                        variant='outline'
+                                        className='bg-background/95'
+                                        title={`${type}: ${value}`}
+                                    >
+                                        {value}
+                                    </Badge>
+                                )
+                            )}
                         </div>
                     </div>
                 </div>

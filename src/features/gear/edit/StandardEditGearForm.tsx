@@ -14,6 +14,9 @@ import { GearNameInput } from './inputs/GearNameInput';
 import { GearUploadImageFromUrlInput } from './inputs/GearUploadImageFromUrlInput';
 import { GearTypeInput } from './inputs/GearTypeInput';
 import { GearWeightTypeInput } from './inputs/GearWeightTypeInput';
+import { GearAttributesInput } from './inputs/GearAttributesInput';
+import { Label } from '@/ui/label';
+import { FieldError } from 'react-hook-form';
 
 export function StandardEditGearForm(props: {
     gear?: Gear;
@@ -28,35 +31,56 @@ export function StandardEditGearForm(props: {
         </EditGearForm>
     );
 }
+
 export function StandardEditGearInputs({ className }: { className?: string }) {
     return (
         <div className={cn('space-y-4', className)}>
             <div className='flex gap-4'>
-                {/* <div> */}
-                <GearInteractiveImage />
-                {/* <GearImage /> */}
-                {/* <UploadImageInput /> */}
-                {/* </div> */}
+                <div>
+                    <GearInteractiveImage />
+                </div>
                 <div className='flex flex-col gap-4'>
-                    <div className='flex gap-4'>
+                    <GearLabelAndField label='Name' htmlFor='name'>
                         <GearNameInput />
+                    </GearLabelAndField>
+                    <div className='flex gap-4'>
+                        <GearLabelAndField label='Brand' htmlFor='brand'>
+                            <GearBrandInput />
+                        </GearLabelAndField>
+                        <GearLabelAndField label='Price' htmlFor='price'>
+                            <GearPriceInput />
+                        </GearLabelAndField>
+                        <GearLabelAndField label='Type' htmlFor='type'>
+                            <GearTypeInput />
+                        </GearLabelAndField>
                     </div>
                     <div className='flex gap-4'>
-                        <GearBrandInput />
-                        <GearPriceInput />
-                        <GearTypeInput />
+                        <GearLabelAndField label='Weight' htmlFor='weight'>
+                            <GearWeightInput />
+                        </GearLabelAndField>
+                        <GearLabelAndField
+                            label='Weight Type'
+                            htmlFor='weightType'
+                        >
+                            <GearWeightTypeInput />
+                        </GearLabelAndField>
                     </div>
-                    <div className='flex gap-4'>
-                        <GearWeightInput />
-                        <GearWeightTypeInput />
-                    </div>
-                    <GearDescriptionInput />
-                    <div>
-                        <GearUploadImageFromUrlInput />
-                    </div>
+                    <GearLabelAndField
+                        label='Description'
+                        htmlFor='description'
+                    >
+                        <GearDescriptionInput />
+                    </GearLabelAndField>
+                    <GearLabelAndField
+                        label='Custom Attributes'
+                        htmlFor='attributes'
+                    >
+                        <GearAttributesInput className='flex-row flex-wrap' />
+                    </GearLabelAndField>
+
+                    <GearUploadImageFromUrlInput />
                 </div>
             </div>
-            {/* <GearImageUrlInput /> */}
         </div>
     );
 }
@@ -66,6 +90,46 @@ export function StandardEditGearButtons({ className }: { className?: string }) {
             <GearSaveButton />
             <GearSaveAsNewButton />
             <GearCancelButton />
+        </div>
+    );
+}
+
+export function GearLabelAndField({
+    label,
+    tooltip,
+    children,
+    htmlFor,
+    className,
+}: {
+    label: React.ReactNode;
+    tooltip?: React.ReactNode;
+    children: React.ReactNode;
+    htmlFor?: string;
+    className?: string;
+}) {
+    return (
+        <div className={cn('', className)}>
+            <Label htmlFor={htmlFor} className='p-2 flex'>
+                {label} {tooltip}
+            </Label>
+            {children}
+        </div>
+    );
+}
+
+export function GearFieldWithError({
+    children,
+    error,
+    className,
+}: {
+    children: React.ReactNode;
+    error?: FieldError;
+    className?: string;
+}) {
+    return (
+        <div className={cn('space-y-2', className)}>
+            {children}
+            {error && <p className='text-sm text-red-600'>{error.message}</p>}
         </div>
     );
 }

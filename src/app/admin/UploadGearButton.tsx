@@ -29,6 +29,7 @@ export function UploadGearButton() {
                 createdById: user?.id || '',
                 createdByUserName: '',
                 order: Math.random() * 1000,
+                attributes: {},
                 isDeleted: false,
                 isOwnedByUser: false,
                 isRetiredByUser: false,

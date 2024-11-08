@@ -47,15 +47,34 @@ export const AlternateGearCard = forwardRef<
                     <Badge
                         variant='default'
                         className='rounded-br-none rounded-tr'
+                        title={`Type: ${gear.type}`}
                     >
                         {gear.type}&nbsp;
                     </Badge>
-                    <Badge variant='outline' className='bg-background/95'>
+                    <Badge
+                        variant='outline'
+                        className='bg-background/95'
+                        title={`Weight: ${formatWeight(gear.weight)}`}
+                    >
                         {formatWeight(gear.weight)}
                     </Badge>
-                    <Badge variant='outline' className='bg-background/95'>
+                    <Badge
+                        variant='outline'
+                        className='bg-background/95'
+                        title={`Price: $${gear.price}`}
+                    >
                         ${gear.price}
                     </Badge>
+                    {Object.entries(gear.attributes).map(([type, value]) => (
+                        <Badge
+                            key={type}
+                            variant='outline'
+                            className='bg-background/95'
+                            title={`${type}: ${value}`}
+                        >
+                            {value}
+                        </Badge>
+                    ))}
                 </div>
                 <div className='m-3 line-clamp-4'>
                     <h3 className='font-semibold text-sm'>{gear.name}</h3>

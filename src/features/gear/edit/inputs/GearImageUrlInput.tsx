@@ -1,12 +1,14 @@
 import React from 'react';
 import { Input } from '@/ui/input';
 import { useEditGearForm } from '../EditGearForm';
+import { GearFieldWithError } from '../StandardEditGearForm';
 
 export function GearImageUrlInput({ className }: { className?: string }) {
     const { register, errors } = useEditGearForm();
     return (
-        <div className={className}>
+        <GearFieldWithError className={className} error={errors.image}>
             <Input
+                id='image'
                 placeholder='Image URL (optional)'
                 {...register('image', {
                     pattern: {
@@ -14,11 +16,7 @@ export function GearImageUrlInput({ className }: { className?: string }) {
                         message: 'Invalid image URL',
                     },
                 })}
-                aria-invalid={!!errors.image}
             />
-            {errors.image && (
-                <p className='text-sm text-red-600'>{errors.image.message}</p>
-            )}
-        </div>
+        </GearFieldWithError>
     );
 }

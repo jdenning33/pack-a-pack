@@ -1,32 +1,14 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 import { useEditGearForm } from '../EditGearForm';
+import { GearFieldWithError } from '../StandardEditGearForm';
 import { Controller } from 'react-hook-form';
-import { Label } from '@/ui/label';
 import { EditWeightTypeToggle } from '@/features/shared/EditWeightTypeToggle';
 
-interface GearWeightInputProps {
-    className?: string;
-    includeLabel?: boolean;
-}
-
-export function GearWeightTypeInput({
-    className,
-    includeLabel = true,
-}: GearWeightInputProps) {
-    const { errors, control } = useEditGearForm();
-    const inputId = 'gear-weight-type';
+export function GearWeightTypeInput({ className }: { className?: string }) {
+    const { control, errors } = useEditGearForm();
 
     return (
-        <div className={cn('', className)}>
-            {includeLabel && (
-                <Label
-                    htmlFor={inputId}
-                    className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-                >
-                    Weight Type
-                </Label>
-            )}
+        <GearFieldWithError className={className} error={errors.weightType}>
             <Controller
                 name='weightType'
                 control={control}
@@ -40,14 +22,6 @@ export function GearWeightTypeInput({
                     />
                 )}
             />
-            {errors.weight && (
-                <p
-                    id={`${inputId}-error`}
-                    className='text-sm font-medium text-destructive'
-                >
-                    {errors.weight.message}
-                </p>
-            )}
-        </div>
+        </GearFieldWithError>
     );
 }

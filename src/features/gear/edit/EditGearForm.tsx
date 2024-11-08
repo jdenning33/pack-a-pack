@@ -14,6 +14,7 @@ export type GearFormData = {
     price: number;
     type: string;
     weightType: WeightType;
+    attributes: Record<string, string | number>;
 };
 
 // Define the extra context type for gear form
@@ -61,6 +62,7 @@ export function EditGearForm({
             weight: data.weight,
             price: data.price,
             type: data.type,
+            attributes: data.attributes,
             weightType: data.weightType,
             isPublic: gear?.isPublic || false,
             isDeleted: gear?.isDeleted || false,
