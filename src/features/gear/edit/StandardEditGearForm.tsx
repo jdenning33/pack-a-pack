@@ -1,21 +1,19 @@
 import React from 'react';
 import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
-import {
-    EditGearForm,
-    GearSaveButton,
-    GearSaveAsNewButton,
-    GearCancelButton,
-} from './EditGearForm';
+import { EditGearForm } from './EditGearForm';
+import { GearCancelButton } from './buttons/GearCancelButton';
+import { GearSaveAsNewButton } from './buttons/GearSaveAsNewButton';
+import { GearSaveButton } from './buttons/GearSaveButton';
 import { GearInteractiveImage } from './GearInteractiveImage';
-import { GearBrandInput } from './GearBrandInput';
-import { GearDescriptionInput } from './GearDescriptionInput';
-import { GearPriceInput } from './GearPriceInput';
-import { GearWeightInput } from './GearWeightInput';
-import { GearNameInput } from './GearNameInput';
-import { GearUploadImageFromUrlInput } from './GearUploadImageFromUrlInput';
-import { GearTypeInput } from './GearTypeInput';
-import { GearWeightTypeInput } from './GearWeightTypeInput';
+import { GearBrandInput } from './inputs/GearBrandInput';
+import { GearDescriptionInput } from './inputs/GearDescriptionInput';
+import { GearPriceInput } from './inputs/GearPriceInput';
+import { GearWeightInput } from './inputs/GearWeightInput';
+import { GearNameInput } from './inputs/GearNameInput';
+import { GearUploadImageFromUrlInput } from './inputs/GearUploadImageFromUrlInput';
+import { GearTypeInput } from './inputs/GearTypeInput';
+import { GearWeightTypeInput } from './inputs/GearWeightTypeInput';
 
 export function StandardEditGearForm(props: {
     gear?: Gear;

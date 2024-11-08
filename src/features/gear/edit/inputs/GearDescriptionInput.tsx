@@ -1,6 +1,6 @@
 import React from 'react';
 import { Textarea } from '@/ui/textarea';
-import { useEditGearForm } from './EditGearForm';
+import { useEditGearForm } from '../EditGearForm';
 import { Label } from '@/ui/label';
 
 export function GearDescriptionInput({

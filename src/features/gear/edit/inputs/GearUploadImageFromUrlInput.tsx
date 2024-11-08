@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input } from '@/ui/input';
 import { cn } from '@/lib/utils';
-import { useEditGearForm } from './EditGearForm';
+import { useEditGearForm } from '../EditGearForm';
 import { Controller } from 'react-hook-form';
 import { Button } from '@/ui/button';
 import { Loader } from 'lucide-react';

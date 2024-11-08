@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { useEditGearForm } from './EditGearForm';
+import { useEditGearForm } from '../EditGearForm';
 import { Controller } from 'react-hook-form';
 import { Label } from '@/ui/label';
 import { EditWeightPopover } from '@/features/shared/EditWeightPopover';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '@/ui/input';
 import { Label } from '@/ui/label';
 import { cn } from '@/lib/utils';
-import { useEditGearForm } from './EditGearForm';
+import { useEditGearForm } from '../EditGearForm';
 
 interface GearPriceInputProps {
     className?: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from '@/ui/input';
-import { useEditGearForm } from './EditGearForm';
+import { useEditGearForm } from '../EditGearForm';
 
 export function GearImageUrlInput({ className }: { className?: string }) {
     const { register, errors } = useEditGearForm();

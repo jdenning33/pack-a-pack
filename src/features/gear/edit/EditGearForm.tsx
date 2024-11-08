@@ -1,17 +1,11 @@
-import React, { MouseEventHandler } from 'react';
-import {
-    useForm,
-    Control,
-    UseFormRegister,
-    FieldErrors,
-} from 'react-hook-form';
-import { Button } from '@/ui/button';
+import React from 'react';
 import { Gear, WeightType } from '@/lib/appTypes';
 import { useAuth } from '@/features/auth/useAuth';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
-import { AuthGuard } from '@/features/auth/components/AuthGuard';
+import { AuthGuard } from '@/features/auth/AuthGuard';
+import { createIq7FormContext, Iq7Form } from '@/ui/iq7-form';
 
-export interface GearFormValues {
+export type GearFormData = {
     name: string;
     description?: string;
     brand?: string;
@@ -20,73 +14,44 @@ export interface GearFormValues {
     price: number;
     type: string;
     weightType: WeightType;
-}
+};
 
-const EditGearContext = React.createContext<{
+// Define the extra context type for gear form
+type GearFormExtraContext = {
     gear?: Gear;
-    control: Control<GearFormValues, unknown>;
-    register: UseFormRegister<GearFormValues>;
-    errors: FieldErrors<GearFormValues>;
-    handleSubmit: (
-        onSubmit: (data: GearFormValues) => Promise<void>
-    ) => MouseEventHandler<HTMLButtonElement> | undefined;
-    onSubmitSave: (data: GearFormValues) => Promise<void>;
-    onSubmitSaveAsNew: (data: GearFormValues) => Promise<void>;
-    onCancel: (() => void) | undefined;
-} | null>(null);
+    onSubmitAsNew: (data: GearFormData) => Promise<void>;
+};
 
-export function useEditGearForm() {
-    const context = React.useContext(EditGearContext);
-    if (!context) {
-        throw new Error(
-            'EditGearForm components must be used within a EditGearFormProvider'
-        );
-    }
-    return context;
-}
+// Create context with the extra values
+export const [GearFormContext, useEditGearForm] = createIq7FormContext<
+    GearFormData,
+    GearFormExtraContext
+>();
 
 export function EditGearForm({
     gear,
     afterSave,
     onCancel,
     children,
+    className,
 }: {
     gear?: Gear;
     afterSave?: (gear: Gear) => void;
     onCancel?: () => void;
     children: React.ReactNode;
+    className?: string;
 }) {
     const { user } = useAuth();
     const { addGear, updateGear } = useAppMutations();
 
-    const {
-        control,
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-    } = useForm<GearFormValues>({
-        defaultValues: {
-            name: gear?.name || '',
-            description: gear?.description || '',
-            brand: gear?.brand || '',
-            image: gear?.image || '',
-            weight: gear?.weight || 0,
-            price: gear?.price || 0,
-            type: gear?.type || '',
-            weightType: gear?.weightType || 'base',
-        },
-    });
-
-    async function onSubmitSave(data: GearFormValues) {
+    async function handleSubmit(data: GearFormData) {
         onSubmit(data, false);
     }
-
-    async function onSubmitSaveAsNew(data: GearFormValues) {
+    async function handleSubmitAsNew(data: GearFormData) {
         onSubmit(data, true);
     }
 
-    async function onSubmit(data: GearFormValues, saveAs: boolean) {
+    async function onSubmit(data: GearFormData, saveAs: boolean) {
         let newGear = {
             ...gear,
             name: data.name,
@@ -120,62 +85,25 @@ export function EditGearForm({
             isOwnedByUser: true,
             isRetiredByUser: false,
         });
-        //reset the form
-        reset();
     }
 
-    const provider = {
+    const extraContext: GearFormExtraContext = {
         gear,
-        control,
-        register,
-        errors,
-        handleSubmit,
-        onSubmitSave,
-        onSubmitSaveAsNew,
-        onCancel,
+        onSubmitAsNew: handleSubmitAsNew,
     };
 
     return (
         <AuthGuard>
-            <EditGearContext.Provider value={provider}>
-                <form onSubmit={handleSubmit(onSubmitSave)}>{children}</form>
-            </EditGearContext.Provider>
+            <Iq7Form
+                context={GearFormContext}
+                defaultValues={gear}
+                onSubmit={handleSubmit}
+                onFinished={onCancel}
+                className={className}
+                extraContext={extraContext}
+            >
+                {children}
+            </Iq7Form>
         </AuthGuard>
-    );
-}
-
-export function GearSaveButton() {
-    const { gear } = useEditGearForm();
-    return (
-        <Button
-            type='submit'
-            disabled={gear?.isPublic}
-            disabledTitle='You cannot edit public gear directly, use "Save As New" instead.'
-        >
-            Save
-        </Button>
-    );
-}
-
-export function GearSaveAsNewButton() {
-    const { handleSubmit, onSubmitSaveAsNew } = useEditGearForm();
-    return (
-        <Button
-            type='button'
-            variant={'outline'}
-            onClick={handleSubmit(onSubmitSaveAsNew)}
-            title='This will create a new gear item with these details, leaving the original unchanged.'
-        >
-            Save As New
-        </Button>
-    );
-}
-
-export function GearCancelButton() {
-    const { onCancel } = useEditGearForm();
-    return (
-        <Button variant='ghost' type='button' onClick={() => onCancel?.()}>
-            Cancel
-        </Button>
     );
 }

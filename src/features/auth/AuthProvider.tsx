@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { AuthContext } from '../useAuth';
+import { AuthContext } from './useAuth';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 
 export const AuthProvider: React.FC<{

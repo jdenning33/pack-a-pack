@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input } from '@/ui/input';
 import { cn } from '@/lib/utils';
-import { useEditGearForm } from './EditGearForm';
+import { useEditGearForm } from '../EditGearForm';
 import { Label } from '@/ui/label';
 
 export function GearBrandInput({

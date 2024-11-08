@@ -11,11 +11,11 @@ import {
     DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import { User } from 'lucide-react';
-import { useAuth } from '../useAuth';
 import {
     ProfileModal,
     ProfileModalTrigger,
-} from '@/features/profile/ProfileModal';
+} from '@/features/profile/modal/ProfileModal';
+import { useAuth } from '@/features/auth/useAuth';
 
 export const UserProfileDropdown: React.FC = () => {
     const { user, isSignedIn, signOut } = useAuth();
