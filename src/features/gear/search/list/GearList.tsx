@@ -1,16 +1,21 @@
 import React from 'react';
 import { Gear } from '@/lib/appTypes';
 import { useGearSearch } from '../useGearSearch';
+import { GearProvider } from '../../GearProvider';
 
 export const GearList = ({
     gearFilter,
-    gearRenderer,
+    children,
 }: {
     gearFilter?: (gear: Gear) => boolean;
-    gearRenderer: (gear: Gear) => React.ReactNode;
+    children: React.ReactNode;
 }) => {
     const { gear } = useGearSearch();
     const filteredGear = gearFilter ? gear.filter(gearFilter) : gear;
 
-    return filteredGear.map((gear) => gearRenderer(gear));
+    return filteredGear.map((gear) => (
+        <GearProvider key={gear.id} gear={gear}>
+            {children}
+        </GearProvider>
+    ));
 };

@@ -4,18 +4,15 @@ import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { NoGearSelectedHolder } from '@/features/item/components/NoGearSelectedHolder';
-import { GearDetailCard } from '@/features/gear/components/card/GearDetailCard';
-import { GearEditInModalOption } from '@/features/gear/components/quick-options/GearEditInModalOption';
-import { GearRemoveFromItemOption } from '@/features/gear/components/quick-options/GearRemoveFromItemOption';
-import { GearQuickOptionsMenu } from '@/features/gear/components/quick-options/GearQuickOptionsMenu';
+import { GearDetailCard } from '@/features/gear/card/GearDetailCard';
+import { GearEditInModalOption } from '@/features/gear/quick-options/GearEditInModalOption';
+import { GearRemoveFromItemOption } from '@/features/gear/quick-options/GearRemoveFromItemOption';
+import { GearQuickOptionsMenu } from '@/features/gear/quick-options/GearQuickOptionsMenu';
 import { QuickEditItemName } from './QuickEditItemName';
 import { GearProvider } from '@/features/gear/GearProvider';
 import { useAppMutations } from '../../app-mutations/useAppMutations';
 import { useConfirmedItemContext, useItemContext } from '../useItem';
-import {
-    GearModal,
-    useGearModal,
-} from '@/features/gear/components/modal/GearModal';
+import { GearModal, useGearModal } from '@/features/gear/modal/GearModal';
 import { OpinionatedTooltip } from '@/ui/tooltip';
 import { PlusIcon } from 'lucide-react';
 import {
@@ -27,7 +24,7 @@ import {
 import {
     GearSearchProvider,
     useGearSearch,
-} from '@/features/gear-search/GearSearchProvider';
+} from '@/features/gear/search/GearSearchProvider';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { useAuth } from '@/features/auth/useAuth';
 import { Textarea } from '@/ui/textarea';
@@ -88,19 +85,19 @@ export const ItemPanel: React.FC = () => {
                             </Label>
                             <GearProvider
                                 gear={item.gear}
-                                className='flex-1'
                                 afterGearUpdated={afterGearUpdated}
                             >
                                 <GearModal>
-                                    {!isReadOnly && (
-                                        <GearQuickOptionsMenu>
-                                            <GearRemoveFromItemOption
-                                                item={item}
-                                            />
-                                            <GearEditInModalOption />
-                                        </GearQuickOptionsMenu>
-                                    )}
-                                    <GearDetailCard className='shadow-sm'></GearDetailCard>
+                                    <GearDetailCard className='flex-1 shadow-sm'>
+                                        {!isReadOnly && (
+                                            <GearQuickOptionsMenu>
+                                                <GearRemoveFromItemOption
+                                                    item={item}
+                                                />
+                                                <GearEditInModalOption />
+                                            </GearQuickOptionsMenu>
+                                        )}
+                                    </GearDetailCard>
                                     <NoGearSelectedHolder className='text-sm text-muted-foreground flex flex-col items-start'>
                                         <div className='flex gap-1 mt-1'>
                                             <GearSearchProvider
@@ -109,14 +106,12 @@ export const ItemPanel: React.FC = () => {
                                                     gearUserId: user?.id,
                                                 }}
                                             >
-                                                <GearModal>
-                                                    <GearSearchBox
-                                                        onGearSelect={(g) => {
-                                                            console.log(g);
-                                                            afterGearUpdated(g);
-                                                        }}
-                                                    />
-                                                </GearModal>
+                                                <GearSearchBox
+                                                    onGearSelect={(g) => {
+                                                        console.log(g);
+                                                        afterGearUpdated(g);
+                                                    }}
+                                                />
                                             </GearSearchProvider>
                                             <Link href='/gear' target='_blank'>
                                                 <Button variant='link'>
@@ -126,7 +121,6 @@ export const ItemPanel: React.FC = () => {
                                         </div>
                                     </NoGearSelectedHolder>
                                 </GearModal>
-                                <GearModal />
                             </GearProvider>
                         </div>
                         <div
@@ -147,7 +141,7 @@ export const ItemPanel: React.FC = () => {
                                     updateItem({ ...item, weight: v });
                                 }}
                             />
-                            {item.weight && item.gear?.weight && (
+                            {item.weight && item.gear?.weight !== undefined && (
                                 <Button
                                     className='translate-y-1 opacity-80'
                                     variant='link'

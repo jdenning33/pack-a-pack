@@ -2,15 +2,15 @@ import React from 'react';
 import { Card, CardContent } from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
-import { useGearContext } from '../../useGearContext';
-import { useFormatWeight } from '@/lib/utils';
+import { useGearContext } from '../useGearContext';
+import { cn, useFormatWeight } from '@/lib/utils';
 
 export const GearCard: React.FC<{ className?: string }> = ({ className }) => {
     const { gear } = useGearContext();
     const formatWeight = useFormatWeight();
     if (!gear) return null;
     return (
-        <Card className={className}>
+        <Card className={cn('relative', className)}>
             <CardContent className='p-3 flex flex-col h-full'>
                 <div className='w-24 h-24 mb-2 relative flex self-center shrink-0'>
                     <ImageWithFallback

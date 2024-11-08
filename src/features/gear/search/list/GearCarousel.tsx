@@ -8,12 +8,12 @@ import {
 } from '@/ui/carousel';
 import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
-import { GearProvider } from '../../gear/GearProvider';
-import { AddGearButton } from '../../gear/components/AddGearButton';
-import { GearCard } from '../../gear/components/card/GearCard';
-import { GearSelectBanner } from '@/features/gear/components/card/GearSelectBanner';
-import { GearModal } from '../../gear/components/modal/GearModal';
-import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
+import { GearProvider } from '../../GearProvider';
+import { AddGearButton } from '../../new/AddGearButton';
+import { GearCard } from '../../card/GearCard';
+import { GearSelectBanner } from '@/features/gear/card/GearSelectBanner';
+import { GearModal } from '../../modal/GearModal';
+import { GearModalTrigger } from '@/features/gear/modal/GearModalTrigger';
 import { useGearSearch } from '../useGearSearch';
 
 export function GearCarousel({
@@ -48,15 +48,16 @@ export function GearCarousel({
                                 key={g.id}
                                 className='w-36 max-w-36 pl-2 '
                             >
-                                <GearProvider gear={g} className=''>
+                                <GearProvider gear={g}>
                                     <GearModal>
                                         <GearModalTrigger>
                                             <GearCard
-                                                className={
+                                                className={cn(
+                                                    'relative',
                                                     variant === 'compact'
                                                         ? 'h-52'
                                                         : 'h-[12.5rem] shadow-sm'
-                                                }
+                                                )}
                                             />
                                         </GearModalTrigger>
                                     </GearModal>

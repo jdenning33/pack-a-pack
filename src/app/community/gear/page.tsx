@@ -1,19 +1,19 @@
 'use client';
-import { GearDetailCard } from '@/features/gear/components/card/GearDetailCard';
-import { GearQuickOptionsMenu } from '@/features/gear/components/quick-options/GearQuickOptionsMenu';
-import { GearDeleteOption } from '@/features/gear/components/quick-options/GearDeleteOption';
-import { GearOpenModalOption } from '@/features/gear/components/quick-options/GearOpenModalOption';
+import { GearDetailCard } from '@/features/gear/card/GearDetailCard';
+import { GearQuickOptionsMenu } from '@/features/gear/quick-options/GearQuickOptionsMenu';
+import { GearDeleteOption } from '@/features/gear/quick-options/GearDeleteOption';
+import { GearOpenModalOption } from '@/features/gear/quick-options/GearOpenModalOption';
 import { DropdownMenuSeparator } from '@/ui/dropdown-menu';
-import { GearSearchBar } from '@/features/gear-search/components/GearSearchBar';
+import { GearSearchBar } from '@/features/gear/search/filters/GearSearchBar';
 import {
     GearSearchProvider,
     useGearSearch,
-} from '@/features/gear-search/GearSearchProvider';
+} from '@/features/gear/search/GearSearchProvider';
 import { GearProvider } from '@/features/gear/GearProvider';
-import { GearAddToUserGearOption } from '@/features/gear/components/quick-options/GearAddToUserGearOption';
-import { GearRemoveFromUserGearOption } from '@/features/gear/components/quick-options/GearRemoveFromMyGearOption';
-import { GearModal } from '@/features/gear/components/modal/GearModal';
-import { GearModalTrigger } from '@/features/gear/components/modal/GearModalTrigger';
+import { GearAddToUserGearOption } from '@/features/gear/quick-options/GearAddToUserGearOption';
+import { GearRemoveFromUserGearOption } from '@/features/gear/quick-options/GearRemoveFromMyGearOption';
+import { GearModal } from '@/features/gear/modal/GearModal';
+import { GearModalTrigger } from '@/features/gear/modal/GearModalTrigger';
 
 export default function GearPage() {
     return (
@@ -44,19 +44,21 @@ function GearDetailsCardList() {
     return (
         <div className='grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4'>
             {gear.map((gear) => (
-                <GearProvider key={gear.id} gear={gear} className='h-full'>
-                    <GearModal>
-                        <GearQuickOptionsMenu className='bg-background/90 p-2'>
-                            <GearOpenModalOption />
-                            <GearAddToUserGearOption />
-                            <GearRemoveFromUserGearOption />
-                            <DropdownMenuSeparator />
-                            <GearDeleteOption />
-                        </GearQuickOptionsMenu>
-                        <GearModalTrigger className='h-full'>
-                            <GearDetailCard className='h-full' />
-                        </GearModalTrigger>
-                    </GearModal>
+                <GearProvider key={gear.id} gear={gear}>
+                    <div className='h-full relative group'>
+                        <GearModal>
+                            <GearQuickOptionsMenu className='bg-background/90 p-2'>
+                                <GearOpenModalOption />
+                                <GearAddToUserGearOption />
+                                <GearRemoveFromUserGearOption />
+                                <DropdownMenuSeparator />
+                                <GearDeleteOption />
+                            </GearQuickOptionsMenu>
+                            <GearModalTrigger className='h-full'>
+                                <GearDetailCard className='h-full' />
+                            </GearModalTrigger>
+                        </GearModal>
+                    </div>
                 </GearProvider>
             ))}
         </div>

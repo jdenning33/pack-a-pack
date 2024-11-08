@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Dialog, DialogContent } from '@/ui/dialog';
 import { GearSearchProvider, useGearSearch } from '../GearSearchProvider';
-import { GearSearchBar } from '../components/GearSearchBar';
+import { GearSearchBar } from '../filters/GearSearchBar';
 
 export const GearSearchModalContext = React.createContext<{
     isOpen: boolean;
@@ -92,7 +92,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/ui/scroll-area';
 import { Gear } from '@/lib/appTypes';
-import { AlternateGearCard } from '@/features/gear/components/card/AlternateGearCard';
+import { AlternateGearCard } from '@/features/gear/card/AlternateGearCard';
 
 interface GearSearchModalTriggerProps
     extends React.HTMLAttributes<HTMLElement> {

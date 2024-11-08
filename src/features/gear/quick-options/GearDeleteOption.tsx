@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trash } from 'lucide-react';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { useAuth } from '@/features/auth/useAuth';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';

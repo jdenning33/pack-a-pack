@@ -5,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/ui/dialog';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 import { EditGearForm } from '../edit/EditGearForm';
 import {
     StandardEditGearInputs,

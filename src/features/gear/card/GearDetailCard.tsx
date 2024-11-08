@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Card } from '@/ui/card';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 import { cn } from '@/lib/utils';
 import { GearDetailCardContent } from './GearDetailCardContent';
 import { EditGearDetailCardContent } from './EditGearDetailCardContent';
@@ -28,7 +28,13 @@ export const useGearDetailCard = () => {
 };
 
 // GearDetailCard component with context provider
-export const GearDetailCard = ({ className }: { className?: string }) => {
+export const GearDetailCard = ({
+    className,
+    children,
+}: {
+    className?: string;
+    children?: React.ReactNode;
+}) => {
     const [isEditing, setIsEditing] = useState(false);
     const { gear } = useGearContext();
 
@@ -43,6 +49,7 @@ export const GearDetailCard = ({ className }: { className?: string }) => {
     return (
         <GearDetailCardContext.Provider value={contextValue}>
             <Card className={cn('p-4 relative', className)}>
+                {children}
                 {isEditing ? (
                     <EditGearDetailCardContent />
                 ) : (

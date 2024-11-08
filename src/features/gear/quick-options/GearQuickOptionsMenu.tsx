@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 import { QuickActionMenu } from '@/ui/quick-actions-dropdown-menu';
 
 // GearQuickOptions component

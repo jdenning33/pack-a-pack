@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Gear } from '@/lib/appTypes';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 import { StandardEditGearForm } from '../edit/StandardEditGearForm';
 import { useGearDetailCard } from './GearDetailCard';
 

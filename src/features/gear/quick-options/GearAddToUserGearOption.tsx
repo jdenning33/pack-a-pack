@@ -3,7 +3,7 @@ import { BadgePlusIcon } from 'lucide-react';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { useAuth } from '@/features/auth/useAuth';
 import { QuickActionMenuOption } from '@/ui/quick-actions-dropdown-menu';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 
 export const GearAddToUserGearOption = () => {
     const { user } = useAuth();

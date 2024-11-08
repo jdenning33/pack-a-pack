@@ -7,7 +7,7 @@ import {
     useGearSearch,
     GearQueryParams,
 } from './useGearSearch';
-import { useAuth } from '../auth/useAuth';
+import { useAuth } from '../../auth/useAuth';
 
 export const GearSearchProvider: React.FC<{
     children: ReactNode;

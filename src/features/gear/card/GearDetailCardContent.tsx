@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 import { BadgeCheckIcon, EarthIcon } from 'lucide-react';
 import { useFormatWeight } from '@/lib/utils';
 

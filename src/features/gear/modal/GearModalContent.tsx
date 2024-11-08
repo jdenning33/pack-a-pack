@@ -5,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/ui/dialog';
-import { useGearContext } from '../../useGearContext';
+import { useGearContext } from '../useGearContext';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Badge } from '@/ui/badge';
 import { Button } from '@/ui/button';

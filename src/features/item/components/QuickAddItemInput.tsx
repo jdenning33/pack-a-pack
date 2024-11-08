@@ -6,12 +6,13 @@ import { useAppMutations } from '../../app-mutations/useAppMutations';
 import { useItemContext } from '../useItem';
 import { ItemSuggestionMenu } from '../../suggestions/ItemSuggestionsMenu';
 import { Command, CommandInput, CommandItem, CommandList } from '@/ui/command';
-import { GearSearchProvider } from '@/features/gear-search/GearSearchProvider';
+import { GearSearchProvider } from '@/features/gear/search/GearSearchProvider';
 import { useAuth } from '@/features/auth/useAuth';
-import { GearList } from '@/features/gear-search/components/GearList';
+import { GearList } from '@/features/gear/search/list/GearList';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
 import { Gear } from '@/lib/appTypes';
+import { useGearContext } from '@/features/gear/useGearContext';
 
 export const QuickAddPackItem = () => {
     const { user } = useAuth();
@@ -112,12 +113,11 @@ export const QuickAddPackItem = () => {
                         }}
                     >
                         <Command autoFocus={false}>
-                            <div className='hidden'>
-                                <CommandInput
-                                    value={newItemName}
-                                    autoFocus={false}
-                                />
-                            </div>
+                            <CommandInput
+                                className='hidden'
+                                value={newItemName}
+                                autoFocus={false}
+                            />
                             <CommandList className='max-h-64' autoFocus={false}>
                                 <GearList
                                     gearFilter={(g) =>
@@ -125,71 +125,51 @@ export const QuickAddPackItem = () => {
                                             (i) => i.gearId === g.id
                                         )
                                     }
-                                    gearRenderer={(g) => (
-                                        <CommandItem
-                                            key={g.id}
-                                            onSelect={() =>
-                                                onGearSelect && onGearSelect(g)
-                                            }
-                                            value={g.id}
-                                            keywords={[g.name, g.brand, g.type]}
-                                            className='border-b rounded-none'
-                                        >
-                                            <div className='flex gap-4 w-full'>
-                                                <ImageWithFallback
-                                                    src='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
-                                                    alt='test'
-                                                    className='rounded object-contain'
-                                                    width={32}
-                                                    height={48}
-                                                />
-                                                <div className='flex-1'>
-                                                    <div className='text-muted-foreground line-clamp-1'>
-                                                        {g.type}
-                                                    </div>
-                                                    <div className='font-bold mr-2 line-clamp-1'>
-                                                        {g.name}
-                                                    </div>
-                                                    {/* <div className='flex justify-between'>
-                                                        <div>${g.price}</div>
-                                                        <div>{g.weight} oz</div>
-                                                    </div> */}
-                                                </div>
-                                            </div>
-                                        </CommandItem>
-                                    )}
-                                />
+                                >
+                                    <ComboBoxGearItem
+                                        onGearSelect={onGearSelect}
+                                    />
+                                </GearList>
                             </CommandList>
                         </Command>
                     </PopoverContent>
                 </Popover>
             </GearSearchProvider>
         );
-
-    return (
-        <form onSubmit={handleAddItem} className='flex space-x-2'>
-            <Input
-                id='new-item-name'
-                value={newItemName}
-                onChange={(e) => setNewItemName(e.target.value)}
-                placeholder='Add new item'
-                disabled={isReadOnly}
-                title='You do not have access to add items to this pack'
-            />
-            <div className='flex'>
-                <Button
-                    type='submit'
-                    className='rounded-r-none'
-                    disabled={isReadOnly}
-                    disabledTitle='You do not have access to add items to this pack'
-                >
-                    <Plus className='h-4 w-4' />
-                </Button>
-                <ItemSuggestionMenu
-                    variant='outline'
-                    className='rounded-l-none px-1'
-                />
-            </div>
-        </form>
-    );
 };
+
+function ComboBoxGearItem({
+    onGearSelect,
+}: {
+    onGearSelect: (g: Gear) => void;
+}) {
+    const { gear } = useGearContext();
+    if (!gear) return null;
+    return (
+        <CommandItem
+            key={gear.id}
+            onSelect={() => onGearSelect && onGearSelect(gear)}
+            value={gear.id}
+            keywords={[gear.name, gear.brand, gear.type]}
+            className='border-b rounded-none'
+        >
+            <div className='flex gap-4 w-full'>
+                <ImageWithFallback
+                    src='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
+                    alt='test'
+                    className='rounded object-contain'
+                    width={32}
+                    height={48}
+                />
+                <div className='flex-1'>
+                    <div className='text-muted-foreground line-clamp-1'>
+                        {gear.type}
+                    </div>
+                    <div className='font-bold mr-2 line-clamp-1'>
+                        {gear.name}
+                    </div>
+                </div>
+            </div>
+        </CommandItem>
+    );
+}

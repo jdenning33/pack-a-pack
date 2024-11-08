@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { AddGearButton } from '../../gear/components/AddGearButton';
+import { AddGearButton } from '../../gear/new/AddGearButton';
 import { useItemContext } from '../useItem';
 
 // CreateNewGear component

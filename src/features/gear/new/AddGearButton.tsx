@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/ui/button';
 import { Plus } from 'lucide-react';
 import { useAuth } from '@/features/auth/useAuth';
-import { useGearModal } from './modal/GearModal';
+import { useGearModal } from '../modal/GearModal';
 
 export const AddGearButton: React.FC<{
     className?: string;
