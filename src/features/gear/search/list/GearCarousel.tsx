@@ -10,11 +10,11 @@ import { Gear } from '@/lib/appTypes';
 import { cn } from '@/lib/utils';
 import { GearProvider } from '../../GearProvider';
 import { AddGearButton } from '../../new/AddGearButton';
-import { GearCard } from '../../card/GearCard';
 import { GearSelectBanner } from '@/features/gear/card/GearSelectBanner';
 import { GearModal } from '../../modal/GearModal';
 import { GearModalTrigger } from '@/features/gear/modal/GearModalTrigger';
-import { useGearSearch } from '../useGearSearch';
+import { GearList } from './GearList';
+import { AlternateGearCard } from '../../card/AlternateGearCard';
 
 export function GearCarousel({
     onSelected,
@@ -24,8 +24,6 @@ export function GearCarousel({
     variant?: 'default' | 'compact';
     onSelected?: (gear: Gear) => void;
 }) {
-    const { gear } = useGearSearch();
-
     return (
         <div className='relative mx-10'>
             <Carousel
@@ -43,32 +41,25 @@ export function GearCarousel({
                     )}
                 >
                     <CarouselContent className='-ml-2'>
-                        {gear.map((g) => (
-                            <CarouselItem
-                                key={g.id}
-                                className='w-36 max-w-36 pl-2 '
-                            >
-                                <GearProvider gear={g}>
-                                    <GearModal>
-                                        <GearModalTrigger>
-                                            <GearCard
-                                                className={cn(
-                                                    'relative',
-                                                    variant === 'compact'
-                                                        ? 'h-52'
-                                                        : 'h-[12.5rem] shadow-sm'
-                                                )}
-                                            />
-                                        </GearModalTrigger>
-                                    </GearModal>
-                                    {onSelected && (
-                                        <GearSelectBanner
-                                            onSelect={onSelected}
+                        <GearList>
+                            <CarouselItem className='w-36 max-w-36 pl-2 '>
+                                <GearModal>
+                                    <GearModalTrigger>
+                                        <AlternateGearCard
+                                            className={cn(
+                                                'relative',
+                                                variant === 'compact'
+                                                    ? 'h-52'
+                                                    : 'h-[12.5rem] shadow-sm'
+                                            )}
                                         />
-                                    )}
-                                </GearProvider>
+                                    </GearModalTrigger>
+                                </GearModal>
+                                {onSelected && (
+                                    <GearSelectBanner onSelect={onSelected} />
+                                )}
                             </CarouselItem>
-                        ))}
+                        </GearList>
                         <CarouselItem className='basis-1/2 md:basis-1/3 pl-2 flex items-center '>
                             <GearProvider afterGearUpdated={onSelected}>
                                 <GearModal>

@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Dialog, DialogContent } from '@/ui/dialog';
-import { GearSearchProvider, useGearSearch } from '../GearSearchProvider';
+import { GearSearchProvider } from '../GearSearchProvider';
 import { GearSearchBar } from '../filters/GearSearchBar';
 
 export const GearSearchModalContext = React.createContext<{
@@ -64,25 +64,22 @@ export const GearSearchModal = ({
 };
 
 export function ScrollableGearList() {
-    const { gear } = useGearSearch();
     const { onGearSelected } = useGearSearchModalContext();
     const { setIsOpen } = useGearSearchModalContext();
     return (
         <ScrollArea className='overflow-auto h-[75svh] border rounded-md p-2 bg-muted pr-3'>
             <div className='grid gap-2 grid-cols-[repeat(auto-fill,minmax(9rem,1fr))]'>
-                {gear.map((gear) => (
+                <GearList>
                     <AlternateGearCard
-                        key={gear.id}
-                        gear={gear}
                         onSelected={
                             onGearSelected &&
-                            (() => {
+                            ((gear) => {
                                 onGearSelected(gear);
                                 setIsOpen(false);
                             })
                         }
                     />
-                ))}
+                </GearList>
             </div>
         </ScrollArea>
     );
@@ -93,6 +90,7 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/ui/scroll-area';
 import { Gear } from '@/lib/appTypes';
 import { AlternateGearCard } from '@/features/gear/card/AlternateGearCard';
+import { GearList } from '../list/GearList';
 
 interface GearSearchModalTriggerProps
     extends React.HTMLAttributes<HTMLElement> {

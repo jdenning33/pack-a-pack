@@ -3,21 +3,23 @@ import React, { forwardRef } from 'react';
 import { Card, CardContent } from '@/ui/card';
 import { ImageWithFallback } from '@/ui/image-with-fallback';
 import { Button } from '@/ui/button';
-import { Gear } from '@/lib/appTypes';
 import { Badge } from '@/ui/badge';
 import { useFormatWeight } from '@/lib/utils';
+import { useGearContext } from '../useGearContext';
+import { Gear } from '@/lib/appTypes';
 
 interface AlternateGearCardProps {
-    gear: Gear;
-    onSelected?: () => void;
+    onSelected?: (gear: Gear) => void;
     className?: string;
 }
 
 export const AlternateGearCard = forwardRef<
     HTMLDivElement,
     AlternateGearCardProps
->(({ gear, onSelected, className = '' }, ref) => {
+>(({ onSelected, className = '' }, ref) => {
     const formatWeight = useFormatWeight();
+    const { gear } = useGearContext();
+    if (!gear) return null;
     return (
         <Card
             ref={ref}
@@ -26,7 +28,9 @@ export const AlternateGearCard = forwardRef<
         >
             {onSelected && (
                 <div className='rounded z-20 opacity-0 group-hover:opacity-100 transition-all flex absolute inset-0 bg-muted/50 items-center justify-center cursor-pointer'>
-                    <Button onClick={onSelected}>Add To My Gear</Button>
+                    <Button onClick={(_) => onSelected(gear)}>
+                        Add To My Gear
+                    </Button>
                 </div>
             )}
             <CardContent className='relative p-0'>
@@ -51,9 +55,6 @@ export const AlternateGearCard = forwardRef<
                     </Badge>
                     <Badge variant='outline' className='bg-background/95'>
                         ${gear.price}
-                    </Badge>
-                    <Badge variant='outline' className='bg-background/95'>
-                        {gear.order}
                     </Badge>
                 </div>
                 <div className='m-3 line-clamp-4'>
