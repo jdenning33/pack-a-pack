@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { supabase } from '../supabaseClient';
 import { appToSupabaseGear } from '../supabaseTypes';
-import { Gear, Item } from '@/lib/appTypes';
+import { Item, UpsertGear } from '@/lib/appTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 import { toast } from 'sonner';
-import { Optional } from '@/lib/utils';
 
 export function useUpsertGear() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (gear: Optional<Gear, 'id'>): Promise<string> => {
+        mutationFn: async (gear: UpsertGear): Promise<string> => {
             const supabaseGear = appToSupabaseGear(gear);
             console.log('supabaseGear', supabaseGear);
             const { data, error } = await supabase

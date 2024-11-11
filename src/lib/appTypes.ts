@@ -1,3 +1,5 @@
+import { Optional } from './utils';
+
 export type PreferredWeightFormat = 'kg' | 'lbs' | 'lbs+oz';
 export interface Profile {
     id: string;
@@ -73,6 +75,7 @@ export interface Gear {
     isRetiredByUser: boolean;
     userGearBinId?: string | null;
 }
+export type UpsertGear = Optional<Gear, 'id' | 'order' | 'createdByUserName'>;
 
 export interface UserGearBin {
     id: string;

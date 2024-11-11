@@ -2,7 +2,7 @@
 import { Input } from '@/ui/input';
 import { Button } from '@/ui/button';
 import { fetchFromCorsUrl } from './load-from-url-action';
-import { Gear } from '@/lib/appTypes';
+import { UpsertGear } from '@/lib/appTypes';
 import { useAppMutations } from '@/features/app-mutations/useAppMutations';
 import { useAuth } from '@/features/auth/useAuth';
 import { Label } from '@/ui/label';
@@ -70,10 +70,10 @@ interface REIProduct {
 }
 
 function transformREIDataToGear(
-    reiData: any,
+    reiData: { searchResults: { results: REIProduct[] } },
     gearType: string,
     userId: string
-): Omit<Gear, 'id'>[] {
+): UpsertGear[] {
     const products = reiData.searchResults.results;
 
     return products.map((product: REIProduct) => {
@@ -99,7 +99,6 @@ function transformREIDataToGear(
             isPublic: true,
             purchaseLinks: [],
             createdById: userId,
-            createdByUserName: '',
             attributes: extractAttributes(product.tileAttributes),
             isDeleted: false,
             isOwnedByUser: false,

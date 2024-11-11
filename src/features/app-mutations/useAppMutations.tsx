@@ -8,6 +8,7 @@ import {
     Gear,
     UserGearBin,
     Profile,
+    UpsertGear,
 } from '@/lib/appTypes';
 
 export interface AppMutationsContextType {
@@ -27,8 +28,8 @@ export interface AppMutationsContextType {
     deleteItem: (item: Item) => Promise<string>;
 
     // Gear mutations
-    addGear: (gear: Omit<Gear, 'id'>) => Promise<string>;
-    updateGear: (gear: Gear) => Promise<string>;
+    addGear: (gear: UpsertGear) => Promise<string>;
+    updateGear: (gear: UpsertGear) => Promise<string>;
     removeGear: (gear: Gear) => Promise<void>;
 
     upsertUserGearBin: (bin: Omit<UserGearBin, 'id'>) => Promise<string>;

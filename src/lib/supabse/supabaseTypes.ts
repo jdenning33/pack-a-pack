@@ -9,6 +9,7 @@ import {
     Profile,
     PreferredWeightFormat,
     WeightType,
+    UpsertGear,
 } from '@/lib/appTypes';
 import { Optional } from '../utils';
 
@@ -258,9 +259,7 @@ export function convertNestedSupabasePack(
     return supabaseToAppPack(supabasePack, kits);
 }
 
-export function appToSupabaseGear(
-    appGear: Optional<Gear, 'id'>
-): Upsert<SupabaseGear> {
+export function appToSupabaseGear(appGear: UpsertGear): Upsert<SupabaseGear> {
     return {
         id: appGear.id,
         name: appGear.name,

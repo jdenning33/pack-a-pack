@@ -15,6 +15,7 @@ import {
     Item,
     Gear,
     UserGearBin,
+    UpsertGear,
 } from '@/lib/appTypes';
 import { useSupabaseAuth } from '@/lib/supabse/auth/useSupabaseAuth';
 import { toast } from 'sonner';
@@ -144,11 +145,11 @@ export const AppMutationsProvider: React.FC<{
         },
 
         // Gear mutations
-        addGear: async (gear: Omit<Gear, 'id'>) => {
+        addGear: async (gear: UpsertGear) => {
             const result = await upsertGearMutation.mutateAsync(gear);
             return result;
         },
-        updateGear: async (gear: Gear) => {
+        updateGear: async (gear: UpsertGear) => {
             const result = await upsertGearMutation.mutateAsync(gear);
             return result;
         },
