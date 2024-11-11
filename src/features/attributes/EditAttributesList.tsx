@@ -51,7 +51,7 @@ export function EditAttributesList({
 
     return (
         <div className={cn('flex flex-col gap-1 items-start', className)}>
-            {Object.entries(attributes).map(([type, value]) => (
+            {Object.entries(attributes || {}).map(([type, value]) => (
                 <EditAttributePopover
                     key={type}
                     attribute={{ type, value }}

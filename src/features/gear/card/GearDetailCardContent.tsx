@@ -20,7 +20,7 @@ export const GearDetailCardContent: React.FC = () => {
                     alt={gear.name || 'placeholder'}
                     fill={true}
                     sizes='100% 100%'
-                    className='object-contain object-left-top rounded'
+                    className='object-contain object-center rounded'
                 />
             </div>
             <div className='ml-4 flex-grow flex flex-col'>
@@ -49,16 +49,18 @@ export const GearDetailCardContent: React.FC = () => {
                     <Badge variant='outline'>
                         $ {gear.price?.toFixed(0) || '_'}
                     </Badge>
-                    {Object.entries(gear.attributes).map(([type, value]) => (
-                        <Badge
-                            key={type}
-                            variant='outline'
-                            className='bg-background/95'
-                            title={`${type}: ${value}`}
-                        >
-                            {value}
-                        </Badge>
-                    ))}
+                    {Object.entries(gear.attributes || {}).map(
+                        ([type, value]) => (
+                            <Badge
+                                key={type}
+                                variant='outline'
+                                className='bg-background/95'
+                                title={`${type}: ${value}`}
+                            >
+                                {value}
+                            </Badge>
+                        )
+                    )}
                 </div>
                 <p className='text-sm text-muted-foreground line-clamp-2'>
                     {gear.description}

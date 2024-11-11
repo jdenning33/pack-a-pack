@@ -40,7 +40,7 @@ export const AlternateGearCard = forwardRef<
                         alt={gear.name}
                         fill={true}
                         sizes='100% 100%'
-                        className='rounded-t object-cover'
+                        className='rounded-t object-contain object-center'
                     />
                 </div>
                 <div className='flex flex-col absolute top-0 right-0 items-end [&>div:not(:first-child)]:rounded-r-none'>
@@ -63,18 +63,8 @@ export const AlternateGearCard = forwardRef<
                         className='bg-background/95'
                         title={`Price: $${gear.price}`}
                     >
-                        ${gear.price}
+                        ${gear.price.toFixed(0)}
                     </Badge>
-                    {Object.entries(gear.attributes).map(([type, value]) => (
-                        <Badge
-                            key={type}
-                            variant='outline'
-                            className='bg-background/95'
-                            title={`${type}: ${value}`}
-                        >
-                            {value}
-                        </Badge>
-                    ))}
                 </div>
                 <div className='m-3 line-clamp-4'>
                     <h3 className='font-semibold text-sm'>{gear.name}</h3>

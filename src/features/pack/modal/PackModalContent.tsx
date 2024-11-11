@@ -37,7 +37,7 @@ export const PackModalContent: React.FC = () => {
                     </DialogDescription>
                 </div>
                 <div className='flex flex-wrap gap-1 -mx-1'>
-                    {Object.entries(pack.attributes).map((attr) => (
+                    {Object.entries(pack.attributes || {}).map((attr) => (
                         <AttributeBadge
                             key={attr[0]}
                             attribute={{

@@ -45,7 +45,7 @@ export function PackCard({
                     </div>
                 </CardHeader>
                 <div className='flex flex-wrap gap-1 mx-1 px-3 py-3'>
-                    {Object.entries(pack.attributes).map((attr) => (
+                    {Object.entries(pack.attributes || {}).map((attr) => (
                         <AttributeBadge
                             key={attr[0]}
                             attribute={{

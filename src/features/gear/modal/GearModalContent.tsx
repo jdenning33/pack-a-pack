@@ -69,7 +69,7 @@ export const GearModalContent: React.FC = () => {
                             <Badge variant='outline'>
                                 $ {gear.price?.toFixed(0) || '_'}
                             </Badge>
-                            {Object.entries(gear.attributes).map(
+                            {Object.entries(gear.attributes || {}).map(
                                 ([type, value]) => (
                                     <Badge
                                         key={type}
