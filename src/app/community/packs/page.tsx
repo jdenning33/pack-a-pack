@@ -1,8 +1,8 @@
 'use client';
-import { PackSearchBar } from '@/features/pack-search/components/PacksSearchBar';
-import { PackSearchProvider } from '@/features/pack-search/PackSearchProvider';
-import { PackList } from '@/features/pack-search/components/PackList';
+import { PackSearchBar } from '@/features/pack/search/PacksSearchBar';
+import { PackSearchProvider } from '@/features/pack/search/PackSearchProvider';
 import { cn } from '@/lib/utils';
+import { PackList } from '@/features/pack/search/PackList';
 
 export default function PacksPage() {
     return (

@@ -4,9 +4,10 @@ import { Profile } from '@/lib/appTypes';
 import { supabaseToAppProfile } from '../supabaseTypes';
 
 export function useProfile(userId: string) {
-    return useQuery<Profile>({
+    return useQuery<Profile | undefined>({
         queryKey: ['profiles', userId],
         queryFn: async () => {
+            if (!userId) return undefined;
             const { data, error } = await supabase
                 .from('profiles')
                 .select('*')

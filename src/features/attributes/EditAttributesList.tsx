@@ -51,7 +51,7 @@ export function EditAttributesList({
 
     return (
         <div className={cn('flex flex-col gap-1 items-start', className)}>
-            {Object.entries(attributes).map(([type, value]) => (
+            {Object.entries(attributes || {}).map(([type, value]) => (
                 <EditAttributePopover
                     key={type}
                     attribute={{ type, value }}
@@ -62,6 +62,8 @@ export function EditAttributesList({
                     onDelete={() => handleAttributeDelete(type)}
                 />
             ))}
+            {/* force a line break for flex-row variant */}
+            <div className='basis-full h-0'></div>
             <EditAttributePopover
                 availableAttributes={remainingAttributes}
                 onUpdate={(value) => {

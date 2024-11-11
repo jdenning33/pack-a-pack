@@ -1,3 +1,5 @@
+import { Optional } from './utils';
+
 export type PreferredWeightFormat = 'kg' | 'lbs' | 'lbs+oz';
 export interface Profile {
     id: string;
@@ -62,15 +64,18 @@ export interface Gear {
     price: number;
     isPublic: boolean;
     purchaseLinks: string[];
+    attributes: Record<string, string | number>;
     createdById: string;
     createdByUserName: string;
     isDeleted: boolean;
     type: string;
     weightType: WeightType;
+    order: number;
     isOwnedByUser: boolean;
     isRetiredByUser: boolean;
-    userGearBinId?: string;
+    userGearBinId?: string | null;
 }
+export type UpsertGear = Optional<Gear, 'id' | 'order' | 'createdByUserName'>;
 
 export interface UserGearBin {
     id: string;

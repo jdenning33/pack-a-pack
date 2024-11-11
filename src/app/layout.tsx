@@ -2,12 +2,12 @@
 import localFont from 'next/font/local';
 import './globals.css';
 import Link from 'next/link';
-import { UserProfileDropdown } from '@/features/auth/components/UserProfileDropdown';
-import { AuthGuard } from '@/features/auth/components/AuthGuard';
-import { AuthSignInButton } from '@/features/auth/components/AuthSignInButton';
+import { UserProfileDropdown } from '@/features/profile/dropdown/UserProfileDropdown';
+import { AuthGuard } from '@/features/auth/AuthGuard';
+import { AuthSignInButton } from '@/features/auth/AuthSignInButton';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useMemo } from 'react';
-import { AuthProvider } from '@/features/auth/components/AuthProvider';
+import { AuthProvider } from '@/features/auth/AuthProvider';
 import { Toaster } from '@/ui/sonner';
 import { AppMutationsProvider } from '@/features/app-mutations/AppMutationsProvider';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/ui/hover-card';

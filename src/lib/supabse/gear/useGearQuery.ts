@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { supabaseToAppGear } from '../supabaseTypes';
 import { Gear } from '@/lib/appTypes';
 import { supabase } from '../supabaseClient';
-import { GearQueryParams } from '@/features/gear-search/useGearSearch';
+import { GearQueryParams } from '@/features/gear/search/useGearSearch';
 import { useAuth } from '@/features/auth/useAuth';
 
 export function useGearQuery(queryParams: GearQueryParams) {
@@ -16,7 +16,7 @@ export function useGearQuery(queryParams: GearQueryParams) {
                     `
                         *,
                         user_gear!inner (
-                            user_id,is_retired,user_gear_bin_id
+                            *
                         ),
                         user:profiles!gear_created_by_id_fkey (username)
                     `
