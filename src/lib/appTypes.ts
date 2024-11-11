@@ -62,6 +62,7 @@ export interface Gear {
     price: number;
     isPublic: boolean;
     purchaseLinks: string[];
+    attributes: Record<string, string | number>;
     createdById: string;
     createdByUserName: string;
     isDeleted: boolean;

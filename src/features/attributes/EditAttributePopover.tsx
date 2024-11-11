@@ -66,10 +66,11 @@ export function EditAttributePopover({
                 <OpinonatedCombobox
                     triggerClassName='w-24 rounded-r-none focus:z-10 bg-background truncate'
                     title={editType || 'Attribute Type'}
+                    placeholder='Type'
                     searchTextPlaceholder='Attribute Type...'
                     allowCustom={true}
                     value={editType}
-                    defaultOpen={!attribute}
+                    defaultOpen={false}
                     onValueChange={setEditType}
                     options={availableAttributes || []}
                 />

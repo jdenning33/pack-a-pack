@@ -1,25 +1,17 @@
 import React from 'react';
 import { Input } from '@/ui/input';
-import { cn } from '@/lib/utils';
 import { useEditGearForm } from '../EditGearForm';
-import { Label } from '@/ui/label';
+import { GearFieldWithError } from '../StandardEditGearForm';
 
-export function GearBrandInput({
-    className,
-    includeLabel = true,
-}: {
-    className?: string;
-    includeLabel?: boolean;
-}) {
-    const { register } = useEditGearForm();
+export function GearBrandInput({ className }: { className?: string }) {
+    const { register, errors } = useEditGearForm();
     return (
-        <div className={cn('min-w-20', className)}>
-            {includeLabel && <Label htmlFor='brand'>Brand</Label>}
+        <GearFieldWithError className={className} error={errors.brand}>
             <Input
                 id='brand'
                 placeholder='Brand (optional)'
                 {...register('brand')}
             />
-        </div>
+        </GearFieldWithError>
     );
 }

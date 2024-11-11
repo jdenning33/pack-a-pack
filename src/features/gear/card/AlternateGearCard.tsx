@@ -40,21 +40,30 @@ export const AlternateGearCard = forwardRef<
                         alt={gear.name}
                         fill={true}
                         sizes='100% 100%'
-                        className='rounded-t object-cover'
+                        className='rounded-t object-contain object-center'
                     />
                 </div>
                 <div className='flex flex-col absolute top-0 right-0 items-end [&>div:not(:first-child)]:rounded-r-none'>
                     <Badge
                         variant='default'
                         className='rounded-br-none rounded-tr'
+                        title={`Type: ${gear.type}`}
                     >
                         {gear.type}&nbsp;
                     </Badge>
-                    <Badge variant='outline' className='bg-background/95'>
+                    <Badge
+                        variant='outline'
+                        className='bg-background/95'
+                        title={`Weight: ${formatWeight(gear.weight)}`}
+                    >
                         {formatWeight(gear.weight)}
                     </Badge>
-                    <Badge variant='outline' className='bg-background/95'>
-                        ${gear.price}
+                    <Badge
+                        variant='outline'
+                        className='bg-background/95'
+                        title={`Price: $${gear.price}`}
+                    >
+                        ${gear.price.toFixed(0)}
                     </Badge>
                 </div>
                 <div className='m-3 line-clamp-4'>
