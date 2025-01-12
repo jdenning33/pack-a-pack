@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { Item } from '@/lib/appTypes';
 import { supabaseToAppItem } from '../supabaseTypes';
 import { useAuth } from '@/features/auth/useAuth';
@@ -11,6 +11,7 @@ export function useItemsQuery(pack_id: string) {
     return useQuery<Item[]>({
         queryKey: ['items', pack_id],
         queryFn: async () => {
+            const supabase = createClient();
             const { data, error } = await supabase
                 .from('items')
                 .select('*,user_gear(*,gear(*,user_gear(*)))')

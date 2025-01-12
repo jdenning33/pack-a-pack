@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { UserGearBin } from '@/lib/appTypes';
 import { supabaseToAppUserGearBin } from '../supabaseTypes';
 
@@ -9,6 +9,7 @@ type UserGearBinSearchOptions = {
     userId: string;
 };
 export function useGearBinQuery(searchParams: UserGearBinSearchOptions) {
+    const supabase = createClient();
     return useQuery<UserGearBin[]>({
         queryKey: ['user_gear_bins', searchParams],
         queryFn: async () => {

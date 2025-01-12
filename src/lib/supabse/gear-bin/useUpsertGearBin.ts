@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { UserGearBin } from '@/lib/appTypes';
 import { appToSupabaseUserGearBin } from '../supabaseTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
@@ -12,6 +12,7 @@ export function useUpsertUserGearBin() {
         mutationFn: async (
             bin: Optional<UserGearBin, 'id'>
         ): Promise<string> => {
+            const supabase = createClient();
             const supabaseBin = appToSupabaseUserGearBin(bin);
             console.log('supabaseBin', supabaseBin);
             const { data, error } = await supabase

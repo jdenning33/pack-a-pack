@@ -1,12 +1,14 @@
 import { useQuery } from 'react-query';
 import { supabaseToAppGear } from '../supabaseTypes';
 import { Gear } from '@/lib/appTypes';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { GearQueryParams } from '@/features/gear/search/useGearSearch';
 import { useAuth } from '@/features/auth/useAuth';
 
 export function useGearQuery(queryParams: GearQueryParams) {
     const { user } = useAuth();
+    const supabase = createClient();
+
     return useQuery<Gear[]>({
         queryKey: ['gear', queryParams],
         queryFn: async () => {

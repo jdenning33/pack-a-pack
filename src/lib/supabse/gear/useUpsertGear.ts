@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { appToSupabaseGear } from '../supabaseTypes';
 import { Item, UpsertGear } from '@/lib/appTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 
 export function useUpsertGear() {
     const queryClient = useQueryClient();
+    const supabase = createClient();
 
     return useMutation({
         mutationFn: async (gear: UpsertGear): Promise<string> => {

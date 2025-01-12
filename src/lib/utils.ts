@@ -31,14 +31,16 @@ export function formatWeight(
             return `${maxPrecision(grams / 453.59237, 2)} lbs`;
         case 'lbs+oz': {
             const lbs = Math.floor(grams / 453.59237);
-            const oz = Math.round((grams % 453.59237) / 28.3495);
+            const rawOz = (grams % 453.59237) / 28.3495;
+            const oz = maxPrecision(rawOz, 2);
             if (lbs === 0) return `${oz} oz`;
-            return `${lbs} lbs ${maxPrecision(oz, 2)} oz`;
+            return `${lbs} lbs ${oz} oz`;
         }
     }
 }
 
 function maxPrecision(value: number, maxPrecision: number) {
+    if (!value) value = 0;
     return Number.parseFloat(value.toFixed(maxPrecision));
 }
 export function usePropDrivenState<T>(

@@ -10,10 +10,11 @@ import {
     DialogTrigger,
 } from '@/ui/dialog';
 import { useAuth } from './useAuth';
-import { supabase } from '@/lib/supabse/supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 
 export const AuthSignInButton: React.FC = () => {
     const { isSignedIn, signOut } = useAuth();
+    const supabase = createClient();
     return (
         <Dialog>
             <DialogTrigger asChild>

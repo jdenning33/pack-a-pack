@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { PackSummary } from '@/lib/appTypes';
 import { SupabasePack, supabaseToAppPack } from '../supabaseTypes';
 
@@ -42,6 +42,7 @@ export function usePacksQuery({
             },
         ],
         queryFn: async () => {
+            const supabase = createClient();
             let query = supabase
                 .from('packs')
                 .select('*,user:profiles!packs_user_id_fkey(id,username)', {

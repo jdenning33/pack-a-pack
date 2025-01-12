@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { Profile } from '@/lib/appTypes';
 import { appToSupabaseProfile } from '../supabaseTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
@@ -12,6 +12,7 @@ export function useUpdateProfile() {
         mutationFn: async (
             profile: Optional<Profile, 'id'>
         ): Promise<string> => {
+            const supabase = createClient();
             const supabaseProfile = appToSupabaseProfile(profile);
             console.log('supabaseProfile', supabaseProfile);
             const { data, error } = await supabase

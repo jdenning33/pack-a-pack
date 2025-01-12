@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { Pack } from '@/lib/appTypes';
 import { supabaseToAppPack } from '../supabaseTypes';
 import { useMemo } from 'react';
@@ -11,6 +11,7 @@ export function usePackQueryShallow(packId: string) {
     return useQuery<Pack>({
         queryKey: ['pack', packId],
         queryFn: async () => {
+            const supabase = createClient();
             const { data, error } = await supabase
                 .from('packs')
                 .select('*,user:profiles!packs_user_id_fkey(id,username)')

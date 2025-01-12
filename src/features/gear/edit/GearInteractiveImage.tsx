@@ -32,7 +32,7 @@ export function GearInteractiveImage() {
                             alt={gear?.name || 'placeholder'}
                             fill={true}
                             sizes='100% 100%'
-                            className='rounded w-full h-full object-cover'
+                            className='object-contain object-center rounded'
                         />
 
                         {/* Overlay with camera icon or loading spinner */}

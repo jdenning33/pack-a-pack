@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { Item } from '@/lib/appTypes';
 import { appToSupabaseItem } from '../supabaseTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
@@ -13,6 +13,8 @@ export function useUpsertItem(userId: string | undefined) {
             if (!userId) {
                 throw new Error('You must be signed in to save items.');
             }
+
+            const supabase = createClient();
 
             let userGearId;
             if (item.gearId) {

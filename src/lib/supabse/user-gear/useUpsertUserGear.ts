@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { toast } from 'sonner';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
 import { Gear } from '@/lib/appTypes';
@@ -32,6 +32,7 @@ export function useUpsertUserGear(userId: string | undefined) {
 
             console.log('supabaseUserGear:', supabaseUserGear);
 
+            const supabase = createClient();
             const { data: userGear, error: userGearError } = await supabase
                 .from('user_gear')
                 .upsert(supabaseUserGear)

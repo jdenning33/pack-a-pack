@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { Kit } from '@/lib/appTypes';
 import { supabaseToAppKit } from '../supabaseTypes';
 
@@ -9,6 +9,7 @@ export function useKitsQuery(packId: string) {
     return useQuery<Kit[]>({
         queryKey: ['kits', packId],
         queryFn: async () => {
+            const supabase = createClient();
             const { data, error } = await supabase
                 .from('kits')
                 .select('*')

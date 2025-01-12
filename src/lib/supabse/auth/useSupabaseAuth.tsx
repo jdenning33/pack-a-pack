@@ -4,7 +4,7 @@ import {
     Session as SupabaseSession,
 } from '@supabase/supabase-js';
 import { AuthContract, User, Session } from '@/features/auth/useAuth';
-import { supabase } from '../supabaseClient';
+import { createClient } from '../supabaseClient';
 import { useProfile } from '../profile/useProfileQuery';
 
 function mapUser(supabaseUser: SupabaseUser | null): User | null {
@@ -32,6 +32,7 @@ export function useSupabaseAuth(): AuthContract {
     const [session, setSession] = useState<Session | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const { data: profile } = useProfile(user?.id || '');
+    const supabase = createClient();
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
