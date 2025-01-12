@@ -1,14 +1,19 @@
-import { supabase } from '../supabaseClient';
+'use server';
+
+import { cookies } from 'next/headers';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export async function uploadGearImageFromUrl(imageUrl: string) {
     const bucketName = 'gear-images';
     try {
-        // Use a CORS proxy
-        const corsProxyUrl =
-            'https://corsproxy.io/?' + encodeURIComponent(imageUrl);
+        // Create a Supabase client specifically for server components
+        const cookieStore = cookies();
+        const supabase = createServerComponentClient({
+            cookies: () => cookieStore,
+        });
 
-        // Fetch the image through the proxy
-        const response = await fetch(corsProxyUrl);
+        // Use the provided image URL directly
+        const response = await fetch(imageUrl);
         if (!response.ok) throw new Error('Failed to fetch image');
 
         // Get the image blob
@@ -16,14 +21,16 @@ export async function uploadGearImageFromUrl(imageUrl: string) {
 
         // Generate a unique filename
         const fileExtension = imageUrl.split('.').pop()?.split('?')[0] || 'jpg';
+        const timestamp = Date.now();
         const randomString = Math.random().toString(36).substring(2, 6);
-        const fileName = `${randomString}.${fileExtension}`;
+        const fileName = `${timestamp}-${randomString}.${fileExtension}`;
 
         // Upload to Supabase
         const { data, error } = await supabase.storage
             .from(bucketName)
             .upload(fileName, imageBlob, {
                 contentType: imageBlob.type,
+                upsert: false,
             });
 
         if (error) throw error;

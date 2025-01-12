@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 
 export async function uploadGearImageFromFile(file: File) {
     const fileParts = file.name.split('.');
@@ -7,6 +7,7 @@ export async function uploadGearImageFromFile(file: File) {
     const uploadFileName = [...fileParts, randomString, fileExtension].join(
         '.'
     );
+    const supabase = createClient();
 
     const { data, error } = await supabase.storage
         .from('gear-images')

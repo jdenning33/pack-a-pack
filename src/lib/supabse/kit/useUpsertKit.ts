@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { supabase } from '../supabaseClient';
+import { createClient } from '@/lib/supabse/supabaseClient';
 import { Kit } from '@/lib/appTypes';
 import { appToSupabaseKit } from '../supabaseTypes';
 import { optimisticUpdateHandler } from '../optimisticUpdateHandler';
@@ -10,6 +10,7 @@ export function useUpsertKit() {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (kit: Optional<Kit, 'id'>): Promise<string> => {
+            const supabase = createClient();
             const supabaseKit = appToSupabaseKit(kit);
             console.log('supabaseKit', supabaseKit);
             const { data, error } = await supabase

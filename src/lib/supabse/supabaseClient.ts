@@ -1,11 +1,17 @@
-// File: src/lib/supabaseClient.ts
-import { createClient } from '@supabase/supabase-js';
+// File: src/lib/supabase/clients.ts
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+// import { cookies } from 'next/headers';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
+// Validate environment variables
+if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+) {
     throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// For client components
+export const createClient = () => {
+    // By default, looks for the NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables
+    return createClientComponentClient();
+};
